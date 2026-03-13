@@ -1,0 +1,69 @@
+:root {
+  /* Oracle Brand Colors */
+  --oracle-red: #C74634;
+  --oracle-red-dark: #A8200D;
+  --oracle-red-light: #E85A4A;
+  --oracle-red-glow: rgba(199, 70, 52, 0.3);
+
+  /* Oracle Theme Colors */
+  --bg-primary: #191919;
+  --bg-secondary: #312D2A;
+  --bg-tertiary: #3A3633;
+  --bg-elevated: #423E3B;
+  --bg-hover: #4A4643;
+
+  /* Text Colors */
+  --text-primary: #F2F0E9;
+  --text-secondary: #D4D2CB;
+  --text-tertiary: #B8B6B0;
+  --text-muted: #9C9A95;
+
+  /* Border Colors */
+  --border-default: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.15);
+  --border-focus: var(--oracle-red);
+
+  /* Status Colors */
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  --info: #3B82F6;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-oracle: 0 4px 20px rgba(199, 70, 52, 0.25);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 400ms ease;
+
+  /* Spacing */
+  --header-height: 64px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
