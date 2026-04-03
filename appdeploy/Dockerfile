@@ -39,7 +39,8 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install only production dependencies for the Express server
-RUN npm ci --only=production
+# --ignore-scripts skips the "prepare" hook which would try to run husky (a devDependency)
+RUN npm ci --only=production --ignore-scripts
 
 # Copy the Express server
 COPY server/ ./server/
