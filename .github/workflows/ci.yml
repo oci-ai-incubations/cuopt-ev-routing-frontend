@@ -2,11 +2,81 @@ name: CI
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, review_requested]
+    types: [opened, synchronize, reopened]
   push:
     branches: [main]
 
 jobs:
+  # ── Frontend checks ──────────────────────────────────────────────
+  lint-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: TypeScript build check
+        run: npm run build
+
+  test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Vitest with coverage
+        run: npm run test:coverage
+
+  # ── Backend checks ───────────────────────────────────────────────
+  lint-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: ESLint (server)
+        run: npx eslint server/
+
+  test-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Backend tests with coverage
+        run: npm run test:backend:coverage
+
+  # ── Security ─────────────────────────────────────────────────────
   security-scan:
     runs-on: ubuntu-latest
     steps:
@@ -15,6 +85,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
@@ -22,52 +93,13 @@ jobs:
       - name: npm audit
         run: npm audit --audit-level=high
 
-  lint:
+  # ── Build & push image (PR) ─────────────────────────────────────
+  build-and-push-pr:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Vite build check
-        run: npm run build
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Vitest with coverage
-        run: |
-          npx vitest run --coverage \
-            --coverage.provider=v8 \
-            --coverage.lines=80 \
-            --coverage.functions=80 \
-            --coverage.branches=80 \
-            --coverage.statements=80
-
-  build-and-push:
-    runs-on: ubuntu-latest
-    needs: [security-scan, lint, test]
+    needs: [lint-frontend, test-frontend, lint-backend, test-backend, security-scan]
     env:
-      OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
-      OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
-      OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
-      OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
-      OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
-      IMAGE_NAME: corrino-devops-repository/cuopt-ev-routing-frontend
+      IMAGE_REPO: iad.ocir.io/${{ secrets.OCI_TENANCY_NAMESPACE }}/corrino-devops-repository
     steps:
       - uses: actions/checkout@v4
 
@@ -82,19 +114,44 @@ jobs:
       - name: Build image
         run: |
           docker build --platform linux/amd64 \
-            -t ${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }} .
+            -f appdeploy/Dockerfile \
+            -t ${{ env.IMAGE_REPO }}:cuopt-interactive-frontend-${{ env.SHORT_SHA }} .
 
-      - name: Tag and push image
+      - name: Push image
         run: |
-          REGISTRY="iad.ocir.io/${{ secrets.OCI_TENANCY_NAMESPACE }}"
-          docker tag ${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }} \
-            $REGISTRY/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}
-          docker push $REGISTRY/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}
+          docker push ${{ env.IMAGE_REPO }}:cuopt-interactive-frontend-${{ env.SHORT_SHA }}
+
+  # ── Build & push image (merge to main) ───────────────────────────
+  build-and-push-main:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: [lint-frontend, test-frontend, lint-backend, test-backend, security-scan]
+    env:
+      IMAGE_REPO: iad.ocir.io/${{ secrets.OCI_TENANCY_NAMESPACE }}/corrino-devops-repository
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compute short SHA
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      - name: Log in to OCIR
+        uses: oracle-actions/login-ocir@v1.3.0
+        with:
+          auth_token: ${{ secrets.OCI_AUTH_TOKEN }}
+
+      - name: Build image
+        run: |
+          docker build --platform linux/amd64 \
+            -f appdeploy/Dockerfile \
+            -t ${{ env.IMAGE_REPO }}:cuopt-interactive-frontend-${{ env.SHORT_SHA }} .
+
+      - name: Push SHA-tagged image
+        run: |
+          docker push ${{ env.IMAGE_REPO }}:cuopt-interactive-frontend-${{ env.SHORT_SHA }}
 
       - name: Tag and push latest
-        if: github.event_name == 'push'
         run: |
-          REGISTRY="iad.ocir.io/${{ secrets.OCI_TENANCY_NAMESPACE }}"
-          docker tag ${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }} \
-            $REGISTRY/${{ env.IMAGE_NAME }}:latest
-          docker push $REGISTRY/${{ env.IMAGE_NAME }}:latest
+          docker tag \
+            ${{ env.IMAGE_REPO }}:cuopt-interactive-frontend-${{ env.SHORT_SHA }} \
+            ${{ env.IMAGE_REPO }}:cuopt-interactive-frontend-latest
+          docker push ${{ env.IMAGE_REPO }}:cuopt-interactive-frontend-latest

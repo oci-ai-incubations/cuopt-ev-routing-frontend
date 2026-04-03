@@ -10,11 +10,13 @@ allowed-tools: Bash, Read
 ## Commands
 
 ```bash
+npm run lint
 npm run build
-npm audit --audit-level=high
+npm run audit:security
 ```
 
 ## On Failure
 
-- **vite build error**: Show the error, investigate the referenced file, fix and rerun.
+- **ESLint error**: Show the error, investigate the referenced file, fix and rerun.
+- **TypeScript / vite build error**: Show the error, investigate the referenced file, fix and rerun.
 - **npm audit**: Show vulnerability details, suggest `npm audit fix` or manual upgrades.
