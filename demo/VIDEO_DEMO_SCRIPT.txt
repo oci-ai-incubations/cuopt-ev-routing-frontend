@@ -1,0 +1,114 @@
+================================================================================
+                CuOPT FRONTEND VIDEO DEMO SCRIPT (3-4 minutes)
+================================================================================
+
+TITLE SLIDE: "Smart Route Optimization with NVIDIA cuOPT and Oracle Cloud AI"
+
+--------------------------------------------------------------------------------
+[0:00 - 0:20] INTRODUCTION
+--------------------------------------------------------------------------------
+
+"Welcome to this demonstration of our intelligent route optimization solution,
+built with NVIDIA cuOPT and Oracle Cloud Infrastructure. This application helps
+logistics companies optimize delivery routes, reduce fuel costs, and improve
+operational efficiency using GPU-accelerated computing and generative AI."
+
+--------------------------------------------------------------------------------
+[0:20 - 1:00] DASHBOARD OVERVIEW
+--------------------------------------------------------------------------------
+
+"Let's start with the main dashboard. On the left, you'll see our input panel
+where we can configure optimization parameters. On the right, we have an
+interactive map powered by Leaflet that displays our delivery locations and
+optimized routes.
+
+The application supports multiple fleet configurations - from small urban
+delivery operations to large-scale logistics networks. We can set the number
+of vehicles, their capacity constraints, and time windows for deliveries."
+
+--------------------------------------------------------------------------------
+[1:00 - 1:45] CSV UPLOAD AND DATA INPUT
+--------------------------------------------------------------------------------
+
+"One of the key features is our flexible data input system. Let me demonstrate
+by uploading a CSV file containing 50 delivery locations across London.
+
+[Upload sample_deliveries_london.csv]
+
+As you can see, the stops are immediately plotted on the map. Each stop includes
+coordinates, demand weight, and optional time window constraints. The system
+validates the data and highlights any issues.
+
+We also support benchmark scenarios for quick testing - here's a Manchester
+regional scenario with 75 stops."
+
+--------------------------------------------------------------------------------
+[1:45 - 2:30] ROUTE OPTIMIZATION
+--------------------------------------------------------------------------------
+
+"Now let's run the optimization. I'll click 'Optimize Routes' and watch the
+cuOPT solver work its magic.
+
+[Click Optimize Routes]
+
+The NVIDIA cuOPT solver running on GPU infrastructure processes this request
+in milliseconds - what would take traditional solvers minutes or hours. The
+optimized routes appear on the map, color-coded by vehicle.
+
+Notice the metrics panel showing total distance, estimated time, and vehicle
+utilization. We've reduced the total travel distance by approximately 30%
+compared to a naive routing approach."
+
+--------------------------------------------------------------------------------
+[2:30 - 3:15] AI ASSISTANT
+--------------------------------------------------------------------------------
+
+"What makes this solution truly intelligent is the integrated AI assistant,
+powered by Oracle Cloud Infrastructure Generative AI.
+
+Let me ask it about our optimization results:
+
+'What insights can you provide about this route optimization?'
+
+[AI responds with analysis]
+
+The AI provides natural language explanations of the results, identifies
+potential improvements, and can answer questions about vehicle utilization,
+delivery sequences, and cost implications. It makes the complex optimization
+data accessible to operations managers who may not have technical backgrounds."
+
+--------------------------------------------------------------------------------
+[3:15 - 3:45] EXTENSIBILITY AND FUTURE ENHANCEMENTS
+--------------------------------------------------------------------------------
+
+"This solution is designed for extensibility. The architecture supports:
+
+- Integration with TomTom or Google Maps for real-time traffic data
+- Ford Commercial Solutions for fleet telematics integration
+- EV charging station optimization for electric vehicle fleets
+- UK postcode-based geocoding for British logistics operations
+
+The modular design allows organizations to add capabilities as their needs
+evolve."
+
+--------------------------------------------------------------------------------
+[3:45 - 4:00] CLOSING
+--------------------------------------------------------------------------------
+
+"In summary, this solution combines the raw computational power of NVIDIA cuOPT
+with Oracle Cloud's enterprise AI capabilities to deliver a complete route
+optimization platform.
+
+Thank you for watching. For more information or a live demonstration, please
+contact the Oracle AI Center of Excellence team."
+
+================================================================================
+                           END OF SCRIPT
+================================================================================
+
+TECHNICAL NOTES FOR RECORDING:
+- Use 1920x1080 resolution for screen recording
+- Ensure the browser window is maximized
+- Pre-load the sample CSV files in the demo folder
+- Test the cuOPT backend connection before recording
+- Have the AI prompts ready from AI_DEMO_PROMPTS.txt

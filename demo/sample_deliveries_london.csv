@@ -1,0 +1,51 @@
+label,lat,lng,demand
+Canary Wharf Office,51.5054,-0.0235,8
+Tower Bridge Warehouse,51.5055,-0.0754,5
+Liverpool Street Station,51.5178,-0.0823,6
+Kings Cross Depot,51.5308,-0.1238,10
+Paddington Hub,51.5154,-0.1755,7
+Victoria Station,51.4952,-0.1439,4
+Waterloo Centre,51.5031,-0.1132,9
+London Bridge Office,51.5079,-0.0877,6
+Southwark Distribution,51.5035,-0.1047,5
+Westminster Delivery,51.4975,-0.1357,8
+Covent Garden Shop,51.5117,-0.1240,3
+Soho Restaurant,51.5136,-0.1365,4
+Mayfair Hotel,51.5095,-0.1491,7
+Bloomsbury University,51.5246,-0.1340,6
+Holborn Legal,51.5174,-0.1182,5
+Clerkenwell Tech,51.5235,-0.1027,8
+Shoreditch Startup,51.5263,-0.0786,9
+Hackney Warehouse,51.5450,-0.0553,10
+Stratford Olympic,51.5430,-0.0134,7
+Greenwich Park,51.4769,-0.0005,4
+Lewisham Centre,51.4624,-0.0138,6
+Brixton Market,51.4613,-0.1156,5
+Clapham Junction,51.4652,-0.1703,8
+Wandsworth Common,51.4571,-0.1818,4
+Putney Bridge,51.4679,-0.2097,6
+Hammersmith Broadway,51.4927,-0.2248,7
+Shepherds Bush,51.5045,-0.2177,5
+Notting Hill Gate,51.5094,-0.1963,4
+Kensington High St,51.4999,-0.1916,6
+Chelsea Kings Road,51.4875,-0.1687,8
+Fulham Broadway,51.4802,-0.1951,5
+Earls Court,51.4914,-0.1934,4
+South Kensington,51.4941,-0.1738,7
+Knightsbridge,51.5015,-0.1607,9
+Piccadilly Circus,51.5100,-0.1347,6
+Oxford Circus,51.5152,-0.1415,8
+Regent Street,51.5117,-0.1407,5
+Bond Street,51.5142,-0.1494,7
+Marble Arch,51.5136,-0.1589,4
+Baker Street,51.5226,-0.1571,6
+St Johns Wood,51.5347,-0.1729,5
+Camden Town,51.5392,-0.1426,8
+Islington Angel,51.5322,-0.1058,7
+Finsbury Park,51.5642,-0.1065,6
+Tottenham Hale,51.5882,-0.0594,9
+Walthamstow Central,51.5830,-0.0199,5
+Leyton Orient,51.5566,-0.0055,4
+Mile End,51.5252,-0.0332,6
+Bethnal Green,51.5270,-0.0558,7
+Whitechapel Market,51.5194,-0.0596,8
