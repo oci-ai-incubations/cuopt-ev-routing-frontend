@@ -100,6 +100,11 @@ jobs:
     needs: [lint-frontend, test-frontend, lint-backend, test-backend, security-scan]
     env:
       IMAGE_REPO: iad.ocir.io/${{ secrets.OCI_TENANCY_NAMESPACE }}/corrino-devops-repository
+      OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
+      OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
+      OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
+      OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
+      OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
     steps:
       - uses: actions/checkout@v4
 
@@ -128,6 +133,11 @@ jobs:
     needs: [lint-frontend, test-frontend, lint-backend, test-backend, security-scan]
     env:
       IMAGE_REPO: iad.ocir.io/${{ secrets.OCI_TENANCY_NAMESPACE }}/corrino-devops-repository
+      OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
+      OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
+      OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
+      OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
+      OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
     steps:
       - uses: actions/checkout@v4
 
