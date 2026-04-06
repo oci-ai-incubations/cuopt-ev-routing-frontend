@@ -12,7 +12,7 @@ allowed-tools: Bash, Read, Grep
 ### 1. Dependency audit
 
 ```bash
-npm audit --audit-level=high
+npm run audit:security
 ```
 
 ### 2. Secrets check
@@ -22,7 +22,7 @@ Verify no secrets are staged:
 git diff --cached --name-only | grep -iE '\.(env|pem|key|p12)$' || echo "No secret files staged"
 ```
 
-Use the Grep tool to search `src/` for patterns like `(password|secret|api_key|token)\s*=\s*["'][^"']+["']`. Exclude `api.js` env variable reads.
+Use the Grep tool to search `src/` and `server/` for patterns like `(password|secret|api_key|token)\s*=\s*["'][^"']+["']`. Exclude env variable reads.
 
 ## Reporting
 

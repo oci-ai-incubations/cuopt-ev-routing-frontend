@@ -1,0 +1,64 @@
+# ============================================================================
+# CuOPT Frontend - Docker Compose for Local Development & Testing
+# ============================================================================
+# Usage (run from appdeploy folder):
+#   Build:  docker-compose build
+#   Run:    docker-compose up -d
+#   Logs:   docker-compose logs -f
+#   Stop:   docker-compose down
+# ============================================================================
+
+version: '3.8'
+
+services:
+  cuopt-frontend:
+    build:
+      context: ..
+      dockerfile: appdeploy/Dockerfile
+    container_name: cuopt-frontend
+    ports:
+      - "8080:80"      # Frontend (Nginx)
+      - "3001:3001"    # API Server (Express)
+    environment:
+      # cuOPT Backend Configuration
+      - CUOPT_ENDPOINT=${CUOPT_ENDPOINT:-https://cuopt-2-cuopt.137-131-27-21.nip.io}
+
+      # OCI GenAI Configuration
+      - OCI_GENAI_ENDPOINT=${OCI_GENAI_ENDPOINT:-https://inference.generativeai.us-phoenix-1.oci.oraclecloud.com}
+      - OCI_COMPARTMENT_ID=${OCI_COMPARTMENT_ID}
+      - OCI_GENAI_MODEL_ID=${OCI_GENAI_MODEL_ID}
+      - OCI_CONFIG_PROFILE=${OCI_CONFIG_PROFILE:-DEFAULT}
+
+      # Weather API (Optional)
+      - OPENWEATHERMAP_API_KEY=${OPENWEATHERMAP_API_KEY:-}
+
+      # Node environment
+      - NODE_ENV=production
+      - PORT=3001
+    volumes:
+      # Mount OCI config for authentication (development only)
+      - ~/.oci:/root/.oci:ro
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - cuopt-network
+
+networks:
+  cuopt-network:
+    driver: bridge
+
+# ============================================================================
+# Environment Variables (.env file example):
+# ============================================================================
+# CUOPT_ENDPOINT=https://cuopt-2-cuopt.137-131-27-21.nip.io
+# OCI_GENAI_ENDPOINT=https://inference.generativeai.us-phoenix-1.oci.oraclecloud.com
+# OCI_COMPARTMENT_ID=ocid1.compartment.oc1..xxxxx
+# OCI_GENAI_MODEL_ID=ocid1.generativeaimodel.oc1.phx.xxxxx
+# OCI_CONFIG_PROFILE=DEFAULT
+# OPENWEATHERMAP_API_KEY=your_api_key
+# ============================================================================

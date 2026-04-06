@@ -8,6 +8,8 @@
       "Bash(npm audit:*)",
       "Bash(npx vitest:*)",
       "Bash(npx vite:*)",
+      "Bash(npx eslint:*)",
+      "Bash(npx husky:*)",
       "Bash(git status:*)",
       "Bash(git diff:*)",
       "Bash(git log:*)",

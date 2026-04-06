@@ -1,0 +1,175 @@
+================================================================================
+                    AI ASSISTANT DEMO PROMPTS
+              Use these during your video demonstration
+================================================================================
+
+RECOMMENDED PROMPT FOR DEMO (Best for showcasing AI capabilities)
+--------------------------------------------------------------------------------
+
+"Optimize 75 deliveries across Manchester with 8 vehicles, ensuring
+each driver works no more than 8 hours. Balance the workload evenly
+across all vehicles."
+
+Why this prompt works well for demo:
+- Shows natural language understanding
+- Demonstrates constraint handling (8-hour limit)
+- Triggers workload balancing recommendation
+- Produces meaningful AI commentary on the results
+
+
+ALTERNATIVE PROMPTS (Choose based on your demo focus)
+--------------------------------------------------------------------------------
+
+1. SIMPLE OPTIMIZATION:
+   "Plan routes for 50 deliveries in London with 5 vans"
+
+2. BUSINESS CONSTRAINTS:
+   "I have 100 packages to deliver in Birmingham before 5pm today
+   using 10 delivery trucks with capacity of 80 units each"
+
+3. COST FOCUS:
+   "Minimize fuel costs for 200 deliveries across the Midlands
+   with our fleet of 20 vehicles"
+
+4. PRIORITY HANDLING:
+   "Route 60 urgent medical deliveries in Edinburgh with 6 vehicles,
+   prioritize hospitals and clinics first"
+
+5. LARGE SCALE (Shows parallel processing):
+   "Optimize 500 deliveries across the UK using parallel processing
+   with 4 regional clusters"
+
+6. SKY-SPECIFIC SCENARIO:
+   "Schedule maintenance visits to 15 Sky EV charging stations
+   with 5 service engineers, prioritizing rapid chargers"
+
+7. WEATHER AWARE (Basic):
+   "Plan delivery routes for 80 stops in Yorkshire considering
+   current weather conditions and traffic"
+
+7a. WEATHER AWARE (Detailed):
+   "Optimize 50 deliveries in London with weather safety assessment
+   and adjusted travel times for current conditions"
+
+7b. WEATHER AWARE (Storm):
+   "Route 60 urgent deliveries in Manchester during storm conditions,
+   prioritize safety and add buffer time for adverse weather"
+
+7c. WEATHER AWARE (EV Stations):
+   "Plan maintenance visits to 30 Sky EV charging stations with
+   weather-aware routing and safety recommendations"
+
+8. REAL-TIME REOPTIMIZATION:
+   "We have 3 vehicles available after a breakdown. Redistribute
+   the remaining 45 deliveries among them efficiently"
+
+9. EV FLEET WITH CHARGING (Future Integration Demo):
+   "Plan routes for 40 electric delivery vans in London, considering
+   charging station locations and vehicle battery levels"
+
+10. INTEGRATION SHOWCASE:
+    "Optimize 60 deliveries in Manchester using real-time TomTom
+    traffic data and current weather conditions"
+
+
+WEATHER-AWARE ROUTING PROMPTS
+--------------------------------------------------------------------------------
+
+These prompts demonstrate the weather integration feature:
+
+1. BASIC WEATHER CHECK:
+   "Plan 50 deliveries in London considering current weather conditions"
+
+2. SAFETY FOCUSED:
+   "Optimize routes for 100 stops in Manchester with weather safety scoring"
+
+3. ADVERSE CONDITIONS:
+   "Route 30 urgent deliveries in Scotland during rainy conditions with safety buffers"
+
+4. EV NETWORK WEATHER:
+   "Schedule visits to 25 Sky EV charging stations with weather-adjusted travel times"
+
+5. REGIONAL WEATHER:
+   "Plan 80 deliveries across Yorkshire checking for adverse weather warnings"
+
+6. STORM RESPONSE:
+   "Emergency routing for 40 service calls in North West England during storm conditions"
+
+Expected AI Response includes:
+- Weather Assessment: Clear/Minor/Moderate/Adverse/Severe
+- Temperature range across route
+- Wind speed (average and maximum)
+- Travel time adjustment percentage
+- Safety score (0-100)
+- Specific recommendations for drivers
+
+
+FOLLOW-UP PROMPTS (After initial optimization)
+--------------------------------------------------------------------------------
+
+After showing results, you can ask follow-up questions like:
+
+"Can you reduce the number of vehicles used?"
+
+"What if I add 20 more urgent deliveries?"
+
+"Show me the longest route and suggest how to shorten it"
+
+
+PROMPTS TO AVOID DURING DEMO
+--------------------------------------------------------------------------------
+
+Avoid these as they may produce less visual results:
+
+- Very small numbers (under 20 stops) - results too simple
+- Numbers over 1000 - may take longer than comfortable for video
+- Vague requests without stop counts - AI may ask clarifying questions
+- Complex multi-day scenarios - beyond current POC scope
+
+
+================================================================================
+                         DEMO FLOW SUGGESTION
+================================================================================
+
+1. Start with the Dashboard route optimizer (manual configuration)
+2. Show CSV upload feature with sample_deliveries_london.csv
+3. Run optimization and show results
+4. Switch to AI Assistant
+5. Use the RECOMMENDED PROMPT above
+6. Show how AI interprets and explains results
+7. Highlight the natural language interface benefit
+8. Mention extensibility and future integration possibilities
+
+================================================================================
+
+
+================================================================================
+                    FUTURE INTEGRATION TALKING POINTS
+         (Mention these when discussing platform extensibility)
+================================================================================
+
+CURRENT CONFIGURATION:
+- UK postcodes and geographic routing data
+- OCI Generative AI endpoints (US-Phoenix region)
+- NVIDIA cuOPT on A10G GPU instances
+- Weather API integration (OpenWeatherMap)
+
+READY FOR INTEGRATION:
+- TomTom Traffic API - real-time traffic streaming
+- Ford/BMW/Tesla Fleet APIs - connected vehicle telemetry
+- EV Charging Networks - ChargePoint, BP Pulse, Pod Point
+- IoT Sensors - vehicle diagnostics, temperature monitoring
+- Oracle Fusion - supply chain and logistics data
+- SAP/JDA - enterprise resource planning systems
+
+GEOGRAPHIC FLEXIBILITY:
+- Currently: UK postcodes and regions
+- Expandable to: Europe, Middle East, Americas, Asia-Pacific
+- Simple configuration change for new regions
+
+KEY MESSAGE:
+"This is a modular, API-first architecture. Start with route
+optimization today, and progressively add live data feeds and
+enterprise integrations as your business requirements evolve."
+
+================================================================================

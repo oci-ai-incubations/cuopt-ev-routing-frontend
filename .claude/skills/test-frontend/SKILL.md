@@ -10,18 +10,23 @@ argument-hint: [test-file]
 
 ## Arguments
 
-- `` (optional) — Specific test file, e.g. `src/__tests__/Header.test.jsx`
+- `<test-file>` (optional) — Specific test file, e.g. `src/__tests__/App.test.tsx`
 
 ## Commands
 
 If a test file is provided:
 ```bash
-npx vitest run
+npx vitest run <test-file>
 ```
 
-Otherwise:
+Otherwise run all frontend tests:
 ```bash
-npm test
+npm run test:frontend
+```
+
+For backend tests:
+```bash
+npm run test:backend
 ```
 
 ## On Failure
