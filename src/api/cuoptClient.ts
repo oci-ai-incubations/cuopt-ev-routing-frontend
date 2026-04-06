@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import type { CuOptRequest, CuOptResponse, Stop, Vehicle, OptimizationConfig } from '@/types';
+import type { CuOptRequest, CuOptResponse, Stop, Vehicle, OptimizationConfig, TaskData } from '@/types';
 
 class CuOptClient {
   private client: AxiosInstance;
@@ -80,9 +80,20 @@ class CuOptClient {
         // Transform vehicle_data from object to array
         // cuOPT returns: { "1": {...}, "2": {...} }
         // Frontend expects: [{ vehicle_id: 1, ... }, { vehicle_id: 2, ... }]
-        let vehicleDataArray: any[] = [];
+        interface VehicleInfo {
+          route?: number[];
+          arrival_stamp?: number[];
+        }
+        let vehicleDataArray: Array<{
+          vehicle_id: number;
+          route: number[];
+          arrival_times: number[];
+          route_distance: number;
+          route_duration: number;
+          load_at_stops: number[];
+        }> = [];
         if (solverResponse?.vehicle_data && typeof solverResponse.vehicle_data === 'object') {
-          vehicleDataArray = Object.entries(solverResponse.vehicle_data).map(([vehicleId, vehicleInfo]: [string, any]) => ({
+          vehicleDataArray = Object.entries(solverResponse.vehicle_data as Record<string, VehicleInfo>).map(([vehicleId, vehicleInfo]) => ({
             vehicle_id: parseInt(vehicleId),
             route: vehicleInfo.route || [],
             arrival_times: vehicleInfo.arrival_stamp || [],
@@ -175,7 +186,7 @@ class CuOptClient {
     const timeMatrix = this.buildTimeMatrix(costMatrix);
 
     // Build task data with service times (dwell times) if available
-    const taskData: any = {
+    const taskData: TaskData = {
       task_locations: stops.map((_, i) => i + 1), // 0 is depot, tasks start at 1
       demand: [stops.map((s) => s.demand)],
     };

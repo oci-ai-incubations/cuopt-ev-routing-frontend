@@ -669,7 +669,7 @@ export default function App() {
                       <div className="w-8 h-8 rounded-full bg-oracle-red flex items-center justify-center text-white font-bold shrink-0">1</div>
                       <div>
                         <div className="font-medium text-white">Load Stops</div>
-                        <div className="text-sm text-gray-400">Use "Load Benchmark Scenario" or upload a CSV file with lat, lng, demand columns. Supports EV charging stations and custom locations.</div>
+                        <div className="text-sm text-gray-400">Use &quot;Load Benchmark Scenario&quot; or upload a CSV file with lat, lng, demand columns. Supports EV charging stations and custom locations.</div>
                       </div>
                     </div>
                     <div className="flex gap-4 p-3 bg-dark-bg rounded-lg">
@@ -683,7 +683,7 @@ export default function App() {
                       <div className="w-8 h-8 rounded-full bg-oracle-red flex items-center justify-center text-white font-bold shrink-0">3</div>
                       <div>
                         <div className="font-medium text-white">Run Optimization</div>
-                        <div className="text-sm text-gray-400">Click "Run Optimization" for single-cluster solving, or "Run Parallel" to split stops into geographic clusters for faster processing.</div>
+                        <div className="text-sm text-gray-400">Click &quot;Run Optimization&quot; for single-cluster solving, or &quot;Run Parallel&quot; to split stops into geographic clusters for faster processing.</div>
                       </div>
                     </div>
                     <div className="flex gap-4 p-3 bg-dark-bg rounded-lg">

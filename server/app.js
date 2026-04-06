@@ -317,12 +317,8 @@ app.get('/api/weather/forecast', async (req, res) => {
 
 // Weather - Alerts (One Call API - requires subscription)
 app.get('/api/weather/alerts', async (_req, res) => {
-  try {
-    // One Call API requires subscription, return empty for now
-    res.json({ alerts: [] });
-  } catch (_error) {
-    res.json({ alerts: [] });
-  }
+  // One Call API requires subscription, return empty for now
+  res.json({ alerts: [] });
 });
 
 // Weather health check
