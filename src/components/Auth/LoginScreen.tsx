@@ -68,8 +68,8 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
           <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-white mb-4 shadow-lg">
             <Cloud className="w-12 h-12" style={{ color: '#C74634' }} strokeWidth={2.5} />
           </div>
-          <h1 className="text-2xl font-bold text-white mb-2">OCI Route Optimizer</h1>
-          <p className="text-gray-400">Powered by Oracle Cloud Infrastructure</p>
+          <h1 className="text-2xl font-bold text-white mb-2">My Custom Route Optimizer</h1>
+          <p className="text-gray-400">Custom Build — Powered by OCI</p>
         </div>
 
         {/* Login Card */}

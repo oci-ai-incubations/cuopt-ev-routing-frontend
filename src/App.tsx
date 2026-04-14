@@ -154,8 +154,8 @@ export default function App() {
           </div>
           {!sidebarCollapsed && (
             <div className="overflow-hidden">
-              <h1 className="font-bold text-white text-sm whitespace-nowrap">cuOPT</h1>
-              <p className="text-xs text-gray-500 whitespace-nowrap">Route Optimizer</p>
+              <h1 className="font-bold text-white text-sm whitespace-nowrap">cuOPT Custom</h1>
+              <p className="text-xs text-gray-500 whitespace-nowrap">My Route Optimizer</p>
             </div>
           )}
         </div>
@@ -248,6 +248,10 @@ export default function App() {
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden">
+        {/* Custom Build Banner */}
+        <div className="w-full bg-emerald-600 text-white text-center py-1.5 text-sm font-medium tracking-wide">
+          Custom Build — Deployed from OCIR
+        </div>
         {/* Header */}
         <header className="h-16 flex items-center justify-between px-6 border-b border-dark-border bg-dark-card">
           <div>
