@@ -473,7 +473,7 @@ export function InputPanel({ onRunOptimization, onRunParallel }: InputPanelProps
                       <p className="font-medium">Available Fleet Size</p>
                       <p>Maximum number of vehicles/technicians available.</p>
                       <p className="text-gray-400">Solver will use only as many as needed.</p>
-                      <p className="text-green-400">Results show: "Used / Available"</p>
+                      <p className="text-green-400">Results show: &quot;Used / Available&quot;</p>
                     </div>
                   }
                   position="right"

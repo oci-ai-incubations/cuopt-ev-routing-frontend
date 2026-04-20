@@ -34,7 +34,7 @@ interface ChatState {
   addMessage: (message: Omit<Message, 'id' | 'timestamp'>) => void;
   addStreamingMessage: () => string;
   appendToStreamingMessage: (chunk: string) => void;
-  finalizeStreamingMessage: (metadata?: object) => void;
+  finalizeStreamingMessage: (metadata?: Message['metadata']) => void;
   updateLastMessage: (content: string) => void;
   clearMessages: () => void;
 
@@ -188,7 +188,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
 
       const messages = state.messages.map((m) =>
         m.id === streamingId
-          ? { ...m, metadata: metadata as any }
+          ? { ...m, metadata }
           : m
       );
       const conversations = state.conversations.map((c) =>

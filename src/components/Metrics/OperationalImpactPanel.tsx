@@ -299,7 +299,7 @@ export function OperationalImpactPanel() {
               </div>
             </div>
             <p className="text-xs text-gray-500 mt-3">
-              <span className="text-yellow-400">Tip:</span> Enable "Return to Depot" in Fleet settings to include return trips.
+              <span className="text-yellow-400">Tip:</span> Enable &quot;Return to Depot&quot; in Fleet settings to include return trips.
             </p>
           </CardContent>
         </Card>

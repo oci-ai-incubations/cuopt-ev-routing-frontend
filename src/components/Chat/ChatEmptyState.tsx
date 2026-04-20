@@ -29,7 +29,7 @@ export function ChatEmptyState({ onPromptClick }: ChatEmptyStateProps) {
       </div>
       <h3 className="text-xl font-semibold text-white mb-2">How can I help you today?</h3>
       <p className="text-gray-400 max-w-md mb-8">
-        Describe your routing problem in natural language, and I'll create an optimized solution using NVIDIA cuOPT.
+        Describe your routing problem in natural language, and I&apos;ll create an optimized solution using NVIDIA cuOPT.
       </p>
 
       <div className="grid grid-cols-2 gap-3 max-w-2xl">

@@ -73,6 +73,24 @@ interface StopWeatherData {
   assessment: AdverseConditionAssessment;
 }
 
+interface EvStopMetadata {
+  networkName?: string;
+  powerGroup?: string;
+}
+
+function getEvMetadata(metadata?: Record<string, unknown>): EvStopMetadata | null {
+  if (!metadata) return null;
+
+  const networkName = typeof metadata.networkName === 'string' ? metadata.networkName : undefined;
+  const powerGroup = typeof metadata.powerGroup === 'string' ? metadata.powerGroup : undefined;
+
+  if (!networkName && !powerGroup) {
+    return null;
+  }
+
+  return { networkName, powerGroup };
+}
+
 // Weather severity colors
 const WEATHER_SEVERITY_COLORS: Record<AdverseConditionLevel, string> = {
   none: '#22C55E',      // Green
@@ -179,9 +197,11 @@ export function GoogleRouteMap() {
               resolve(response);
             } else if (status === 'OVER_QUERY_LIMIT') {
               // Rate limited - will retry with delay
+              // eslint-disable-next-line no-console
               console.warn('Rate limited, will retry...');
               resolve(null);
             } else {
+              // eslint-disable-next-line no-console
               console.warn(`Directions failed: ${status}`);
               resolve(null);
             }
@@ -194,6 +214,7 @@ export function GoogleRouteMap() {
         const delay = Math.min(500 * Math.pow(2, attempt), 3000);
         await new Promise((resolve) => setTimeout(resolve, delay));
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('Directions error:', error);
       }
     }
@@ -341,8 +362,10 @@ export function GoogleRouteMap() {
 
         setWeatherData(newWeatherData);
         setOverallWeatherLevel(worstLevel);
+        // eslint-disable-next-line no-console
         console.log('[GoogleRouteMap] Weather loaded for', newWeatherData.size, 'stops. Worst level:', worstLevel);
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('Failed to fetch weather:', error);
       } finally {
         setIsLoadingWeather(false);
@@ -710,7 +733,8 @@ export function GoogleRouteMap() {
           const assignedRoute = routes.find((r) => r.route.includes(stop.id));
           const isAssigned = !!assignedRoute;
           const routeColor = assignedRoute ? getVehicleColor(assignedRoute.vehicle_id).color : '#9CA3AF';
-          const isEVStation = !!(stop as any).metadata?.networkName;
+          const evMetadata = getEvMetadata(stop.metadata);
+          const isEVStation = !!evMetadata?.networkName;
           const stopWeather = weatherData.get(stop.id);
           const weatherLevel = stopWeather?.assessment.level || 'none';
 
@@ -800,8 +824,8 @@ export function GoogleRouteMap() {
                   const stop = stops.find((s) => s.id === selectedMarker);
                   if (!stop) return null;
                   const assignedRoute = routes.find((r) => r.route.includes(stop.id));
-                  const isEVStation = !!(stop as any).metadata?.networkName;
-                  const metadata = (stop as any).metadata;
+                  const evMetadata = getEvMetadata(stop.metadata);
+                  const isEVStation = !!evMetadata?.networkName;
                   const stopWeather = weatherData.get(stop.id);
 
                   return (
@@ -869,15 +893,15 @@ export function GoogleRouteMap() {
                           </div>
                         )}
 
-                        {isEVStation && metadata && (
+                        {isEVStation && evMetadata && (
                           <>
                             <div className="flex justify-between">
                               <span>Network:</span>
-                              <span>{metadata.networkName}</span>
+                              <span>{evMetadata.networkName || '-'}</span>
                             </div>
                             <div className="flex justify-between">
                               <span>Power:</span>
-                              <span>{metadata.powerGroup}</span>
+                              <span>{evMetadata.powerGroup || '-'}</span>
                             </div>
                           </>
                         )}

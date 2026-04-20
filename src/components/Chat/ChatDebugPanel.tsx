@@ -4,11 +4,11 @@ import { Badge } from '@/components/shared/Badge';
 
 interface ChatDebugPanelProps {
   lastGenAIPrompt: string | null;
-  lastCuOptRequest: any;
-  lastCuOptResponse: any;
+  lastCuOptRequest: object | null;
+  lastCuOptResponse: object | null;
 }
 
-function JsonCard({ title, badge, data }: { title: string; badge: React.ReactNode; data: any }) {
+function JsonCard({ title, badge, data }: { title: string; badge: React.ReactNode; data: object | null }) {
   return (
     <Card variant="bordered" padding="sm">
       <CardHeader>

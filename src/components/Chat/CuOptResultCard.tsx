@@ -3,14 +3,15 @@ import { Button } from '@/components/shared/Button';
 import { Badge } from '@/components/shared/Badge';
 import { useConfigStore } from '@/store';
 import { formatDistance, formatDuration, getVehiclePlate, getVehicleColor, setVehicleCountry } from '@/utils';
+import type { CuOptResponse, VehicleRoute } from '@/types';
 
-export function CuOptResultCard({ result }: { result: any }) {
+export function CuOptResultCard({ result }: { result: CuOptResponse }) {
   const { config: appConfig } = useConfigStore();
   setVehicleCountry(appConfig.countryCode);
 
-  const vehicleData = result.vehicle_data || [];
+  const vehicleData: VehicleRoute[] = result.vehicle_data || [];
   const totalDistance = result.solution_cost || 0;
-  const totalDuration = vehicleData.reduce((sum: number, v: any) => sum + (v.route_duration || 0), 0);
+  const totalDuration = vehicleData.reduce((sum: number, v) => sum + (v.route_duration || 0), 0);
 
   const handleDownload = (format: 'json' | 'csv') => {
     let data: string;
@@ -23,7 +24,7 @@ export function CuOptResultCard({ result }: { result: any }) {
       mimeType = 'application/json';
     } else {
       const headers = 'plate,name,stops,route,duration\n';
-      const rows = vehicleData.map((v: any) => {
+      const rows = vehicleData.map((v) => {
         const vehicle = getVehiclePlate(v.vehicle_id);
         return `${vehicle.plate},${vehicle.name},${(v.route?.length || 2) - 2},"${v.route?.join('->')}",${v.route_duration || 0}`;
       }).join('\n');
@@ -67,7 +68,7 @@ export function CuOptResultCard({ result }: { result: any }) {
           <div className="text-xs text-gray-400 font-medium">
             Showing {Math.min(vehicleData.length, 10)} of {vehicleData.length} routes
           </div>
-          {vehicleData.slice(0, 10).map((v: any, idx: number) => {
+          {vehicleData.slice(0, 10).map((v, idx: number) => {
             const vehicle = getVehiclePlate(v.vehicle_id);
             return (
               <div key={idx} className="bg-dark-bg rounded-lg p-2 border border-dark-border">

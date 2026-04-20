@@ -17,6 +17,26 @@ interface MapStyleOption {
   preview: string;
 }
 
+interface EvStopMetadata {
+  networkName?: string;
+  powerGroup?: string;
+  connectorType?: string;
+}
+
+function getEvMetadata(metadata?: Record<string, unknown>): EvStopMetadata | null {
+  if (!metadata) return null;
+
+  const networkName = typeof metadata.networkName === 'string' ? metadata.networkName : undefined;
+  const powerGroup = typeof metadata.powerGroup === 'string' ? metadata.powerGroup : undefined;
+  const connectorType = typeof metadata.connectorType === 'string' ? metadata.connectorType : undefined;
+
+  if (!networkName && !powerGroup && !connectorType) {
+    return null;
+  }
+
+  return { networkName, powerGroup, connectorType };
+}
+
 const MAP_STYLES: MapStyleOption[] = [
   {
     id: 'streets',
@@ -62,7 +82,8 @@ const LEGACY_THEME_MAP: Record<string, MapStyle> = {
 };
 
 // Fix Leaflet default icon issue
-delete (L.Icon.Default.prototype as any)._getIconUrl;
+const defaultIconPrototype = L.Icon.Default.prototype as L.Icon.Default & { _getIconUrl?: string };
+delete defaultIconPrototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
   iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
@@ -417,8 +438,8 @@ export function RouteMap({ isActive = true }: RouteMapProps) {
           : '#9CA3AF'; // Gray for unassigned
 
         // Check if this is an EV charging station (has metadata with networkName)
-        const isEVStation = !!(stop as any).metadata?.networkName;
-        const metadata = (stop as any).metadata;
+        const metadata = getEvMetadata(stop.metadata);
+        const isEVStation = !!metadata?.networkName;
 
         // Use different marker for unassigned stops when routes exist
         const isUnassigned = !isAssigned && routes.length > 0;

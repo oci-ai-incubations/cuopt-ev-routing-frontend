@@ -448,7 +448,7 @@ export function ResultsPanel() {
                   Partial Solution - Some Constraints Relaxed
                 </h4>
                 <p className="text-sm text-gray-400 mb-2">
-                  cuOPT couldn't find a fully feasible solution. Time window or capacity constraints may be violated.
+                  cuOPT couldn&apos;t find a fully feasible solution. Time window or capacity constraints may be violated.
                   This typically means the workload exceeds available vehicle-hours.
                 </p>
                 <div className="text-xs text-gray-500 space-y-1">
@@ -475,7 +475,7 @@ export function ResultsPanel() {
           </CardHeader>
           <CardContent>
             <p className="text-sm text-gray-400 mb-3">
-              Some stops couldn't be served due to constraints. Here are suggestions to recover them:
+              Some stops couldn&apos;t be served due to constraints. Here are suggestions to recover them:
             </p>
             <div className="space-y-2">
               {recoverySuggestions.map((suggestion, idx) => (

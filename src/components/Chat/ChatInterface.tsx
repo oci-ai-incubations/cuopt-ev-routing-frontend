@@ -243,6 +243,7 @@ Could you please provide more details? For example:
             }
           } catch (e) {
             // Weather fetch failed, continue without it
+            // eslint-disable-next-line no-console
             console.log('Weather fetch failed:', e);
           }
 
@@ -273,7 +274,6 @@ Could you please provide more details? For example:
           });
 
           // Run parallel optimization
-          let runningClusters = 0;
           const results = await cuoptClient.solveParallel(
             payloads,
             numClusters,
@@ -281,7 +281,6 @@ Could you please provide more details? For example:
               // Progress callback - clusters completed
             },
             () => {
-              runningClusters++;
               // Job started callback - could update UI here if needed
             }
           );
@@ -289,7 +288,7 @@ Could you please provide more details? For example:
           // Merge results with unique numeric vehicle IDs
           let globalVehicleId = 0;
           const mergedVehicleData = results.flatMap((r, clusterIdx) =>
-            (r?.vehicle_data || []).map((v: any) => ({
+            (r?.vehicle_data || []).map((v) => ({
               ...v,
               vehicle_id: globalVehicleId++,
               cluster_id: clusterIdx,
@@ -387,8 +386,8 @@ Could you please provide more details? For example:
 
               weatherSummary = generateWeatherSummary(weatherImpacts, overallAssessment);
             }
-          } catch (e) {
-            console.log('Weather fetch failed:', e);
+          } catch {
+            // Weather fetch failed, continue without weather summary.
           }
 
           // Step 2: Call cuOPT API

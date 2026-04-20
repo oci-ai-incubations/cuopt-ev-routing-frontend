@@ -209,7 +209,7 @@ export function Dashboard() {
           // Get the original stops for this cluster
           const clusterStops = clusters[clusterIdx];
 
-          return (r.vehicle_data || []).map((v: any) => {
+          return (r.vehicle_data || []).map((v) => {
             // Remap route indices to original stop IDs
             // cuOPT returns: 0 = depot, 1 = first stop in cluster, 2 = second stop, etc.
             // We need to convert these to original stop IDs

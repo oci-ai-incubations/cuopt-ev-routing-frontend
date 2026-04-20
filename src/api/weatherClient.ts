@@ -14,6 +14,31 @@ import {
 } from '@/types/weather';
 import type { Stop } from '@/types';
 
+interface OpenWeatherApiResponse {
+  main?: {
+    temp?: number;
+    feels_like?: number;
+    humidity?: number;
+    pressure?: number;
+  };
+  wind?: {
+    speed?: number;
+    gust?: number;
+  };
+  visibility?: number;
+  clouds?: {
+    all?: number;
+  };
+  weather?: WeatherData['conditions'];
+  rain?: {
+    '1h'?: number;
+  };
+  snow?: {
+    '1h'?: number;
+  };
+  alerts?: LocationWeather['alerts'];
+}
+
 class WeatherClient {
   private client: AxiosInstance;
   private cache: Map<string, { data: LocationWeather; timestamp: number }> = new Map();
@@ -70,6 +95,7 @@ class WeatherClient {
 
       return locationWeather;
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Weather API error:', error);
       // Return mock data if API fails
       return this.getMockWeather(lat, lng, name);
@@ -324,7 +350,7 @@ class WeatherClient {
   }
 
   private transformApiResponse(
-    data: any,
+    data: OpenWeatherApiResponse,
     lat: number,
     lng: number,
     name?: string

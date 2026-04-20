@@ -1,5 +1,14 @@
 import axios, { AxiosInstance } from 'axios';
-import type { CuOptRequest, CuOptResponse, Stop, Vehicle, OptimizationConfig, TaskData } from '@/types';
+import type {
+  CuOptRequest,
+  CuOptResponse,
+  FleetData,
+  OptimizationConfig,
+  SolverConfig,
+  Stop,
+  TaskData,
+  Vehicle,
+} from '@/types';
 
 class CuOptClient {
   private client: AxiosInstance;
@@ -230,7 +239,7 @@ class CuOptClient {
       vehicleLocations = vehicles.map(() => [0, 0]);
     }
 
-    const fleetData: any = {
+    const fleetData: FleetData = {
       vehicle_locations: vehicleLocations,
       capacities: [vehicles.map((v) => v.capacity)],
     };
@@ -255,10 +264,10 @@ class CuOptClient {
     };
   }
 
-  private buildSolverConfig(config: OptimizationConfig): any {
+  private buildSolverConfig(config: OptimizationConfig): SolverConfig {
     // cuOPT v25.10 solver_config only supports time_limit and objectives
     // Note: number_of_climbers, min_vehicles are NOT supported in this API version
-    const solverConfig: any = {
+    const solverConfig: SolverConfig = {
       time_limit: config.timeLimit,
     };
 
