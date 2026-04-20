@@ -1,11 +1,13 @@
 import { Truck } from 'lucide-react';
 
 import { SCENARIO_PRESETS } from '@/data/locationData';
-import type { AppConfig } from '@/store/configStore';
+
 
 import { Section } from './Section';
 import { SelectField } from './SelectField';
 import { ToggleField } from './ToggleField';
+
+import type { AppConfig } from '@/store/configStore';
 
 interface ScenarioPresetsProps {
   config: AppConfig;

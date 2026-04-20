@@ -1,4 +1,5 @@
 import { MessageSquare, Eye, EyeOff } from 'lucide-react';
+
 import { Button } from '@/components/shared/Button';
 
 interface ChatHeaderProps {

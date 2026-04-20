@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+
 import type { ViewMode, ConnectionStatus, Toast } from '@/types';
 
 export type MapTheme = 'dark' | 'light';

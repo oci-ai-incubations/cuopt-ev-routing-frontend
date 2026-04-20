@@ -1,13 +1,14 @@
 import { create } from 'zustand';
-import type {
-  LocationWeather,
-  WeatherRoutingImpact,
-  AdverseConditionAssessment,
-  WeatherConfig,
-} from '@/types/weather';
-import { DEFAULT_WEATHER_CONFIG } from '@/types/weather';
+
 import { weatherClient } from '@/api/weatherClient';
-import type { Stop } from '@/types';
+import {
+  DEFAULT_WEATHER_CONFIG,
+  type AdverseConditionAssessment,
+  type LocationWeather,
+  type Stop,
+  type WeatherConfig,
+  type WeatherRoutingImpact,
+} from '@/types';
 
 interface WeatherState {
   // Weather data

@@ -4,7 +4,7 @@ interface RadioGroupProps {
   label: string;
   value: string;
   onChange: (value: string) => void;
-  options: { value: string; label: string }[];
+  options: Array<{ value: string; label: string }>;
 }
 
 export function RadioGroup({ label, value, onChange, options }: RadioGroupProps) {

@@ -1,7 +1,8 @@
 import { Sparkles } from 'lucide-react';
-import { useConfigStore } from '@/store';
+
 import { examplePrompts } from '@/data/benchmarkData';
 import { generateDynamicPrompts } from '@/data/locationData';
+import { useConfigStore } from '@/store';
 
 interface ChatEmptyStateProps {
   onPromptClick: (prompt: string) => void;
@@ -33,9 +34,9 @@ export function ChatEmptyState({ onPromptClick }: ChatEmptyStateProps) {
       </p>
 
       <div className="grid grid-cols-2 gap-3 max-w-2xl">
-        {prompts.slice(0, 4).map((prompt, idx) => (
+        {prompts.slice(0, 4).map((prompt) => (
           <button
-            key={idx}
+            key={prompt}
             onClick={() => onPromptClick(prompt)}
             className="p-4 bg-dark-card border border-dark-border rounded-xl text-left hover:bg-dark-hover hover:border-[#C74634]/30 transition-all group"
           >
@@ -49,9 +50,9 @@ export function ChatEmptyState({ onPromptClick }: ChatEmptyStateProps) {
       <div className="mt-6 text-left max-w-2xl">
         <p className="text-xs text-gray-500 mb-2">Quick Tests ({cityLabel}):</p>
         <div className="flex flex-wrap gap-2">
-          {quickTests.map((item, idx) => (
+          {quickTests.map((item) => (
             <button
-              key={idx}
+              key={item.label}
               onClick={() => onPromptClick(item.prompt)}
               className="px-3 py-1 text-xs bg-dark-bg border border-dark-border rounded-full text-gray-400 hover:text-[#C74634] hover:border-[#C74634]/50 transition-all"
             >

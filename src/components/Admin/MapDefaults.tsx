@@ -1,9 +1,10 @@
 import { MapPin } from 'lucide-react';
 
+import { NumberField } from './NumberField';
+import { Section } from './Section';
+
 import type { AppConfig } from '@/store/configStore';
 
-import { Section } from './Section';
-import { NumberField } from './NumberField';
 
 interface MapDefaultsProps {
   config: AppConfig;

@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { Settings, RotateCcw, Save, Check, Info } from 'lucide-react';
 import { clsx } from 'clsx';
+import { Settings, RotateCcw, Save, Check, Info } from 'lucide-react';
+import { useState } from 'react';
 
-import { useConfigStore } from '@/store/configStore';
 import { SCENARIO_PRESETS, getCountryByCode } from '@/data/locationData';
+import { useConfigStore } from '@/store/configStore';
 
-import { RegionSettings } from './RegionSettings';
-import { MapDefaults } from './MapDefaults';
 import { BusinessDefaults } from './BusinessDefaults';
+import { MapDefaults } from './MapDefaults';
+import { RegionSettings } from './RegionSettings';
 import { ScenarioPresets } from './ScenarioPresets';
 
 export function AdminPage() {

@@ -1,4 +1,3 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
 import {
   GoogleMap,
   useJsApiLoader,
@@ -8,13 +7,16 @@ import {
   InfoWindow,
 } from '@react-google-maps/api';
 import { Map as MapIcon, Navigation, Layers, AlertCircle, Car, Cloud, AlertTriangle } from 'lucide-react';
+import { useState, useCallback, useEffect, useRef } from 'react';
+
+import { weatherClient } from '@/api/weatherClient';
 import { useOptimizationStore, useAppStore, useConfigStore } from '@/store';
 import { getVehicleColor, formatVehicleName } from '@/utils';
-import { weatherClient } from '@/api/weatherClient';
-import type { LocationWeather, AdverseConditionAssessment, AdverseConditionLevel } from '@/types/weather';
+
+import type { LocationWeather, AdverseConditionAssessment, AdverseConditionLevel } from '@/types';
 
 // Libraries to load - Directions API doesn't need a library, it's always available
-const libraries: ('places')[] = ['places'];
+const libraries: Array<'places'> = ['places'];
 
 // Map container style
 const containerStyle = {
@@ -133,6 +135,7 @@ export function GoogleRouteMap() {
   const [mapKey, setMapKey] = useState(0); // Increments on reset to clear polylines
   const mapRef = useRef<google.maps.Map | null>(null);
   const directionsServiceRef = useRef<google.maps.DirectionsService | null>(null);
+  const segmentUuidMapRef = useRef(new WeakMap<object, string>());
 
   const googleMapsApiKey = useAppStore((s) => s.googleMapsApiKey);
 
@@ -140,6 +143,15 @@ export function GoogleRouteMap() {
     googleMapsApiKey,
     libraries,
   });
+
+  const getSegmentUuid = useCallback((segment: object) => {
+    const existingUuid = segmentUuidMapRef.current.get(segment);
+    if (existingUuid) return existingUuid;
+
+    const nextUuid = crypto.randomUUID();
+    segmentUuidMapRef.current.set(segment, nextUuid);
+    return nextUuid;
+  }, []);
 
   // Default center - use config store or calculate from stops
   const center = stops.length > 0
@@ -192,7 +204,13 @@ export function GoogleRouteMap() {
             };
           }
 
-          directionsServiceRef.current!.route(request, (response, status) => {
+          const directionsService = directionsServiceRef.current;
+          if (!directionsService) {
+            resolve(null);
+            return;
+          }
+
+          directionsService.route(request, (response, status) => {
             if (status === 'OK') {
               resolve(response);
             } else if (status === 'OVER_QUERY_LIMIT') {
@@ -409,6 +427,33 @@ export function GoogleRouteMap() {
 
   const isDarkTheme = mapTheme === 'dark';
   const currentStyle = MAP_STYLES.find((s) => s.id === mapStyle) || MAP_STYLES[0];
+  let trafficButtonClass = 'bg-white border border-gray-200 text-gray-500 hover:text-gray-700';
+  if (showTraffic) {
+    trafficButtonClass = 'bg-green-600 text-white';
+  } else if (isDarkTheme) {
+    trafficButtonClass = 'bg-dark-card border border-dark-border text-gray-400 hover:text-white';
+  }
+  const weatherActiveClass = (() => {
+    if (overallWeatherLevel === 'none' || overallWeatherLevel === 'low') {
+      return 'bg-green-600 text-white';
+    }
+    if (overallWeatherLevel === 'moderate') {
+      return 'bg-amber-500 text-white';
+    }
+    return 'bg-red-500 text-white';
+  })();
+  let weatherButtonClass = 'bg-white border border-gray-200 text-gray-500 hover:text-gray-700';
+  if (showWeather) {
+    weatherButtonClass = weatherActiveClass;
+  } else if (isDarkTheme) {
+    weatherButtonClass = 'bg-dark-card border border-dark-border text-gray-400 hover:text-white';
+  }
+  const getStyleOptionClass = (styleId: MapStyleId) => {
+    if (mapStyle === styleId) {
+      return isDarkTheme ? 'bg-[#C74634]/20 text-[#C74634]' : 'bg-red-50 text-red-700';
+    }
+    return isDarkTheme ? 'text-gray-300 hover:bg-dark-hover' : 'text-gray-700 hover:bg-gray-50';
+  };
 
   if (loadError) {
     return (
@@ -454,13 +499,7 @@ export function GoogleRouteMap() {
         {/* Traffic Toggle */}
         <button
           onClick={() => setShowTraffic(!showTraffic)}
-          className={`p-2 rounded-lg shadow-lg transition-colors flex items-center gap-2 ${
-            showTraffic
-              ? 'bg-green-600 text-white'
-              : isDarkTheme
-              ? 'bg-dark-card border border-dark-border text-gray-400 hover:text-white'
-              : 'bg-white border border-gray-200 text-gray-500 hover:text-gray-700'
-          }`}
+          className={`p-2 rounded-lg shadow-lg transition-colors flex items-center gap-2 ${trafficButtonClass}`}
           title={showTraffic ? 'Hide Traffic' : 'Show Traffic'}
         >
           <Car className="w-4 h-4" />
@@ -470,17 +509,7 @@ export function GoogleRouteMap() {
         {/* Weather Toggle */}
         <button
           onClick={() => setShowWeather(!showWeather)}
-          className={`p-2 rounded-lg shadow-lg transition-colors flex items-center gap-2 ${
-            showWeather
-              ? overallWeatherLevel === 'none' || overallWeatherLevel === 'low'
-                ? 'bg-green-600 text-white'
-                : overallWeatherLevel === 'moderate'
-                ? 'bg-amber-500 text-white'
-                : 'bg-red-500 text-white'
-              : isDarkTheme
-              ? 'bg-dark-card border border-dark-border text-gray-400 hover:text-white'
-              : 'bg-white border border-gray-200 text-gray-500 hover:text-gray-700'
-          }`}
+          className={`p-2 rounded-lg shadow-lg transition-colors flex items-center gap-2 ${weatherButtonClass}`}
           title={showWeather ? 'Hide Weather' : 'Show Weather'}
         >
           <Cloud className="w-4 h-4" />
@@ -510,15 +539,7 @@ export function GoogleRouteMap() {
                   setMapStyle(style.id);
                   setShowStyleSelector(false);
                 }}
-                className={`w-full px-3 py-2 text-left flex items-center gap-2 transition-colors ${
-                  mapStyle === style.id
-                    ? isDarkTheme
-                      ? 'bg-[#C74634]/20 text-[#C74634]'
-                      : 'bg-red-50 text-red-700'
-                    : isDarkTheme
-                    ? 'text-gray-300 hover:bg-dark-hover'
-                    : 'text-gray-700 hover:bg-gray-50'
-                }`}
+                className={`w-full px-3 py-2 text-left flex items-center gap-2 transition-colors ${getStyleOptionClass(style.id)}`}
               >
                 <MapIcon className="w-4 h-4" />
                 <div>
@@ -677,7 +698,7 @@ export function GoogleRouteMap() {
           .map((rd) => (
             <DirectionsRenderer
               key={`route-${rd.vehicleId}`}
-              directions={rd.directions!}
+              directions={rd.directions as google.maps.DirectionsResult}
               options={{
                 suppressMarkers: true,
                 polylineOptions: {
@@ -692,11 +713,13 @@ export function GoogleRouteMap() {
 
         {/* Route Directions - Additional segments for long routes */}
         {routeDirections
-          .filter((rd) => rd.additionalSegments && rd.additionalSegments.length > 0)
+          .filter((rd): rd is RouteDirections & { additionalSegments: google.maps.DirectionsResult[] } => (
+            Boolean(rd.additionalSegments && rd.additionalSegments.length > 0)
+          ))
           .flatMap((rd) =>
-            rd.additionalSegments!.map((segment, idx) => (
+            rd.additionalSegments.map((segment) => (
               <DirectionsRenderer
-                key={`route-${rd.vehicleId}-segment-${idx}`}
+                key={`route-${rd.vehicleId}-segment-${getSegmentUuid(segment)}`}
                 directions={segment}
                 options={{
                   suppressMarkers: true,
@@ -740,13 +763,14 @@ export function GoogleRouteMap() {
 
           // Unassigned stops: gray with lower opacity and smaller size
           // Assigned stops: route color or weather color if showing weather
-          const markerColor = !isAssigned
-            ? '#9CA3AF' // Gray for unassigned
-            : showWeather && weatherLevel !== 'none' && weatherLevel !== 'low'
-              ? WEATHER_SEVERITY_COLORS[weatherLevel]
-              : isEVStation
-                ? '#22C55E'
-                : routeColor;
+          let markerColor = routeColor;
+          if (!isAssigned) {
+            markerColor = '#9CA3AF';
+          } else if (showWeather && weatherLevel !== 'none' && weatherLevel !== 'low') {
+            markerColor = WEATHER_SEVERITY_COLORS[weatherLevel];
+          } else if (isEVStation) {
+            markerColor = '#22C55E';
+          }
 
           // Add weather icon to label if weather is bad
           const weatherIcon = showWeather && stopWeather ? getWeatherIcon(stopWeather.weather) : '';
@@ -756,29 +780,37 @@ export function GoogleRouteMap() {
             : `${unassignedLabel}${stop.label || `Stop ${stop.id}`}`;
 
           // Smaller, semi-transparent markers for unassigned stops
-          const markerScale = !isAssigned && routes.length > 0
-            ? 6 // Smaller for unassigned
-            : isEVStation
-              ? 0.8
-              : showWeather && weatherLevel !== 'none' && weatherLevel !== 'low'
-                ? 10
-                : 8;
+          let markerScale = 8;
+          if (!isAssigned && routes.length > 0) {
+            markerScale = 6;
+          } else if (isEVStation) {
+            markerScale = 0.8;
+          } else if (showWeather && weatherLevel !== 'none' && weatherLevel !== 'low') {
+            markerScale = 10;
+          }
 
           const markerOpacity = !isAssigned && routes.length > 0 ? 0.5 : 1;
+          const markerPath = isEVStation
+            ? 'M13 2L3 14 12 14 11 22 21 10 12 10 13 2'
+            : google.maps.SymbolPath.CIRCLE;
+          let markerStrokeWeight = 2;
+          if (!isAssigned && routes.length > 0) {
+            markerStrokeWeight = 1;
+          } else if (showWeather && weatherLevel !== 'none' && weatherLevel !== 'low') {
+            markerStrokeWeight = 3;
+          }
 
           return (
             <Marker
               key={stop.id}
               position={{ lat: stop.lat, lng: stop.lng }}
               icon={{
-                path: isEVStation
-                  ? 'M13 2L3 14 12 14 11 22 21 10 12 10 13 2' // Lightning bolt
-                  : google.maps.SymbolPath.CIRCLE,
+                path: markerPath,
                 scale: markerScale,
                 fillColor: markerColor,
                 fillOpacity: markerOpacity,
                 strokeColor: !isAssigned && routes.length > 0 ? '#EF4444' : '#FFFFFF', // Red border for unassigned
-                strokeWeight: !isAssigned && routes.length > 0 ? 1 : (showWeather && weatherLevel !== 'none' && weatherLevel !== 'low' ? 3 : 2),
+                strokeWeight: markerStrokeWeight,
               }}
               title={markerTitle}
               onClick={() => setSelectedMarker(stop.id)}
@@ -885,9 +917,24 @@ export function GoogleRouteMap() {
                             )}
                             {stopWeather.assessment.factors.length > 0 && (
                               <div className="mt-1 text-[10px] text-gray-500">
-                                {stopWeather.assessment.factors.map((f, i) => (
-                                  <div key={i}>• {f.description}</div>
-                                ))}
+                                {(() => {
+                                  const factorKeyCounts = new Map<string, number>();
+                                  return stopWeather.assessment.factors.map((factor) => {
+                                    const baseFactorKey = [
+                                      factor.type,
+                                      factor.severity,
+                                      factor.description,
+                                      factor.impact,
+                                    ].join('-');
+                                    const seenCount = factorKeyCounts.get(baseFactorKey) ?? 0;
+                                    factorKeyCounts.set(baseFactorKey, seenCount + 1);
+                                    return (
+                                      <div key={`${baseFactorKey}-${seenCount}`}>
+                                        • {factor.description}
+                                      </div>
+                                    );
+                                  });
+                                })()}
                               </div>
                             )}
                           </div>

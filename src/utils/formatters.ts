@@ -223,7 +223,7 @@ export function getVehicleCountry(): string {
  */
 export function getVehiclePlate(vehicleId: number, countryCode?: string): { plate: string; region: string; name: string } {
   const country = countryCode || currentCountryCode;
-  const plates = VEHICLE_PLATES_BY_COUNTRY[country] || VEHICLE_PLATES_BY_COUNTRY['GB'];
+  const plates = VEHICLE_PLATES_BY_COUNTRY[country] || VEHICLE_PLATES_BY_COUNTRY.GB;
   return plates[vehicleId % plates.length];
 }
 

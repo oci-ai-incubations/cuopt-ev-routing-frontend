@@ -29,7 +29,7 @@ function processInlineFormatting(line: string): React.ReactNode {
       parts.push(remaining.slice(0, firstMatch.index));
     }
 
-    const match = firstMatch.match!;
+    const match = firstMatch.match as RegExpMatchArray;
     switch (firstMatch.type) {
       case 'bold':
         parts.push(<strong key={key++} className="font-semibold text-white">{match[1]}</strong>);
@@ -58,7 +58,7 @@ function processInlineFormatting(line: string): React.ReactNode {
     }
   }
 
-  return parts.length === 1 ? parts[0] : <>{parts}</>;
+  return parts.length === 1 ? parts[0] : parts;
 }
 
 function parseMarkdown(text: string): React.ReactNode[] {
@@ -77,6 +77,7 @@ function parseMarkdown(text: string): React.ReactNode[] {
           className={clsx('my-2 space-y-1', listType === 'ol' ? 'list-decimal list-inside' : 'list-disc list-inside')}
         >
           {listItems.map((item, idx) => (
+            // eslint-disable-next-line react/no-array-index-key
             <li key={idx} className="text-gray-300">{processInlineFormatting(item)}</li>
           ))}
         </ListTag>
@@ -89,11 +90,13 @@ function parseMarkdown(text: string): React.ReactNode[] {
   lines.forEach((line, idx) => {
     if (line.startsWith('### ')) {
       flushList();
+      // eslint-disable-next-line react/no-array-index-key
       elements.push(<h3 key={idx} className="font-semibold text-white mt-3 mb-1 text-sm">{processInlineFormatting(line.slice(4))}</h3>);
       return;
     }
     if (line.startsWith('## ')) {
       flushList();
+      // eslint-disable-next-line react/no-array-index-key
       elements.push(<h2 key={idx} className="font-bold text-white mt-3 mb-2">{processInlineFormatting(line.slice(3))}</h2>);
       return;
     }
@@ -109,10 +112,12 @@ function parseMarkdown(text: string): React.ReactNode[] {
     }
     if (line.trim() === '') {
       flushList();
+      // eslint-disable-next-line react/no-array-index-key
       elements.push(<div key={idx} className="h-2" />);
       return;
     }
     flushList();
+    // eslint-disable-next-line react/no-array-index-key
     elements.push(<p key={idx} className="text-gray-300">{processInlineFormatting(line)}</p>);
   });
 

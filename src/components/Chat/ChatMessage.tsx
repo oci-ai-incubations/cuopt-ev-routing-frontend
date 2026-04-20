@@ -1,11 +1,14 @@
-import { useState, useMemo } from 'react';
-import { User, Bot, ChevronDown, ChevronRight } from 'lucide-react';
 import { clsx } from 'clsx';
+import { User, Bot, ChevronDown, ChevronRight } from 'lucide-react';
+import { useState, useMemo } from 'react';
+
 import { Card } from '@/components/shared/Card';
 import { MarkdownRenderer } from '@/components/shared/MarkdownRenderer';
-import { CuOptResultCard } from './CuOptResultCard';
-import type { Message } from '@/types';
 import { formatTimestamp } from '@/utils';
+
+import { CuOptResultCard } from './CuOptResultCard';
+
+import type { Message } from '@/types';
 
 interface ChatMessageProps {
   message: Message;

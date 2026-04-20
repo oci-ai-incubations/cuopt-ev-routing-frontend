@@ -1,8 +1,10 @@
 import { Route, Clock, Truck, Download } from 'lucide-react';
-import { Button } from '@/components/shared/Button';
+
 import { Badge } from '@/components/shared/Badge';
+import { Button } from '@/components/shared/Button';
 import { useConfigStore } from '@/store';
 import { formatDistance, formatDuration, getVehiclePlate, getVehicleColor, setVehicleCountry } from '@/utils';
+
 import type { CuOptResponse, VehicleRoute } from '@/types';
 
 export function CuOptResultCard({ result }: { result: CuOptResponse }) {
@@ -68,10 +70,10 @@ export function CuOptResultCard({ result }: { result: CuOptResponse }) {
           <div className="text-xs text-gray-400 font-medium">
             Showing {Math.min(vehicleData.length, 10)} of {vehicleData.length} routes
           </div>
-          {vehicleData.slice(0, 10).map((v, idx: number) => {
+          {vehicleData.slice(0, 10).map((v) => {
             const vehicle = getVehiclePlate(v.vehicle_id);
             return (
-              <div key={idx} className="bg-dark-bg rounded-lg p-2 border border-dark-border">
+              <div key={v.vehicle_id} className="bg-dark-bg rounded-lg p-2 border border-dark-border">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full" style={{ backgroundColor: getVehicleColor(v.vehicle_id).color }} />

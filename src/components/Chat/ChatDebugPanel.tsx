@@ -1,6 +1,7 @@
 import { Code } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/shared/Card';
+
 import { Badge } from '@/components/shared/Badge';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/shared/Card';
 
 interface ChatDebugPanelProps {
   lastGenAIPrompt: string | null;

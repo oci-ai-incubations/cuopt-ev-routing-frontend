@@ -1,15 +1,17 @@
 import { Globe } from 'lucide-react';
 
 import { COUNTRIES } from '@/data/locationData';
-import type { AppConfig } from '@/store/configStore';
 
+import { RadioGroup } from './RadioGroup';
 import { Section } from './Section';
 import { SelectField } from './SelectField';
-import { RadioGroup } from './RadioGroup';
+
+import type { AppConfig } from '@/store/configStore';
+
 
 interface RegionSettingsProps {
   config: AppConfig;
-  cities: { id: string; name: string; timezone?: string }[];
+  cities: Array<{ id: string; name: string; timezone?: string }>;
   onCountryChange: (v: string) => void;
   onCityChange: (v: string) => void;
   onDistanceUnitChange: (v: string) => void;

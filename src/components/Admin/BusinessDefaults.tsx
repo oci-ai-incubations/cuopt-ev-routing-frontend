@@ -1,10 +1,11 @@
 import { Building2 } from 'lucide-react';
 
-import type { AppConfig } from '@/store/configStore';
 
-import { Section } from './Section';
 import { NumberField } from './NumberField';
 import { RadioGroup } from './RadioGroup';
+import { Section } from './Section';
+
+import type { AppConfig } from '@/store/configStore';
 
 interface BusinessDefaultsProps {
   config: AppConfig;

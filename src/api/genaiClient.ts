@@ -1,6 +1,16 @@
-import axios, { AxiosInstance } from 'axios';
-import type { Message, ModelId, ChatResponse, CuOptRequest, CuOptResponse, Stop, ModelInfo } from '@/types';
-import { CUOPT_SCHEMA_PROMPT, CUOPT_RESPONSE_PROMPT } from '@/types/genai';
+import axios, { type AxiosInstance } from 'axios';
+
+import {
+  CUOPT_SCHEMA_PROMPT,
+  CUOPT_RESPONSE_PROMPT,
+  type ChatResponse,
+  type CuOptRequest,
+  type CuOptResponse,
+  type Message,
+  type ModelId,
+  type ModelInfo,
+  type Stop,
+} from '@/types';
 
 class GenAIClient {
   private client: AxiosInstance;
@@ -412,7 +422,7 @@ ${JSON.stringify(cuoptResult, null, 2)}`;
     const words = response.content.split(' ');
 
     for (const word of words) {
-      yield word + ' ';
+      yield `${word  } `;
       await this.delay(30); // Simulate typing
     }
   }

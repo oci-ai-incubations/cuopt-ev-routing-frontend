@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { Zap, Eye, EyeOff, Cloud } from 'lucide-react';
+import { useState } from 'react';
 
 interface LoginScreenProps {
   onLogin: (username: string) => void;

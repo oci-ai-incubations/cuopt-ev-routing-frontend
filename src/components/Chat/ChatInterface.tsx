@@ -1,15 +1,18 @@
-import { useRef, useEffect, useCallback } from 'react';
 import { MessageSquare } from 'lucide-react';
-import { ChatMessage } from './ChatMessage';
-import { ChatInput } from './ChatInput';
-import { ChatHeader } from './ChatHeader';
-import { ChatEmptyState } from './ChatEmptyState';
-import { ChatDebugPanel } from './ChatDebugPanel';
+import { useRef, useEffect, useCallback } from 'react';
+
+import { genaiClient, cuoptClient, weatherClient } from '@/api';
 import { LoadingDots } from '@/components/shared/LoadingDots';
 import { useChatStore, useAppStore, useOptimizationStore } from '@/store';
-import { genaiClient, cuoptClient, weatherClient } from '@/api';
-import type { Stop } from '@/types';
-import type { WeatherRoutingImpact, AdverseConditionAssessment } from '@/types/weather';
+
+import { ChatDebugPanel } from './ChatDebugPanel';
+import { ChatEmptyState } from './ChatEmptyState';
+import { ChatHeader } from './ChatHeader';
+import { ChatInput } from './ChatInput';
+import { ChatMessage } from './ChatMessage';
+
+
+import type { AdverseConditionAssessment, Stop, WeatherRoutingImpact } from '@/types';
 
 // Helper function to generate weather summary for AI response
 function generateWeatherSummary(impacts: WeatherRoutingImpact[], assessment: AdverseConditionAssessment | null): string {
@@ -236,7 +239,7 @@ Could you please provide more details? For example:
                 factors: weatherImpacts.flatMap((i: WeatherRoutingImpact) => i.assessment.factors).slice(0, 3),
                 travelTimeMultiplier: avgMultiplier,
                 safetyScore: avgSafety,
-                recommendations: [...new Set(weatherImpacts.flatMap((i: WeatherRoutingImpact) => i.assessment.recommendations))].slice(0, 3) as string[],
+                recommendations: [...new Set(weatherImpacts.flatMap((i: WeatherRoutingImpact) => i.assessment.recommendations))].slice(0, 3),
               };
 
               weatherSummary = generateWeatherSummary(weatherImpacts, overallAssessment);
@@ -381,7 +384,7 @@ Could you please provide more details? For example:
                 factors: weatherImpacts.flatMap((i: WeatherRoutingImpact) => i.assessment.factors).slice(0, 3),
                 travelTimeMultiplier: avgMultiplier,
                 safetyScore: avgSafety,
-                recommendations: [...new Set(weatherImpacts.flatMap((i: WeatherRoutingImpact) => i.assessment.recommendations))].slice(0, 3) as string[],
+                recommendations: [...new Set(weatherImpacts.flatMap((i: WeatherRoutingImpact) => i.assessment.recommendations))].slice(0, 3),
               };
 
               weatherSummary = generateWeatherSummary(weatherImpacts, overallAssessment);
@@ -456,7 +459,7 @@ Please try again or rephrase your request.`,
         setIsProcessing(false);
       }
     },
-    [addMessage, setIsProcessing, setDebugData, addToast, setResult, setStops, config.model]
+    [addMessage, addStreamingMessage, appendToStreamingMessage, finalizeStreamingMessage, setIsProcessing, setDebugData, addToast, setResult, setStops, config.model]
   );
 
   return (

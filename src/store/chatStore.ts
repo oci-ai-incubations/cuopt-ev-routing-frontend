@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+
 import type { Message, Conversation, ModelId, GenAIConfig } from '@/types';
 
 interface ChatState {

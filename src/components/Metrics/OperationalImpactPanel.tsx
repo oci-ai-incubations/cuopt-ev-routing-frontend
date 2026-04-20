@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import {
   TrendingUp,
   Car,
@@ -10,12 +9,14 @@ import {
   Home,
   Route,
 } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/shared/Card';
+import { useMemo } from 'react';
+
 import { Badge } from '@/components/shared/Badge';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/shared/Card';
 import { Tooltip } from '@/components/shared/Tooltip';
+import { formatCurrency } from '@/data/locationData';
 import { useOptimizationStore, useConfigStore } from '@/store';
 import { formatDistance, formatDuration } from '@/utils';
-import { formatCurrency } from '@/data/locationData';
 
 // Business Impact baseline values (Belron UK case study)
 const BUSINESS_IMPACT_BASELINES = {
@@ -88,16 +89,17 @@ export function OperationalImpactPanel() {
     };
   }, [result, stops, stopsServed, vehiclesUsed, totalDistance, totalDuration, routes]);
 
+  const productivePercent = metrics ? Math.round(metrics.productiveRatio * 100) : 0;
+  const drivePercent = 100 - productivePercent;
+
   if (!result || !metrics) {
     return (
-      <div className="h-full flex items-center justify-center text-gray-400">
-        <div className="text-center">
-          <Target className="w-12 h-12 mx-auto mb-3 opacity-50" />
-          <p>Run optimization to see operational impact</p>
-          <p className="text-sm mt-1 text-gray-500">
-            Metrics include jobs/tech/day, productive time, and savings
-          </p>
-        </div>
+      <div className="h-full text-center py-12 text-gray-400 flex-1 flex flex-col items-center justify-center">
+        <Target className="w-12 h-12 mx-auto mb-3 opacity-50" />
+        <p>Run optimization to see operational impact</p>
+        <p className="text-sm mt-1">
+          Metrics include jobs/tech/day, productive time, and savings
+        </p>
       </div>
     );
   }
@@ -241,13 +243,23 @@ export function OperationalImpactPanel() {
                 className="bg-[#C74634] flex items-center justify-center text-xs text-white font-medium"
                 style={{ width: `${metrics.productiveRatio * 100}%` }}
               >
-                {Math.round(metrics.productiveRatio * 100)}% Jobs
+                {productivePercent >= 18 ? `${productivePercent}% Jobs` : ''}
               </div>
               <div
                 className="bg-blue-500 flex items-center justify-center text-xs text-white font-medium"
                 style={{ width: `${(1 - metrics.productiveRatio) * 100}%` }}
               >
-                {Math.round((1 - metrics.productiveRatio) * 100)}% Drive
+                {drivePercent >= 18 ? `${drivePercent}% Drive` : ''}
+              </div>
+            </div>
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-1 text-[#C74634]">
+                <span className="w-2 h-2 rounded-full bg-[#C74634]" />
+                <span>{productivePercent}% Jobs</span>
+              </div>
+              <div className="flex items-center gap-1 text-blue-400">
+                <span className="w-2 h-2 rounded-full bg-blue-500" />
+                <span>{drivePercent}% Drive</span>
               </div>
             </div>
 

@@ -1,5 +1,5 @@
-import { HTMLAttributes, forwardRef } from 'react';
 import { clsx } from 'clsx';
+import { type HTMLAttributes, forwardRef } from 'react';
 
 interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {
   variant?: 'text' | 'circular' | 'rectangular';
@@ -18,8 +18,8 @@ export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
     };
 
     const style = {
-      width: width,
-      height: height,
+      width,
+      height,
     };
 
     return (

@@ -1,5 +1,5 @@
-import { InputHTMLAttributes, forwardRef } from 'react';
 import { clsx } from 'clsx';
+import { type InputHTMLAttributes, forwardRef } from 'react';
 
 interface SliderProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string;
@@ -40,17 +40,9 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
           type="range"
           value={value}
           className={clsx(
-            'w-full h-2 bg-dark-border rounded-lg appearance-none cursor-pointer',
-            'focus:outline-none focus:ring-2 focus:ring-[#C74634] focus:ring-offset-2 focus:ring-offset-dark-bg',
-            '[&::-webkit-slider-thumb]:appearance-none',
-            '[&::-webkit-slider-thumb]:w-4',
-            '[&::-webkit-slider-thumb]:h-4',
-            '[&::-webkit-slider-thumb]:bg-[#C74634]',
-            '[&::-webkit-slider-thumb]:rounded-full',
-            '[&::-webkit-slider-thumb]:cursor-pointer',
-            '[&::-webkit-slider-thumb]:shadow-lg',
-            '[&::-webkit-slider-thumb]:transition-transform',
-            '[&::-webkit-slider-thumb]:hover:scale-110',
+            'slider-input w-full h-3 appearance-none cursor-pointer rounded-full border border-[#C74634]/45 bg-[#101827]',
+            'transition-colors hover:border-[#C74634]/70',
+            'focus:outline-none focus:ring-2 focus:ring-[#C74634] focus:ring-offset-0 focus-visible:ring-offset-0',
             className
           )}
           {...props}
