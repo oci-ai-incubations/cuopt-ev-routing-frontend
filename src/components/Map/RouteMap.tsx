@@ -205,6 +205,7 @@ function MapUpdater({ isActive = true }: MapUpdaterProps) {
     if (isActive) {
       setTimeout(() => {
         map.invalidateSize();
+        map.zoomControl.setPosition('bottomright');
       }, 100);
     }
   }, [isActive, map]);
@@ -354,7 +355,11 @@ export function RouteMap({ isActive = true }: RouteMapProps) {
             <Navigation className="w-3 h-3" />
             Routes ({routes.length})
           </div>
-          <div className="space-y-1 max-h-[200px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent pr-1">
+          <div
+            className={`space-y-1 max-h-[200px] overflow-y-auto scrollbar-thin pr-1 ${
+              isDarkStyle ? 'map-legend-scroll-dark' : 'map-legend-scroll-light'
+            }`}
+          >
             {routes.map((route) => {
               const color = getVehicleColor(route.vehicle_id);
               return (
@@ -395,6 +400,7 @@ export function RouteMap({ isActive = true }: RouteMapProps) {
       <MapContainer
         center={center}
         zoom={stops.length > 0 ? 11 : 6}
+        zoomControl
         className="h-full w-full rounded-xl"
         style={{ background: isDarkStyle ? '#1B1F2E' : '#f8fafc' }}
       >

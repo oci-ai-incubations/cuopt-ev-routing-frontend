@@ -45,7 +45,7 @@ export function RoutesCard({
   const remainingRoutes = routes.length - visibleRoutesCount;
 
   return (
-    <Card variant="bordered" className="h-full flex flex-col">
+    <Card variant="bordered" className="h-full flex flex-col overflow-hidden">
       <CardHeader>
         <CardTitle>Routes</CardTitle>
         <div className="flex gap-2">
@@ -69,7 +69,7 @@ export function RoutesCard({
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="flex-1 flex flex-col">
+      <CardContent className="flex-1 min-h-0 flex flex-col overflow-hidden">
         {routes.length === 0 ? (
           <div className="text-center py-12 text-gray-400 flex-1 flex flex-col items-center justify-center">
             <Route className="w-12 h-12 mx-auto mb-3 opacity-50" />
@@ -77,8 +77,8 @@ export function RoutesCard({
             <p className="text-sm mt-1">Configure your fleet and stops, then run optimization</p>
           </div>
         ) : (
-          <div className="space-y-2 h-full">
-            <div className="flex items-center justify-between text-xs text-gray-400 mb-2">
+          <div className="h-full min-h-0 flex flex-col">
+            <div className="flex items-center justify-between text-xs text-gray-400 mb-2 shrink-0">
               <span>Showing {visibleRoutes.length} of {routes.length} routes</span>
               {routeWarnings.size > 0 && (
                 <span className="flex items-center gap-1 text-yellow-400">
@@ -88,46 +88,47 @@ export function RoutesCard({
               )}
             </div>
 
-            {visibleRoutes.map((route) => {
-              const color = getVehicleColor(route.vehicle_id);
-              const isExpanded = expandedRoutes.has(route.vehicle_id);
-              const warnings = routeWarnings.get(route.vehicle_id);
+            <div className="flex-1 min-h-0 overflow-y-auto pr-1 space-y-2">
+              {visibleRoutes.map((route) => {
+                const color = getVehicleColor(route.vehicle_id);
+                const isExpanded = expandedRoutes.has(route.vehicle_id);
+                const warnings = routeWarnings.get(route.vehicle_id);
 
-              return (
-                <div
-                  key={route.vehicle_id}
-                  className={`bg-dark-bg rounded-lg border overflow-hidden ${
-                    warnings ? 'border-yellow-500/50' : 'border-dark-border'
-                  }`}
-                >
-                  <button
-                    onClick={() => onToggleRoute(route.vehicle_id)}
-                    className="w-full p-3 flex items-center gap-4 hover:bg-dark-hover transition-colors"
+                return (
+                  <div
+                    key={route.vehicle_id}
+                    className={`bg-dark-bg rounded-lg border overflow-hidden ${
+                      warnings ? 'border-yellow-500/50' : 'border-dark-border'
+                    }`}
                   >
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: color.color }} />
-                    <div className="flex-1 text-left">
-                      <span className="font-medium text-white font-mono">{formatVehicleName(route.vehicle_id)}</span>
-                      <span className="text-gray-500 ml-2 text-xs">{getVehiclePlate(route.vehicle_id).name}</span>
-                      <span className="text-gray-400 ml-3 text-sm">{route.route.length - 2} stops</span>
-                      {warnings && <AlertTriangle className="w-3 h-3 text-yellow-400 inline ml-2" />}
-                    </div>
-                    <div className="text-sm text-gray-400 space-x-4">
-                      <span className={route.route_distance > 500 ? 'text-yellow-400' : ''}>
-                        {formatDistance(route.route_distance)}
-                      </span>
-                      <span className={route.route_duration > shiftLimitMinutes ? 'text-yellow-400' : ''}>
-                        {formatDuration(route.route_duration)}
-                      </span>
-                    </div>
-                    {isExpanded ? (
-                      <ChevronDown className="w-4 h-4 text-gray-400" />
-                    ) : (
-                      <ChevronRight className="w-4 h-4 text-gray-400" />
-                    )}
-                  </button>
+                    <button
+                      onClick={() => onToggleRoute(route.vehicle_id)}
+                      className="w-full p-3 flex items-center gap-4 hover:bg-dark-hover transition-colors"
+                    >
+                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: color.color }} />
+                      <div className="flex-1 text-left">
+                        <span className="font-medium text-white font-mono">{formatVehicleName(route.vehicle_id)}</span>
+                        <span className="text-gray-500 ml-2 text-xs">{getVehiclePlate(route.vehicle_id).name}</span>
+                        <span className="text-gray-400 ml-3 text-sm">{route.route.length - 2} stops</span>
+                        {warnings && <AlertTriangle className="w-3 h-3 text-yellow-400 inline ml-2" />}
+                      </div>
+                      <div className="text-sm text-gray-400 space-x-4">
+                        <span className={route.route_distance > 500 ? 'text-yellow-400' : ''}>
+                          {formatDistance(route.route_distance)}
+                        </span>
+                        <span className={route.route_duration > shiftLimitMinutes ? 'text-yellow-400' : ''}>
+                          {formatDuration(route.route_duration)}
+                        </span>
+                      </div>
+                      {isExpanded ? (
+                        <ChevronDown className="w-4 h-4 text-gray-400" />
+                      ) : (
+                        <ChevronRight className="w-4 h-4 text-gray-400" />
+                      )}
+                    </button>
 
-                  {isExpanded && (
-                    <div className="px-4 pb-3 border-t border-dark-border">
+                    {isExpanded && (
+                      <div className="px-4 pb-3 border-t border-dark-border">
                       {warnings && (
                         <div className="mt-2 mb-3 p-2 bg-yellow-500/10 border border-yellow-500/30 rounded text-xs text-yellow-400">
                           <div className="flex items-center gap-1 font-medium mb-1">
@@ -245,12 +246,13 @@ export function RoutesCard({
                         </div>
                       )}
                     </div>
-                  )}
-                </div>
-              );
-            })}
+                    )}
+                  </div>
+                );
+              })}
+            </div>
 
-            <div className="flex justify-center gap-2 pt-2">
+            <div className="flex justify-center gap-2 pt-2 shrink-0">
               {hasMoreRoutes && (
                 <button
                   onClick={onShowMore}

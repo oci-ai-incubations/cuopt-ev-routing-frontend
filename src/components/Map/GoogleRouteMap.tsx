@@ -572,7 +572,13 @@ export function GoogleRouteMap() {
               <span className="ml-2 text-orange-400 text-[10px]">Loading...</span>
             )}
           </div>
-          <div className="space-y-1.5 max-h-[200px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent pr-1">
+          <div
+            className={`space-y-1.5 max-h-[200px] overflow-y-auto scrollbar-thin pr-1 ${
+              isDarkTheme
+                ? 'map-legend-scroll-dark'
+                : 'map-legend-scroll-light'
+            }`}
+          >
             {routes.map((route) => {
               const color = getVehicleColor(route.vehicle_id);
               const weatherETA = getWeatherAdjustedETA(route.vehicle_id);
