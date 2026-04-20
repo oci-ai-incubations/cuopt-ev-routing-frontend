@@ -77,7 +77,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Username */}
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-300 mb-2">
+              <label htmlFor="username" className="block text-base font-medium text-gray-300 mb-2">
                 Username
               </label>
               <input
@@ -85,7 +85,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-oracle-red focus:border-transparent transition-all"
+                className="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg text-base text-white placeholder:text-base placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-oracle-red focus:border-transparent transition-all"
                 placeholder="Enter your username"
                 autoComplete="username"
                 disabled={isLoading}
@@ -94,7 +94,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+              <label htmlFor="password" className="block text-base font-medium text-gray-300 mb-2">
                 Password
               </label>
               <div className="relative">
@@ -103,7 +103,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-oracle-red focus:border-transparent transition-all pr-12"
+                  className="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg text-base text-white placeholder:text-base placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-oracle-red focus:border-transparent transition-all pr-12"
                   placeholder="Enter your password"
                   autoComplete="current-password"
                   disabled={isLoading}

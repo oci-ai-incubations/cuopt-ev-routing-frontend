@@ -10,3 +10,5 @@ export { Toast, ToastContainer } from './Toast';
 export { MetricCard } from './MetricCard';
 export { Modal } from './Modal';
 export { Tooltip, HelpText } from './Tooltip';
+export { LoadingDots } from './LoadingDots';
+export { MarkdownRenderer } from './MarkdownRenderer';

@@ -1,14 +1,13 @@
 import { useRef, useEffect, useCallback } from 'react';
-import { MessageSquare, Sparkles, Code, Eye, EyeOff } from 'lucide-react';
+import { MessageSquare } from 'lucide-react';
 import { ChatMessage } from './ChatMessage';
 import { ChatInput } from './ChatInput';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/shared/Card';
-import { Button } from '@/components/shared/Button';
-import { Badge } from '@/components/shared/Badge';
-import { useChatStore, useAppStore, useOptimizationStore, useConfigStore } from '@/store';
+import { ChatHeader } from './ChatHeader';
+import { ChatEmptyState } from './ChatEmptyState';
+import { ChatDebugPanel } from './ChatDebugPanel';
+import { LoadingDots } from '@/components/shared/LoadingDots';
+import { useChatStore, useAppStore, useOptimizationStore } from '@/store';
 import { genaiClient, cuoptClient, weatherClient } from '@/api';
-import { examplePrompts } from '@/data/benchmarkData';
-import { generateDynamicPrompts } from '@/data/locationData';
 import type { Stop } from '@/types';
 import type { WeatherRoutingImpact, AdverseConditionAssessment } from '@/types/weather';
 
@@ -83,15 +82,7 @@ export function ChatInterface() {
 
   const { addToast } = useAppStore();
   const { setResult, setStops } = useOptimizationStore();
-  const { config: appConfig } = useConfigStore();
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  // Generate dynamic prompts based on configured location
-  const dynamicPrompts = generateDynamicPrompts(
-    appConfig.countryCode,
-    appConfig.cityId,
-    appConfig.activeScenario
-  );
 
   // Scroll to bottom on new messages
   useEffect(() => {
@@ -469,97 +460,22 @@ Please try again or rephrase your request.`,
     [addMessage, setIsProcessing, setDebugData, addToast, setResult, setStops, config.model]
   );
 
-  const handleExampleClick = (prompt: string) => {
-    handleSend(prompt);
-  };
-
   return (
     <div className="flex h-full">
-      {/* Main Chat Area */}
       <div className="flex-1 flex flex-col">
-        {/* Chat Header */}
-        <div className="border-b border-dark-border px-6 py-4 flex items-center justify-between bg-dark-card">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#C74634]/20 flex items-center justify-center">
-              <MessageSquare className="w-5 h-5 text-[#C74634]" />
-            </div>
-            <div>
-              <h2 className="font-semibold text-white">cuOPT AI Assistant</h2>
-              <p className="text-xs text-gray-400">
-                Natural language route optimization
-              </p>
-            </div>
-          </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            leftIcon={debugMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-            onClick={toggleDebugMode}
-          >
-            {debugMode ? 'Hide Debug' : 'Debug'}
-          </Button>
-        </div>
+        <ChatHeader debugMode={debugMode} onToggleDebug={toggleDebugMode} />
 
-        {/* Messages */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {messages.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-center">
-              <div className="w-16 h-16 rounded-2xl bg-[#C74634]/10 flex items-center justify-center mb-4">
-                <Sparkles className="w-8 h-8 text-[#C74634]" />
-              </div>
-              <h3 className="text-xl font-semibold text-white mb-2">
-                How can I help you today?
-              </h3>
-              <p className="text-gray-400 max-w-md mb-8">
-                Describe your routing problem in natural language, and I'll
-                create an optimized solution using NVIDIA cuOPT.
-              </p>
-
-              {/* Example Prompts - Dynamic based on configured location */}
-              <div className="grid grid-cols-2 gap-3 max-w-2xl">
-                {(dynamicPrompts.length > 0 ? dynamicPrompts : examplePrompts).slice(0, 4).map((prompt, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => handleExampleClick(prompt)}
-                    className="p-4 bg-dark-card border border-dark-border rounded-xl text-left hover:bg-dark-hover hover:border-[#C74634]/30 transition-all group"
-                  >
-                    <span className="text-sm text-gray-300 group-hover:text-white">
-                      {prompt}
-                    </span>
-                  </button>
-                ))}
-              </div>
-              <p className="text-xs text-gray-500 mt-2">
-                Location: {appConfig.cityId.charAt(0).toUpperCase() + appConfig.cityId.slice(1).replace('_', ' ')}, {appConfig.countryCode}
-              </p>
-
-              {/* Quick Test Categories - Dynamic based on location */}
-              <div className="mt-6 text-left max-w-2xl">
-                <p className="text-xs text-gray-500 mb-2">Quick Tests ({appConfig.cityId.charAt(0).toUpperCase() + appConfig.cityId.slice(1).replace('_', ' ')}):</p>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    { label: '50 Stops', prompt: dynamicPrompts[0] || examplePrompts[0] },
-                    { label: '200 Stops', prompt: dynamicPrompts[1] || examplePrompts[1] },
-                    { label: '500 Stops', prompt: dynamicPrompts[2] || examplePrompts[2] },
-                    { label: 'Priority', prompt: dynamicPrompts[3] || examplePrompts[3] },
-                    { label: 'National', prompt: dynamicPrompts[4] || examplePrompts[4] },
-                    { label: appConfig.activeScenario === 'belron' ? 'Belron Jobs' : 'Regional', prompt: dynamicPrompts[6] || dynamicPrompts[5] || examplePrompts[5] },
-                  ].filter(item => item.prompt).map((item, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => handleExampleClick(item.prompt)}
-                      className="px-3 py-1 text-xs bg-dark-bg border border-dark-border rounded-full text-gray-400 hover:text-[#C74634] hover:border-[#C74634]/50 transition-all"
-                    >
-                      {item.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <ChatEmptyState onPromptClick={(prompt) => handleSend(prompt)} />
           ) : (
             <>
               {messages.map((message) => (
-                <ChatMessage key={message.id} message={message} isStreaming={isStreaming && message.id === useChatStore.getState().streamingMessageId} />
+                <ChatMessage
+                  key={message.id}
+                  message={message}
+                  isStreaming={isStreaming && message.id === useChatStore.getState().streamingMessageId}
+                />
               ))}
               {isProcessing && !isStreaming && (
                 <div className="flex gap-3">
@@ -567,17 +483,7 @@ Please try again or rephrase your request.`,
                     <MessageSquare className="w-4 h-4 text-[#C74634]" />
                   </div>
                   <div className="bg-dark-card border border-dark-border rounded-2xl rounded-tl-none px-4 py-3">
-                    <div className="flex gap-1">
-                      <div className="w-2 h-2 bg-[#C74634] rounded-full animate-bounce" />
-                      <div
-                        className="w-2 h-2 bg-[#C74634] rounded-full animate-bounce"
-                        style={{ animationDelay: '0.1s' }}
-                      />
-                      <div
-                        className="w-2 h-2 bg-[#C74634] rounded-full animate-bounce"
-                        style={{ animationDelay: '0.2s' }}
-                      />
-                    </div>
+                    <LoadingDots />
                   </div>
                 </div>
               )}
@@ -586,84 +492,15 @@ Please try again or rephrase your request.`,
           )}
         </div>
 
-        {/* Input */}
         <ChatInput onSend={handleSend} isProcessing={isProcessing} />
       </div>
 
-      {/* Debug Panel */}
       {debugMode && (
-        <div className="w-96 border-l border-dark-border bg-dark-bg overflow-y-auto">
-          <div className="p-4 border-b border-dark-border">
-            <h3 className="font-semibold text-white flex items-center gap-2">
-              <Code className="w-4 h-4 text-[#C74634]" />
-              Debug Panel
-            </h3>
-          </div>
-
-          <div className="p-4 space-y-4">
-            {/* GenAI Prompt */}
-            {lastGenAIPrompt && (
-              <Card variant="bordered" padding="sm">
-                <CardHeader>
-                  <CardTitle className="text-sm">Interpretation</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-xs text-gray-400">{lastGenAIPrompt}</p>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* cuOPT Request */}
-            {lastCuOptRequest && (
-              <Card variant="bordered" padding="sm">
-                <CardHeader>
-                  <CardTitle className="text-sm">cuOPT Request</CardTitle>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="info">JSON</Badge>
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(JSON.stringify(lastCuOptRequest, null, 2));
-                      }}
-                      className="text-xs text-gray-400 hover:text-white px-2 py-1 rounded hover:bg-dark-hover"
-                    >
-                      Copy
-                    </button>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <pre className="text-xs text-gray-300 overflow-auto font-mono bg-dark-bg p-2 rounded max-h-64">
-                    {JSON.stringify(lastCuOptRequest, null, 2)}
-                  </pre>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* cuOPT Response */}
-            {lastCuOptResponse && (
-              <Card variant="bordered" padding="sm">
-                <CardHeader>
-                  <CardTitle className="text-sm">cuOPT Response</CardTitle>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="success">Result</Badge>
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(JSON.stringify(lastCuOptResponse, null, 2));
-                      }}
-                      className="text-xs text-gray-400 hover:text-white px-2 py-1 rounded hover:bg-dark-hover"
-                    >
-                      Copy
-                    </button>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <pre className="text-xs text-gray-300 overflow-auto font-mono bg-dark-bg p-2 rounded max-h-96">
-                    {JSON.stringify(lastCuOptResponse, null, 2)}
-                  </pre>
-                </CardContent>
-              </Card>
-            )}
-          </div>
-        </div>
+        <ChatDebugPanel
+          lastGenAIPrompt={lastGenAIPrompt}
+          lastCuOptRequest={lastCuOptRequest}
+          lastCuOptResponse={lastCuOptResponse}
+        />
       )}
     </div>
   );
