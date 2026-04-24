@@ -1,18 +1,42 @@
-import axios, { AxiosInstance } from 'axios';
-import type {
-  WeatherData,
-  LocationWeather,
-  AdverseConditionAssessment,
-  AdverseConditionFactor,
-  AdverseConditionLevel,
-  WeatherRoutingImpact,
-  WeatherConfig,
-} from '@/types/weather';
+import axios, { type AxiosInstance } from 'axios';
+
 import {
   DEFAULT_WEATHER_CONFIG,
   WEATHER_CONDITION_SEVERITY,
-} from '@/types/weather';
-import type { Stop } from '@/types';
+  type AdverseConditionAssessment,
+  type AdverseConditionFactor,
+  type AdverseConditionLevel,
+  type LocationWeather,
+  type Stop,
+  type WeatherConfig,
+  type WeatherData,
+  type WeatherRoutingImpact,
+} from '@/types';
+
+interface OpenWeatherApiResponse {
+  main?: {
+    temp?: number;
+    feels_like?: number;
+    humidity?: number;
+    pressure?: number;
+  };
+  wind?: {
+    speed?: number;
+    gust?: number;
+  };
+  visibility?: number;
+  clouds?: {
+    all?: number;
+  };
+  weather?: WeatherData['conditions'];
+  rain?: {
+    '1h'?: number;
+  };
+  snow?: {
+    '1h'?: number;
+  };
+  alerts?: LocationWeather['alerts'];
+}
 
 class WeatherClient {
   private client: AxiosInstance;
@@ -51,7 +75,8 @@ class WeatherClient {
 
     // Check cache first
     if (this.isCacheValid(cacheKey)) {
-      return this.cache.get(cacheKey)!.data;
+      const cached = this.cache.get(cacheKey);
+      if (cached) return cached.data;
     }
 
     try {
@@ -70,6 +95,7 @@ class WeatherClient {
 
       return locationWeather;
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Weather API error:', error);
       // Return mock data if API fails
       return this.getMockWeather(lat, lng, name);
@@ -199,7 +225,7 @@ class WeatherClient {
 
     // Check weather condition codes
     weather.conditions.forEach((condition) => {
-      const codePrefix = condition.id.toString().substring(0, 1) + 'xx';
+      const codePrefix = `${condition.id.toString().substring(0, 1)  }xx`;
       const severity = WEATHER_CONDITION_SEVERITY[condition.id.toString()] ||
                        WEATHER_CONDITION_SEVERITY[codePrefix];
 
@@ -314,7 +340,7 @@ class WeatherClient {
           postcode: stop.postcode || '',
           weather: weather.current,
           assessment,
-          estimatedDelay: Math.round((assessment.travelTimeMultiplier - 1) * 30), // Base 30 min per stop
+          estimatedDelay: Math.round((assessment.travelTimeMultiplier - 1) * 30),
           skipRecommended: assessment.level === 'severe',
         });
       }
@@ -324,7 +350,7 @@ class WeatherClient {
   }
 
   private transformApiResponse(
-    data: any,
+    data: OpenWeatherApiResponse,
     lat: number,
     lng: number,
     name?: string
@@ -355,49 +381,41 @@ class WeatherClient {
   }
 
   private getMockWeather(lat: number, lng: number, name?: string): LocationWeather {
-    // Generate realistic mock weather based on geographic location
     const absLat = Math.abs(lat);
     const now = new Date();
-    const month = now.getMonth(); // 0-11
+    const month = now.getMonth();
 
-    // Determine if it's summer or winter in this hemisphere
     const isSouthernHemisphere = lat < 0;
-    const isSummerMonths = month >= 4 && month <= 9; // May-Oct
+    const isSummerMonths = month >= 4 && month <= 9;
     const isLocalSummer = isSouthernHemisphere ? !isSummerMonths : isSummerMonths;
 
-    // Base temperature by latitude zone (annual average)
     let baseTemp: number;
     let humidity: number;
     let conditions: Array<{ id: number; main: string; description: string; icon: string }>;
 
     if (absLat < 15) {
-      // Tropical (0-15°): Hot and humid year-round
       baseTemp = 28 + Math.random() * 5;
       humidity = 70 + Math.floor(Math.random() * 20);
       conditions = Math.random() > 0.6
         ? [{ id: 500, main: 'Rain', description: 'light rain', icon: '10d' }]
         : [{ id: 801, main: 'Clouds', description: 'few clouds', icon: '02d' }];
     } else if (absLat < 30) {
-      // Subtropical (15-30°): Warm, seasonal variation
       baseTemp = isLocalSummer ? 30 + Math.random() * 5 : 18 + Math.random() * 6;
       humidity = 50 + Math.floor(Math.random() * 25);
       conditions = [{ id: 800, main: 'Clear', description: 'clear sky', icon: '01d' }];
     } else if (absLat < 45) {
-      // Mediterranean/Temperate warm (30-45°): Distinct seasons
       baseTemp = isLocalSummer ? 25 + Math.random() * 8 : 8 + Math.random() * 8;
       humidity = 45 + Math.floor(Math.random() * 30);
       conditions = isLocalSummer
         ? [{ id: 800, main: 'Clear', description: 'clear sky', icon: '01d' }]
         : [{ id: 803, main: 'Clouds', description: 'broken clouds', icon: '04d' }];
     } else if (absLat < 60) {
-      // Temperate (45-60°): Cool, often cloudy (UK, Northern Europe, Canada)
       baseTemp = isLocalSummer ? 18 + Math.random() * 8 : 2 + Math.random() * 8;
       humidity = 60 + Math.floor(Math.random() * 25);
       conditions = Math.random() > 0.5
         ? [{ id: 802, main: 'Clouds', description: 'scattered clouds', icon: '03d' }]
         : [{ id: 500, main: 'Rain', description: 'light rain', icon: '10d' }];
     } else {
-      // Subarctic/Arctic (60°+): Cold
       baseTemp = isLocalSummer ? 10 + Math.random() * 8 : -10 + Math.random() * 10;
       humidity = 70 + Math.floor(Math.random() * 20);
       conditions = isLocalSummer
@@ -405,7 +423,6 @@ class WeatherClient {
         : [{ id: 600, main: 'Snow', description: 'light snow', icon: '13d' }];
     }
 
-    // Add slight random variation
     const tempVariation = (Math.random() - 0.5) * 4;
     const finalTemp = baseTemp + tempVariation;
 

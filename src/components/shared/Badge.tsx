@@ -1,5 +1,5 @@
-import { HTMLAttributes, forwardRef } from 'react';
 import { clsx } from 'clsx';
+import { type HTMLAttributes, forwardRef } from 'react';
 
 type BadgeVariant = 'default' | 'success' | 'warning' | 'error' | 'info' | 'nvidia' | 'oci';
 

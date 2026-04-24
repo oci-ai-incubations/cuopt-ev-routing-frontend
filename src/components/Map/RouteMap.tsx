@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Polyline, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { Map, Layers, Navigation, Info } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, Marker, Polyline, Popup, useMap } from 'react-leaflet';
+
 import { useOptimizationStore, useAppStore, useConfigStore } from '@/store';
 import { getVehicleColor, formatVehicleName } from '@/utils';
 import 'leaflet/dist/leaflet.css';
@@ -15,6 +16,26 @@ interface MapStyleOption {
   url: string;
   attribution: string;
   preview: string;
+}
+
+interface EvStopMetadata {
+  networkName?: string;
+  powerGroup?: string;
+  connectorType?: string;
+}
+
+function getEvMetadata(metadata?: Record<string, unknown>): EvStopMetadata | null {
+  if (!metadata) return null;
+
+  const networkName = typeof metadata.networkName === 'string' ? metadata.networkName : undefined;
+  const powerGroup = typeof metadata.powerGroup === 'string' ? metadata.powerGroup : undefined;
+  const connectorType = typeof metadata.connectorType === 'string' ? metadata.connectorType : undefined;
+
+  if (!networkName && !powerGroup && !connectorType) {
+    return null;
+  }
+
+  return { networkName, powerGroup, connectorType };
 }
 
 const MAP_STYLES: MapStyleOption[] = [
@@ -62,7 +83,8 @@ const LEGACY_THEME_MAP: Record<string, MapStyle> = {
 };
 
 // Fix Leaflet default icon issue
-delete (L.Icon.Default.prototype as any)._getIconUrl;
+const defaultIconPrototype = L.Icon.Default.prototype as L.Icon.Default & { _getIconUrl?: string };
+delete defaultIconPrototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
   iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
@@ -183,6 +205,7 @@ function MapUpdater({ isActive = true }: MapUpdaterProps) {
     if (isActive) {
       setTimeout(() => {
         map.invalidateSize();
+        map.zoomControl.setPosition('bottomright');
       }, 100);
     }
   }, [isActive, map]);
@@ -228,7 +251,7 @@ export function RouteMap({ isActive = true }: RouteMapProps) {
   // Build route polylines
   const routeLines = routes.map((route) => {
     const color = getVehicleColor(route.vehicle_id);
-    const positions: [number, number][] = route.route.map((stopIdx) => {
+    const positions: Array<[number, number]> = route.route.map((stopIdx) => {
       if (stopIdx === 0) {
         // Depot - use first stop's location as proxy
         return stops.length > 0 ? [stops[0].lat, stops[0].lng] : center;
@@ -270,18 +293,21 @@ export function RouteMap({ isActive = true }: RouteMapProps) {
             }`}>
               Map Style
             </div>
-            {MAP_STYLES.map((style) => (
+            {MAP_STYLES.map((style) => {
+              let styleButtonClass: string;
+              if (mapStyle === style.id) {
+                styleButtonClass = isDarkStyle ? 'bg-[#C74634]/20 text-[#C74634]' : 'bg-red-50 text-red-700';
+              } else {
+                styleButtonClass = isDarkStyle ? 'text-gray-300 hover:bg-dark-hover' : 'text-gray-700 hover:bg-gray-50';
+              }
+              return (
               <button
                 key={style.id}
                 onClick={() => {
                   setMapStyle(style.id);
                   setShowStyleSelector(false);
                 }}
-                className={`w-full px-3 py-2 text-left flex items-center gap-2 transition-colors ${
-                  mapStyle === style.id
-                    ? isDarkStyle ? 'bg-[#C74634]/20 text-[#C74634]' : 'bg-red-50 text-red-700'
-                    : isDarkStyle ? 'text-gray-300 hover:bg-dark-hover' : 'text-gray-700 hover:bg-gray-50'
-                }`}
+                className={`w-full px-3 py-2 text-left flex items-center gap-2 transition-colors ${styleButtonClass}`}
               >
                 <Map className="w-4 h-4" />
                 <div>
@@ -291,7 +317,8 @@ export function RouteMap({ isActive = true }: RouteMapProps) {
                   </div>
                 </div>
               </button>
-            ))}
+              );
+            })}
 
             {/* Traffic Info Section */}
             <div className={`border-t px-3 py-2 ${isDarkStyle ? 'border-dark-border' : 'border-gray-100'}`}>
@@ -328,7 +355,11 @@ export function RouteMap({ isActive = true }: RouteMapProps) {
             <Navigation className="w-3 h-3" />
             Routes ({routes.length})
           </div>
-          <div className="space-y-1 max-h-[200px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent pr-1">
+          <div
+            className={`space-y-1 max-h-[200px] overflow-y-auto scrollbar-thin pr-1 ${
+              isDarkStyle ? 'map-legend-scroll-dark' : 'map-legend-scroll-light'
+            }`}
+          >
             {routes.map((route) => {
               const color = getVehicleColor(route.vehicle_id);
               return (
@@ -369,6 +400,7 @@ export function RouteMap({ isActive = true }: RouteMapProps) {
       <MapContainer
         center={center}
         zoom={stops.length > 0 ? 11 : 6}
+        zoomControl
         className="h-full w-full rounded-xl"
         style={{ background: isDarkStyle ? '#1B1F2E' : '#f8fafc' }}
       >
@@ -417,8 +449,8 @@ export function RouteMap({ isActive = true }: RouteMapProps) {
           : '#9CA3AF'; // Gray for unassigned
 
         // Check if this is an EV charging station (has metadata with networkName)
-        const isEVStation = !!(stop as any).metadata?.networkName;
-        const metadata = (stop as any).metadata;
+        const metadata = getEvMetadata(stop.metadata);
+        const isEVStation = !!metadata?.networkName;
 
         // Use different marker for unassigned stops when routes exist
         const isUnassigned = !isAssigned && routes.length > 0;
@@ -471,7 +503,7 @@ export function RouteMap({ isActive = true }: RouteMapProps) {
                   {assignedRoute && (
                     <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid #eee', display: 'flex', alignItems: 'center', gap: '6px' }}>
                       <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: color }} />
-                      <span style={{ fontFamily: 'monospace', fontWeight: 600, color: color }}>
+                      <span style={{ fontFamily: 'monospace', fontWeight: 600, color }}>
                         {formatVehicleName(assignedRoute.vehicle_id)}
                       </span>
                     </div>

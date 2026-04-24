@@ -1,3 +1,5 @@
+import type { CuOptResponse } from './cuopt';
+
 // GenAI Types (LlamaStack-backed)
 
 export type ModelProvider = 'OPENAI' | 'GOOGLE' | 'XAI' | 'META' | 'COHERE';
@@ -25,7 +27,7 @@ export interface Message {
     tokensUsed?: number;
     responseTimeMs?: number;
     cuoptRequest?: object;
-    cuoptResponse?: object;
+    cuoptResponse?: CuOptResponse;
   };
 }
 

@@ -1,7 +1,9 @@
-import { useEffect } from 'react';
 import { clsx } from 'clsx';
 import { CheckCircle, XCircle, AlertTriangle, Info, X } from 'lucide-react';
+import { useEffect } from 'react';
+
 import { useAppStore } from '@/store';
+
 import type { Toast as ToastType } from '@/types';
 
 const icons = {

@@ -1,7 +1,8 @@
 import { clsx } from 'clsx';
+import { type LucideIcon } from 'lucide-react';
+
 import { Card } from './Card';
 import { Skeleton } from './Skeleton';
-import { LucideIcon } from 'lucide-react';
 
 interface MetricCardProps {
   title: string;
@@ -39,18 +40,35 @@ export function MetricCard({
   return (
     <Card
       variant="bordered"
-      padding="md"
+      padding="sm"
       className={clsx(
         'transition-all duration-200 hover:border-dark-hover',
         variant === 'highlight' && 'border-oracle-red/30 bg-oracle-red/5'
       )}
     >
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-sm text-gray-400">{title}</p>
+      <div className="min-w-0">
+        <div className="flex flex-wrap items-start gap-2">
+          <p className="text-[11px] sm:text-xs lg:text-sm text-gray-400 flex-1 min-w-0 leading-tight break-normal">
+            {title}
+          </p>
+          {Icon && (
+            <div
+              className={clsx(
+                'p-1.5 rounded-lg shrink-0',
+                variant === 'highlight'
+                  ? 'bg-oracle-red/20 text-oracle-red'
+                  : 'bg-dark-hover text-gray-400'
+              )}
+            >
+              <Icon className="w-4 h-4" />
+            </div>
+          )}
+        </div>
+        <div className="min-w-0">
           <p
             className={clsx(
-              'text-2xl font-bold mt-1 animate-count-up font-mono',
+              'text-base sm:text-lg lg:text-xl font-bold mt-1 animate-count-up font-mono',
+              'leading-tight break-words whitespace-normal',
               variant === 'highlight' ? 'text-oracle-red' : 'text-white'
             )}
           >
@@ -61,26 +79,14 @@ export function MetricCard({
           )}
           {trend && (
             <div
-              className="flex items-center gap-1 mt-2 text-xs"
+              className="flex items-center gap-1 mt-2 text-[10px] sm:text-xs leading-tight"
               style={{ color: '#C74634' }}
             >
               <span>{trend.isPositive ? '↑' : '↓'}</span>
-              <span>{Math.abs(trend.value)}% vs baseline</span>
+              <span className="truncate">{Math.abs(trend.value)}% vs baseline</span>
             </div>
           )}
         </div>
-        {Icon && (
-          <div
-            className={clsx(
-              'p-2 rounded-lg',
-              variant === 'highlight'
-                ? 'bg-oracle-red/20 text-oracle-red'
-                : 'bg-dark-hover text-gray-400'
-            )}
-          >
-            <Icon className="w-5 h-5" />
-          </div>
-        )}
       </div>
     </Card>
   );

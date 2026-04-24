@@ -76,6 +76,8 @@ export interface CuOptResponse {
   num_vehicles: number;
   status: 'SUCCESS' | 'PARTIAL' | 'FAILED' | 'INFEASIBLE' | 'TIMEOUT' | 'ERROR';
   solve_time: number;
+  clusters_used?: number;
+  parallel_execution?: boolean;
   solver_response?: {
     solution_cost: number;
     num_vehicles: number;

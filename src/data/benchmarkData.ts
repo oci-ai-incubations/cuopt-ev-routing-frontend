@@ -2,7 +2,6 @@
 // Source: payload_optimization benchmark results
 // Updated for UK Route Optimization
 
-import type { BenchmarkScenario, PerformanceMetric } from '@/types';
 import {
   ukPostcodeAreas,
   getNearestPostcodeArea,
@@ -12,6 +11,8 @@ import {
   belronJobTypes,
   ukMajorCities,
 } from './ukPostcodes';
+
+import type { BenchmarkScenario, PerformanceMetric } from '@/types';
 
 // Re-export UK data for convenience
 export { ukPostcodeAreas, getNearestPostcodeArea, generateUKPostcode, generateUKStops, generateBelronStops, belronJobTypes, ukMajorCities };
@@ -462,7 +463,7 @@ export function generateRandomStops(
   centerLat: number = 54.5, // Center of UK
   centerLng: number = -2.0,
   radiusKm: number = 400 // Cover most of UK
-): { id: number; lat: number; lng: number; demand: number; label: string; postcode?: string }[] {
+): Array<{ id: number; lat: number; lng: number; demand: number; label: string; postcode?: string }> {
   const stops = [];
 
   // Convert radius to degrees (approx 111km per degree)

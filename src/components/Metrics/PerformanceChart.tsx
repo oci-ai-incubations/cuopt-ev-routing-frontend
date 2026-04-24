@@ -1,3 +1,4 @@
+import { TrendingUp, HelpCircle, Clock, Zap } from 'lucide-react';
 import { useState } from 'react';
 import {
   LineChart,
@@ -12,10 +13,10 @@ import {
   Bar,
   ReferenceLine,
 } from 'recharts';
-import { TrendingUp, HelpCircle, Clock, Zap } from 'lucide-react';
+
 import { performanceBaselines, parallelExecutionData } from '@/data/benchmarkData';
-import { useOptimizationStore, useConfigStore } from '@/store';
 import { getCountryByCode } from '@/data/locationData';
+import { useOptimizationStore, useConfigStore } from '@/store';
 
 export function PerformanceChart() {
   const { stops, solveTime } = useOptimizationStore();

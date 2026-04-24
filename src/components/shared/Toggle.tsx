@@ -1,5 +1,5 @@
-import { InputHTMLAttributes, forwardRef } from 'react';
 import { clsx } from 'clsx';
+import { type InputHTMLAttributes, forwardRef } from 'react';
 
 interface ToggleProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string;

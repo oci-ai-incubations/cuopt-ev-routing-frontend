@@ -1,5 +1,15 @@
-import axios, { AxiosInstance } from 'axios';
-import type { CuOptRequest, CuOptResponse, Stop, Vehicle, OptimizationConfig, TaskData } from '@/types';
+import axios, { type AxiosInstance } from 'axios';
+
+import type {
+  CuOptRequest,
+  CuOptResponse,
+  FleetData,
+  OptimizationConfig,
+  SolverConfig,
+  Stop,
+  TaskData,
+  Vehicle,
+} from '@/types';
 
 class CuOptClient {
   private client: AxiosInstance;
@@ -115,11 +125,19 @@ class CuOptClient {
         }
 
         // Determine status: solver_response = SUCCESS, solver_infeasible_response = PARTIAL
+        let solveStatus: string;
+        if (!vehicleDataArray.length) {
+          solveStatus = 'FAILED';
+        } else if (isPartialSolution) {
+          solveStatus = 'PARTIAL';
+        } else {
+          solveStatus = 'SUCCESS';
+        }
         return {
           ...solverResponse,
           vehicle_data: vehicleDataArray,
-          total_distance: totalCost, // Explicitly include total distance
-          status: vehicleDataArray.length > 0 ? (isPartialSolution ? 'PARTIAL' : 'SUCCESS') : 'FAILED',
+          total_distance: totalCost,
+          status: solveStatus,
           solve_time: data.response.total_solve_time || data.response.solve_time || 0,
         };
       }
@@ -131,12 +149,12 @@ class CuOptClient {
   async solveParallel(
     payloads: CuOptRequest[],
     concurrency: number = 4,
-    onProgress?: (completed: number, total: number, results: (CuOptResponse | null)[]) => void,
+    onProgress?: (completed: number, total: number, results: Array<CuOptResponse | null>) => void,
     onJobStart?: (index: number) => void,
     onJobError?: (index: number, error: Error) => void
-  ): Promise<(CuOptResponse | null)[]> {
+  ): Promise<Array<CuOptResponse | null>> {
     // Initialize results array with nulls to avoid sparse array issues
-    const results: (CuOptResponse | null)[] = new Array(payloads.length).fill(null);
+    const results: Array<CuOptResponse | null> = new Array(payloads.length).fill(null);
     const semaphore = new Semaphore(concurrency);
 
     const tasks = payloads.map(async (payload, index) => {
@@ -230,7 +248,7 @@ class CuOptClient {
       vehicleLocations = vehicles.map(() => [0, 0]);
     }
 
-    const fleetData: any = {
+    const fleetData: FleetData = {
       vehicle_locations: vehicleLocations,
       capacities: [vehicles.map((v) => v.capacity)],
     };
@@ -255,10 +273,10 @@ class CuOptClient {
     };
   }
 
-  private buildSolverConfig(config: OptimizationConfig): any {
+  private buildSolverConfig(config: OptimizationConfig): SolverConfig {
     // cuOPT v25.10 solver_config only supports time_limit and objectives
     // Note: number_of_climbers, min_vehicles are NOT supported in this API version
-    const solverConfig: any = {
+    const solverConfig: SolverConfig = {
       time_limit: config.timeLimit,
     };
 
@@ -310,7 +328,7 @@ class CuOptClient {
   // Build distance matrix including vehicle home locations for home-start routing
   private buildDistanceMatrixWithHomes(stops: Stop[], vehicles: Vehicle[], includeHomes: boolean): number[][] {
     // Build location list: [depot, ...stops, ...vehicleHomes]
-    const allPoints: { lat: number; lng: number }[] = [
+    const allPoints: Array<{ lat: number; lng: number }> = [
       // Index 0: Depot (use center of stops or first stop)
       {
         lat: stops.length > 0 ? stops[0].lat : 0,
@@ -393,7 +411,7 @@ class CuOptClient {
     const clusters: Stop[][] = Array.from({ length: numClusters }, () => []);
 
     // Initialize centroids
-    const centroids: { lat: number; lng: number }[] = [];
+    const centroids: Array<{ lat: number; lng: number }> = [];
     for (let i = 0; i < numClusters; i++) {
       const idx = Math.floor((i * stops.length) / numClusters);
       centroids.push({ lat: stops[idx].lat, lng: stops[idx].lng });
@@ -443,7 +461,7 @@ class CuOptClient {
 // Simple semaphore for concurrency control
 class Semaphore {
   private permits: number;
-  private waiting: (() => void)[] = [];
+  private waiting: Array<() => void> = [];
 
   constructor(permits: number) {
     this.permits = permits;

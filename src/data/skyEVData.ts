@@ -8460,7 +8460,7 @@ export function calculateStationDemand(station: EVChargingStation): number {
   );
   
   // Base demand from power output (1-5 scale based on power)
-  let baseDemand = Math.max(1, Math.ceil(station.maxPowerKW / 50));
+  const baseDemand = Math.max(1, Math.ceil(station.maxPowerKW / 50));
   
   if (matchingUtils.length > 0) {
     // Average utilisation rate across matching records
