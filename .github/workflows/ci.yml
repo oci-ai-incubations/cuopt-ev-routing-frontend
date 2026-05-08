@@ -125,10 +125,3 @@ jobs:
       - name: Push SHA-tagged image
         run: |
           docker push ${{ env.IMAGE_REPO }}:cuopt-interactive-frontend-${{ env.SHORT_SHA }}
-
-      - name: Tag and push latest
-        run: |
-          docker tag \
-            ${{ env.IMAGE_REPO }}:cuopt-interactive-frontend-${{ env.SHORT_SHA }} \
-            ${{ env.IMAGE_REPO }}:cuopt-interactive-frontend-latest
-          docker push ${{ env.IMAGE_REPO }}:cuopt-interactive-frontend-latest
