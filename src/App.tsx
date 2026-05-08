@@ -1,7 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useNavigate,
+} from 'react-router-dom';
 
 import { AdminPage } from '@/components/Admin';
-import { LoginScreen } from '@/components/Auth';
 import { ChatInterface } from '@/components/Chat';
 import { Dashboard } from '@/components/Dashboard';
 import { AppHeader } from '@/components/Layout/AppHeader';
@@ -9,68 +15,47 @@ import { AppSidebar } from '@/components/Layout/AppSidebar';
 import { HelpModal } from '@/components/Layout/HelpModal';
 import { LogoutConfirmModal } from '@/components/Layout/LogoutConfirmModal';
 import { SettingsModal } from '@/components/Layout/SettingsModal';
+import { LoginGuard } from '@/components/LoginGuard';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Toast } from '@/components/shared/Toast';
+import Login from '@/pages/Login';
+import SSOCallback from '@/pages/SSOCallback';
 import { useAppStore, useConfigStore } from '@/store';
-
-const AUTH_KEY = 'cuopt_auth';
+import { useAuthStore } from '@/store/authStore';
 
 type AppMode = 'dashboard' | 'chat' | 'admin';
 
-export default function App() {
-  const [mode, setMode] = useState<AppMode>('dashboard');
+interface AppShellProps {
+  initialMode?: AppMode;
+}
+
+function AppShell({ initialMode = 'dashboard' }: AppShellProps) {
+  const navigate = useNavigate();
+  const [mode, setMode] = useState<AppMode>(initialMode);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [currentUser, setCurrentUser] = useState<string | null>(null);
 
   const { toasts, removeToast, mapTheme, toggleMapTheme, fetchRuntimeConfig } = useAppStore();
   const { config } = useConfigStore();
+  const logout = useAuthStore((s) => s.logout);
 
   useEffect(() => {
     fetchRuntimeConfig();
   }, [fetchRuntimeConfig]);
 
-  useEffect(() => {
-    const savedAuth = localStorage.getItem(AUTH_KEY);
-    if (!savedAuth) return;
-    try {
-      const authData = JSON.parse(savedAuth);
-      if (authData.username && authData.timestamp) {
-        const sessionAge = Date.now() - authData.timestamp;
-        if (sessionAge < 24 * 60 * 60 * 1000) {
-          setIsAuthenticated(true);
-          setCurrentUser(authData.username);
-        } else {
-          localStorage.removeItem(AUTH_KEY);
-        }
-      }
-    } catch {
-      localStorage.removeItem(AUTH_KEY);
-    }
-  }, []);
-
-  const handleLogin = (username: string) => {
-    localStorage.setItem(AUTH_KEY, JSON.stringify({ username, timestamp: Date.now() }));
-    setIsAuthenticated(true);
-    setCurrentUser(username);
-  };
-
   const handleLogout = () => {
-    localStorage.removeItem(AUTH_KEY);
-    sessionStorage.clear();
-    setIsAuthenticated(false);
-    setCurrentUser(null);
+    logout();
     setShowLogoutConfirm(false);
+    navigate('/login', { replace: true });
   };
-
-  if (!isAuthenticated) {
-    return <LoginScreen onLogin={handleLogin} />;
-  }
 
   return (
-    <div className="flex h-screen bg-dark-bg text-white overflow-hidden" style={{ minHeight: '100vh' }}>
+    <div
+      className="flex h-screen bg-dark-bg text-white overflow-hidden"
+      style={{ minHeight: '100vh' }}
+    >
       <AppSidebar
         mode={mode}
         collapsed={sidebarCollapsed}
@@ -102,7 +87,6 @@ export default function App() {
       <SettingsModal
         isOpen={showSettings}
         onClose={() => setShowSettings(false)}
-        currentUser={currentUser}
         mapTheme={mapTheme}
         onToggleMapTheme={toggleMapTheme}
         onLogoutClick={() => setShowLogoutConfirm(true)}
@@ -116,5 +100,71 @@ export default function App() {
 
       <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} />
     </div>
+  );
+}
+
+/**
+ * Root application component.
+ *
+ * Routing:
+ *   /login                 — public, LoginGuard redirects authenticated users to /
+ *   /auth/callback/:slug   — OIDC callback exchange, also LoginGuarded
+ *   /                      — ProtectedRoute → AppShell (default mode dashboard)
+ *   /admin                 — ProtectedRoute requiredRole="admin" → AppShell pinned to admin mode
+ *   *                      — redirect to /
+ *
+ * On mount, if a persisted token exists, refresh the user from /auth/me to
+ * verify the token is still valid (authClient will refresh-or-logout on 401).
+ */
+export default function App() {
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const loadCurrentUser = useAuthStore((s) => s.loadCurrentUser);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      void loadCurrentUser();
+    }
+    // Only run on initial mount + when authentication transitions; further
+    // triggers come from the store itself.
+  }, [isAuthenticated, loadCurrentUser]);
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/login"
+          element={
+            <LoginGuard>
+              <Login />
+            </LoginGuard>
+          }
+        />
+        <Route
+          path="/auth/callback/:slug"
+          element={
+            <LoginGuard>
+              <SSOCallback />
+            </LoginGuard>
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <AppShell />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AppShell initialMode="admin" />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }

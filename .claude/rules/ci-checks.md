@@ -9,16 +9,14 @@ Before every `git push`, run all checks. Each check is a separate Bash call.
 3. `npm run test:frontend` — frontend unit tests must pass
 4. `npm run test:coverage` — frontend coverage report (informational)
 
-## Backend checks
-
-5. `npm run test:backend:coverage` — backend tests with 80 % coverage gate (lines, functions, branches, statements)
-
 ## Security
 
-6. `npm run audit:security` — no high-severity npm vulnerabilities
+5. `npm run audit:security` — no high-severity npm vulnerabilities
 
 ## Quick alias
 
-`npm run ci` runs lint → frontend tests → backend tests (with coverage) → audit sequentially.
+`npm run ci` runs lint → frontend tests → audit sequentially.
+
+The legacy `test:backend` / `test:backend:coverage` jobs were removed in phase 5 of the auth-integration epic — backend logic now lives in the `cuopt-ev-routing-backend` repo (FastAPI) with its own pytest CI.
 
 Fix any failures before pushing. GitHub Actions CI runs the same checks.

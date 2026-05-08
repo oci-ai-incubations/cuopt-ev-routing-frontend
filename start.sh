@@ -1,24 +1,22 @@
 #!/bin/bash
 
-# cuOPT Frontend Startup Script
-# ==============================
+# cuOPT Frontend - Local dev startup script
+# ============================================================================
+# This script just starts the Vite dev server. The legacy Express backend was
+# retired in phase 5 of the auth-integration epic; backend lives in the
+# cuopt-ev-routing-backend repo (FastAPI) and the auth service in
+# accelerator-pack-auth-service.
+#
+# Vite's proxy expects:
+#   - accelerator-pack-auth-service on http://localhost:8080  (override via VITE_AUTH_HOST)
+#   - cuopt-ev-routing-backend     on http://localhost:8081  (override via VITE_CUOPT_BACKEND_URL)
+#
+# Run those two services in separate terminals first, then start this one.
 
 echo "╔══════════════════════════════════════════════════════════════════╗"
-echo "║          cuOPT Frontend - Startup Script                         ║"
+echo "║          cuOPT Frontend - Dev Startup                            ║"
 echo "╚══════════════════════════════════════════════════════════════════╝"
 echo ""
-
-# Check if OCI config exists
-if [ ! -f ~/.oci/config ]; then
-    echo "❌ ERROR: OCI config file not found at ~/.oci/config"
-    echo ""
-    echo "Please configure OCI CLI first:"
-    echo "  oci setup config"
-    echo ""
-    exit 1
-fi
-
-echo "✅ OCI config found"
 
 # Check Node.js
 if ! command -v node &> /dev/null; then
@@ -39,16 +37,13 @@ if [ ! -d "node_modules" ]; then
 fi
 
 echo ""
-echo "🚀 Starting cuOPT Frontend..."
+echo "🚀 Starting cuOPT Frontend (Vite dev server)..."
 echo ""
-echo "   Frontend:  http://localhost:5173"
-echo "   Server:    http://localhost:3001"
-echo ""
-echo "   cuOPT API: https://cuopt-2-cuopt.137-131-27-21.nip.io"
-echo "   GenAI:     https://inference.generativeai.us-phoenix-1.oci.oraclecloud.com"
+echo "   Frontend:                http://localhost:5173"
+echo "   Expects /auth proxied to ${VITE_AUTH_HOST:-http://localhost:8080}"
+echo "   Expects /api  proxied to ${VITE_CUOPT_BACKEND_URL:-http://localhost:8081}"
 echo ""
 echo "Press Ctrl+C to stop"
 echo ""
 
-# Start both frontend and server
-npm run start
+npm run dev

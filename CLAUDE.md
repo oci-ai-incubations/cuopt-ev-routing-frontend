@@ -6,64 +6,77 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **cuOPT EV Routing Frontend** — production-ready Vehicle Routing Problem (VRP) UI for the cuopt accelerator pack. Combines NVIDIA cuOPT GPU-accelerated optimization with OCI Generative AI for explanations, real-time weather integration, and map visualization. Targets logistics / field-service / mobile-workforce use cases.
 
-The frontend talks to:
-- The cuopt EV routing backend (FastAPI, separate repo `cuopt-ev-routing-backend`) over `/api/*`
-- Optionally the LLM gateway (OCI Generative AI) for natural-language route explanations
-- A weather provider for weather-aware constraints
+The frontend is a **static SPA only**. All backend API logic lives in:
+- `cuopt-ev-routing-backend` (FastAPI, sibling repo) — serves `/api/*` (cuopt + genai + weather + config). All `/api/*` is auth-protected (HS256 JWT).
+- `accelerator-pack-auth-service` (sibling repo) — serves `/auth/*` (login, refresh, SSO, /me).
+
+The legacy Express server that lived in `server/` was retired in phase 5 of the auth-integration epic; FastAPI absorbed it.
 
 ## Tech Stack
 
 - React 18.2, **TypeScript** strict, Vite 5.4
 - Tailwind 3.4 + lucide-react icons
 - Zustand stores, Tanstack Query for server state
-- react-router-dom 6 for routing
-- axios for HTTP, leaflet + @react-google-maps/api for maps, recharts for charts
-- ESLint flat config (`eslint.config.js`), Vitest + @testing-library, husky for pre-commit
-- Production: Express static server (`server/index.js`) serving `dist/`
+- react-router-dom 6 routing (BrowserRouter + ProtectedRoute / LoginGuard)
+- axios for HTTP (single auth-aware instance — see `src/api/authClient.ts`)
+- ESLint flat config, Vitest + @testing-library, husky for pre-commit
+- Production: nginx serving `dist/` (`appdeploy/Dockerfile` + `appdeploy/nginx.conf`). The OKE ingress (configured in `ai-accelerator-starter-packs` blueprint_files.tf) routes `/api/*` and `/auth/*` to upstream pods directly.
 
 ## Commands
 
 ```bash
-npm install                 # install deps (uses package-lock.json)
-npm run dev                 # vite dev server on :3000
-npm run server              # Express static server (after build)
-npm start                   # both, concurrently
+npm install                 # install deps
+npm run dev                 # vite dev server on :5173
 npm run build               # tsc + vite build → dist/
+npm run preview             # preview production build locally
 npm run lint                # eslint .
 npm run lint:fix            # eslint . --fix
 npm test                    # vitest (one-shot)
 npm run test:watch          # vitest watch
-npm run test:coverage       # vitest with coverage report (FE)
-npm run test:backend:coverage  # 80% coverage gate on the Express server tests
+npm run test:coverage       # vitest with coverage report
 npm audit --audit-level=high
-npm run ci                  # lint + test:frontend + test:backend:coverage + audit (the local CI bundle)
+npm run ci                  # lint + test:frontend + audit (local CI bundle)
 ```
+
+## Local development
+
+This repo's dev server expects two sibling services running locally:
+- `accelerator-pack-auth-service` on **port 8080**
+- `cuopt-ev-routing-backend` on **port 8081** (override its default 8080 to avoid clashing with auth-service — e.g. `uvicorn cuopt_ev_routing_backend.main:app --reload --port 8081`)
+
+Vite proxies `/auth` → `VITE_AUTH_HOST` (default `http://localhost:8080`) and `/api` → `VITE_CUOPT_BACKEND_URL` (default `http://localhost:8081`).
+
+The cuopt backend defaults to `CUOPT_AUTH_REQUIRE_AUTH=false` for local dev, which returns a synthetic admin user on every `/api/*` request — log in via the Login page anyway to exercise the full flow, or hit `/api/*` directly without auth headers.
 
 ## Architecture
 
 ```
 src/
-├── main.tsx                  # entrypoint
-├── App.tsx                   # router root
+├── main.tsx                  # entrypoint, mounts QueryClientProvider + App
+├── App.tsx                   # BrowserRouter + Routes (login / callback / app / admin)
 ├── index.css                 # Tailwind + design tokens
 ├── api/
-│   ├── cuoptClient.ts        # cuopt-ev-routing-backend calls
-│   ├── genaiClient.ts        # OCI Generative AI gateway
-│   ├── weatherClient.ts      # weather provider
+│   ├── authClient.ts         # axios with Bearer + 401-refresh-retry interceptors
+│   ├── auth.ts               # /auth/* typed wrappers
+│   ├── cuoptClient.ts        # cuopt VRP solve flow (uses authClient)
+│   ├── genaiClient.ts        # OCI Generative AI gateway calls (uses authClient)
+│   ├── weatherClient.ts      # weather + adverse-conditions assessment (uses authClient)
 │   └── index.ts
-├── store/                    # Zustand stores
-│   ├── optimizationStore.ts
-│   ├── weatherStore.ts
-│   ├── appStore.ts
-│   ├── configStore.ts
-│   └── index.ts
-├── types/                    # TS types (cuopt, weather, genai)
-├── utils/
-├── data/                     # demo data (UK postcodes, sample stops)
+├── pages/                    # routed pages
+│   ├── Login.tsx
+│   └── SSOCallback.tsx
+├── components/
+│   ├── ProtectedRoute.tsx    # auth + optional role gate
+│   ├── LoginGuard.tsx        # bounce authenticated users from /login
+│   ├── Layout/               # header, sidebar, modals
+│   ├── Admin/                # admin panel components
+│   ├── Chat/, Dashboard/, Map/, Metrics/, Weather/, shared/
+├── store/                    # Zustand stores (auth, app, config, optimization, weather, chat)
+├── types/                    # TS types
+├── utils/, data/             # helpers + demo data
 └── __tests__/                # vitest tests
 
-server/                       # Express static server for production
-appdeploy/                    # deployment manifests
+appdeploy/                    # deployment manifests (Dockerfile, nginx.conf, k8s/)
 demo/                         # demo content
 docs/                         # public docs
 public/, index.html
@@ -71,18 +84,18 @@ vite.config.ts, vitest.config.ts, eslint.config.js, tailwind.config.js, postcss.
 tsconfig.json, tsconfig.node.json
 ```
 
-## Current Feature
+## Current feature
 
-**Auth integration** — wiring `accelerator-pack-auth-service` (per-user JWT auth) into cuopt. Branch: `feature/integrate-auth-service`. Frontend changes to land here:
+**Auth integration** — phase 5 complete. `feature/integrate-auth-service`.
 
-- `src/api/authClient.ts` — axios instance with Bearer-token interceptor + 401-refresh-retry
-- `src/api/auth.ts` — auth-service endpoints (login, refresh, /auth/me, SSO)
-- `src/store/authStore.ts` — auth state (Zustand, persist)
-- `src/pages/Login.tsx`, `src/pages/SSOCallback.tsx` — login UI
-- `<ProtectedRoute>` / `<LoginGuard>` — route guards integrated into App.tsx routing
-- Existing `cuoptClient`, `genaiClient`, `weatherClient` migrated to use `authClient` so all backend calls carry the Bearer token
-
-The companion `cuopt-ev-routing-backend` repo (FastAPI/Python 3.12) gets HS256 JWT validation via a FastAPI `Depends`, sharing `AUTH_JWT_SECRET` with the auth service.
+Phases (per the parent repo's `CLAUDE.md`):
+1. ✅ TF: deploy auth-service + cuopt-backend + ingress (in `ai-accelerator-starter-packs`)
+2. ✅ BE port: Express → FastAPI + HS256 JWT dep (in `cuopt-ev-routing-backend`)
+3. ✅ FE state/HTTP: `authStore`, `authClient`, `auth.ts`, `types/auth.ts`
+4. ✅ FE UI components: `Login`, `SSOCallback`, `ProtectedRoute`, `LoginGuard`
+5. ✅ App.tsx router refactor + client migrations + retire Express
+6. (next) Admin panels (User + Roles + Groups + IDPs + Collection perms + Audit log)
+7. (next) Vite proxy already in place; production proxy lives in OKE ingress
 
 ## Skills
 

@@ -1,5 +1,4 @@
-import axios, { type AxiosInstance } from 'axios';
-
+import { authClient } from '@/api/authClient';
 import {
   DEFAULT_WEATHER_CONFIG,
   WEATHER_CONDITION_SEVERITY,
@@ -38,20 +37,14 @@ interface OpenWeatherApiResponse {
   alerts?: LocationWeather['alerts'];
 }
 
+const WEATHER_TIMEOUT_MS = 30000;
+
 class WeatherClient {
-  private client: AxiosInstance;
   private cache: Map<string, { data: LocationWeather; timestamp: number }> = new Map();
   private cacheTimeout = 15 * 60 * 1000; // 15 minutes
   private config: WeatherConfig;
 
   constructor() {
-    this.client = axios.create({
-      baseURL: '/api/weather',
-      timeout: 30000,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
     this.config = { ...DEFAULT_WEATHER_CONFIG };
   }
 
@@ -80,8 +73,9 @@ class WeatherClient {
     }
 
     try {
-      const response = await this.client.get('/current', {
+      const response = await authClient.get('/api/weather/current', {
         params: { lat, lng },
+        timeout: WEATHER_TIMEOUT_MS,
       });
 
       const data = response.data;
