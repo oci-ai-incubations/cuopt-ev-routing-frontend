@@ -10,6 +10,7 @@ import { authClient } from '@/api/authClient';
 
 import type {
   AdminUser,
+  ApiKeysUpdate,
   AuditQueryFilters,
   AuditQueryResponse,
   ClaimMapping,
@@ -17,9 +18,12 @@ import type {
   CreateMappingPayload,
   CreateProviderPayload,
   CreateRolePayload,
+  FeatureFlagsUpdate,
   Group,
   GroupMember,
   IdentityProvider,
+  InstanceConfig,
+  PackAuthModel,
   Permission,
   PermissionCheckPayload,
   PermissionCheckResult,
@@ -30,6 +34,35 @@ import type {
 } from '@/types/admin';
 
 const BASE = '/auth';
+const CUOPT_ADMIN_BASE = '/api/admin';
+
+// ─── Pack model (auth-service — public) ───────────────────────────────────
+export async function fetchPackModel(): Promise<PackAuthModel> {
+  const { data } = await authClient.get<PackAuthModel>(`${BASE}/pack/model`);
+  return data;
+}
+
+// ─── Instance config (cuopt-backend — admin only) ─────────────────────────
+export async function fetchInstanceConfig(): Promise<InstanceConfig> {
+  const { data } = await authClient.get<InstanceConfig>(`${CUOPT_ADMIN_BASE}/config`);
+  return data;
+}
+
+export async function updateApiKeys(payload: ApiKeysUpdate): Promise<InstanceConfig> {
+  const { data } = await authClient.patch<InstanceConfig>(
+    `${CUOPT_ADMIN_BASE}/config/api-keys`,
+    payload,
+  );
+  return data;
+}
+
+export async function updateFeatures(payload: FeatureFlagsUpdate): Promise<InstanceConfig> {
+  const { data } = await authClient.patch<InstanceConfig>(
+    `${CUOPT_ADMIN_BASE}/config/features`,
+    payload,
+  );
+  return data;
+}
 
 // ─── Users ────────────────────────────────────────────────────────────────
 export async function listUsers(): Promise<AdminUser[]> {

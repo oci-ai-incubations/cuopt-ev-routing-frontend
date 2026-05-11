@@ -1,10 +1,41 @@
 /**
- * TS shapes for the accelerator-pack-auth-service admin endpoints.
+ * TS shapes for the accelerator-pack-auth-service admin endpoints +
+ * cuopt-ev-routing-backend's /api/admin/config* endpoints.
  *
  * Aligned with auth-service Pydantic models — keep in sync if those change.
  */
 
 import type { UserRole } from '@/types/auth';
+
+// ─── Pack model (from auth-service /auth/pack/model) ──────────────────────
+export interface PackAuthModel {
+  pack_id: string;
+  roles: string[];
+  permissions: string[];
+  role_permissions: Record<string, string[]>;
+}
+
+// ─── Instance settings (from cuopt-backend /api/admin/config) ─────────────
+export interface InstanceConfig {
+  google_maps_api_key: string;       // "***" when set, "" when unset
+  openweathermap_api_key: string;    // "***" when set, "" when unset
+  genai_chat_enabled: boolean;
+  weather_enabled: boolean;
+  sso_enabled: boolean;
+  updated_at: string;
+  updated_by: string | null;
+}
+
+export interface ApiKeysUpdate {
+  google_maps_api_key?: string;
+  openweathermap_api_key?: string;
+}
+
+export interface FeatureFlagsUpdate {
+  genai_chat_enabled?: boolean;
+  weather_enabled?: boolean;
+  sso_enabled?: boolean;
+}
 
 // ─── Users ────────────────────────────────────────────────────────────────
 export interface AdminUser {

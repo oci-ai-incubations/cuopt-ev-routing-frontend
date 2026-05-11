@@ -1,6 +1,8 @@
 export { AdminPanel } from './AdminPanel';
+export { ApiKeysPanel } from './ApiKeysPanel';
 export { AuditLog } from './AuditLog';
 export { CollectionPermissions } from './CollectionPermissions';
+export { FeatureFlagsPanel } from './FeatureFlagsPanel';
 export { Groups } from './Groups';
 export { IdentityProviders } from './IdentityProviders';
 export { RolesPermissions } from './RolesPermissions';

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -6,7 +6,15 @@ import { AdminPanel } from '@/components/Admin/auth/AdminPanel';
 import { useAuthStore } from '@/store/authStore';
 
 import type { User } from '@/types/auth';
+import type { PackAuthModel } from '@/types/admin';
 
+const { fetchPackModelMock } = vi.hoisted(() => ({
+  fetchPackModelMock: vi.fn<() => Promise<PackAuthModel>>(),
+}));
+
+vi.mock('@/api/admin', () => ({
+  fetchPackModel: fetchPackModelMock,
+}));
 vi.mock('@/components/Admin/AdminPage', () => ({
   AdminPage: () => <div>config-tab-content</div>,
 }));
@@ -28,6 +36,12 @@ vi.mock('@/components/Admin/auth/CollectionPermissions', () => ({
 vi.mock('@/components/Admin/auth/AuditLog', () => ({
   AuditLog: () => <div>audit-tab-content</div>,
 }));
+vi.mock('@/components/Admin/auth/ApiKeysPanel', () => ({
+  ApiKeysPanel: () => <div>api-keys-tab-content</div>,
+}));
+vi.mock('@/components/Admin/auth/FeatureFlagsPanel', () => ({
+  FeatureFlagsPanel: () => <div>features-tab-content</div>,
+}));
 
 const adminUser: User = {
   id: 1,
@@ -45,6 +59,41 @@ const nonAdminUser: User = {
   is_active: true,
 };
 
+const CUOPT_MODEL: PackAuthModel = {
+  pack_id: 'cuopt',
+  roles: ['admin', 'user', 'reader'],
+  permissions: [
+    'cuopt.solve',
+    'cuopt.view',
+    'admin.users.manage',
+    'admin.config.write',
+    'admin.features.toggle',
+    'admin.audit.view',
+  ],
+  role_permissions: {},
+};
+
+const PAAS_RAG_MODEL: PackAuthModel = {
+  pack_id: 'paas_rag',
+  roles: ['admin', 'user', 'reader', 'pending'],
+  permissions: [
+    'admin.users.manage',
+    'admin.roles.manage',
+    'admin.groups.manage',
+    'admin.providers.manage',
+    'admin.collections.manage',
+    'admin.audit.view',
+  ],
+  role_permissions: {},
+};
+
+const BASE_MODEL: PackAuthModel = {
+  pack_id: 'base',
+  roles: ['admin', 'user'],
+  permissions: ['admin.users.manage', 'admin.audit.view'],
+  role_permissions: {},
+};
+
 function setUser(user: User | null) {
   useAuthStore.setState({
     user,
@@ -54,35 +103,90 @@ function setUser(user: User | null) {
   });
 }
 
-beforeEach(() => setUser(adminUser));
+beforeEach(() => {
+  setUser(adminUser);
+  fetchPackModelMock.mockReset();
+});
 afterEach(() => setUser(null));
 
-describe('AdminPanel', () => {
-  it('renders all 7 tabs for admin role and shows the Configuration tab by default', () => {
+describe('AdminPanel — dynamic tabs', () => {
+  it('cuopt model: Configuration / Users / API Keys / Feature Flags / Audit Log', async () => {
+    fetchPackModelMock.mockResolvedValue(CUOPT_MODEL);
     render(<AdminPanel />);
+    await waitFor(() =>
+      expect(screen.getByRole('tab', { name: /^users$/i })).toBeInTheDocument(),
+    );
     expect(screen.getByRole('tab', { name: /configuration/i })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /api keys/i })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /feature flags/i })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /audit log/i })).toBeInTheDocument();
+    // Not in cuopt model
+    expect(screen.queryByRole('tab', { name: /roles & permissions/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('tab', { name: /^groups$/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('tab', { name: /identity providers/i }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('tab', { name: /collection permissions/i }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('paas_rag model: full RBAC tab set (no cuopt-only tabs)', async () => {
+    fetchPackModelMock.mockResolvedValue(PAAS_RAG_MODEL);
+    render(<AdminPanel />);
+    await waitFor(() =>
+      expect(screen.getByRole('tab', { name: /roles & permissions/i })).toBeInTheDocument(),
+    );
     expect(screen.getByRole('tab', { name: /^users$/i })).toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: /roles & permissions/i })).toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: /groups/i })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /^groups$/i })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: /identity providers/i })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: /collection permissions/i })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: /audit log/i })).toBeInTheDocument();
-    expect(screen.getByText('config-tab-content')).toBeInTheDocument();
+    // Not in paas_rag model
+    expect(screen.queryByRole('tab', { name: /api keys/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('tab', { name: /feature flags/i })).not.toBeInTheDocument();
   });
 
-  it('switches tabs on click', async () => {
+  it('base model: only Configuration / Users / Audit Log', async () => {
+    fetchPackModelMock.mockResolvedValue(BASE_MODEL);
     render(<AdminPanel />);
-    await userEvent.click(screen.getByRole('tab', { name: /^users$/i }));
-    expect(screen.getByText('users-tab-content')).toBeInTheDocument();
-    await userEvent.click(screen.getByRole('tab', { name: /audit log/i }));
-    expect(screen.getByText('audit-tab-content')).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getByRole('tab', { name: /audit log/i })).toBeInTheDocument(),
+    );
+    expect(screen.getByRole('tab', { name: /configuration/i })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /^users$/i })).toBeInTheDocument();
+    expect(screen.queryByRole('tab', { name: /roles & permissions/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('tab', { name: /api keys/i })).not.toBeInTheDocument();
   });
 
-  it('hides auth-admin tabs when role is not admin', () => {
+  it('non-admin user sees only Configuration regardless of pack model', async () => {
     setUser(nonAdminUser);
+    fetchPackModelMock.mockResolvedValue(CUOPT_MODEL);
     render(<AdminPanel />);
     expect(screen.getByRole('tab', { name: /configuration/i })).toBeInTheDocument();
     expect(screen.queryByRole('tab', { name: /^users$/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole('tab', { name: /audit log/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('tab', { name: /api keys/i })).not.toBeInTheDocument();
+  });
+
+  it('switches tabs on click', async () => {
+    fetchPackModelMock.mockResolvedValue(CUOPT_MODEL);
+    render(<AdminPanel />);
+    await waitFor(() =>
+      expect(screen.getByRole('tab', { name: /api keys/i })).toBeInTheDocument(),
+    );
+    await userEvent.click(screen.getByRole('tab', { name: /api keys/i }));
+    expect(screen.getByText('api-keys-tab-content')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('tab', { name: /feature flags/i }));
+    expect(screen.getByText('features-tab-content')).toBeInTheDocument();
+  });
+
+  it('shows error if pack model fetch fails (still renders Configuration)', async () => {
+    fetchPackModelMock.mockRejectedValue(new Error('boom'));
+    render(<AdminPanel />);
+    await waitFor(() =>
+      expect(screen.getByText(/could not load pack model/i)).toBeInTheDocument(),
+    );
+    expect(screen.getByRole('tab', { name: /configuration/i })).toBeInTheDocument();
+    expect(screen.queryByRole('tab', { name: /^users$/i })).not.toBeInTheDocument();
   });
 });
