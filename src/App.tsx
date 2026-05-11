@@ -7,7 +7,7 @@ import {
   useNavigate,
 } from 'react-router-dom';
 
-import { AdminPage } from '@/components/Admin';
+import { AdminPanel } from '@/components/Admin/auth/AdminPanel';
 import { ChatInterface } from '@/components/Chat';
 import { Dashboard } from '@/components/Dashboard';
 import { AppHeader } from '@/components/Layout/AppHeader';
@@ -74,7 +74,7 @@ function AppShell({ initialMode = 'dashboard' }: AppShellProps) {
         <div className="flex-1 overflow-hidden">
           {mode === 'dashboard' && <Dashboard />}
           {mode === 'chat' && <ChatInterface />}
-          {mode === 'admin' && <AdminPage />}
+          {mode === 'admin' && <AdminPanel />}
         </div>
       </main>
 

@@ -94,7 +94,7 @@ Phases (per the parent repo's `CLAUDE.md`):
 3. ✅ FE state/HTTP: `authStore`, `authClient`, `auth.ts`, `types/auth.ts`
 4. ✅ FE UI components: `Login`, `SSOCallback`, `ProtectedRoute`, `LoginGuard`
 5. ✅ App.tsx router refactor + client migrations + retire Express
-6. (next) Admin panels (User + Roles + Groups + IDPs + Collection perms + Audit log)
+6. ✅ Admin panels (User + Roles + Groups + IDPs + Collection perms + Audit log) — see src/components/Admin/auth/
 7. (next) Vite proxy already in place; production proxy lives in OKE ingress
 
 ## Skills
