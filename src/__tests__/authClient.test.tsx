@@ -143,6 +143,40 @@ describe('authClient response interceptor', () => {
     expect(logout).not.toHaveBeenCalled();
   });
 
+  it('does not refresh-or-logout on 401 from /auth/logout (recursion guard)', async () => {
+    // The logout call itself uses authClient; if its 401 triggered logout()
+    // again, the interceptor recursed infinitely. Verified against an auth
+    // service log that showed thousands of POST /auth/logout 401s when this
+    // path was wide open.
+    const refreshAccessToken = vi.fn();
+    const logout = vi.fn();
+    vi.mocked(useAuthStore.getState).mockReturnValue(
+      makeMockState({ refreshAccessToken, logout }) as never,
+    );
+
+    const cfg = { ...makeRequestConfig(), url: '/auth/logout' } as InternalAxiosRequestConfig;
+    const error = { response: { status: 401 }, config: cfg } as AxiosError;
+
+    await expect(responseInterceptor.rejected!(error)).rejects.toBe(error);
+    expect(refreshAccessToken).not.toHaveBeenCalled();
+    expect(logout).not.toHaveBeenCalled();
+  });
+
+  it('does not refresh-or-logout on 401 from /auth/refresh (recursion guard)', async () => {
+    const refreshAccessToken = vi.fn();
+    const logout = vi.fn();
+    vi.mocked(useAuthStore.getState).mockReturnValue(
+      makeMockState({ refreshAccessToken, logout }) as never,
+    );
+
+    const cfg = { ...makeRequestConfig(), url: '/auth/refresh' } as InternalAxiosRequestConfig;
+    const error = { response: { status: 401 }, config: cfg } as AxiosError;
+
+    await expect(responseInterceptor.rejected!(error)).rejects.toBe(error);
+    expect(refreshAccessToken).not.toHaveBeenCalled();
+    expect(logout).not.toHaveBeenCalled();
+  });
+
   it('rejects without refresh on non-401 errors', async () => {
     const refreshAccessToken = vi.fn();
     const logout = vi.fn();

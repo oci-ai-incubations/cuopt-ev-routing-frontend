@@ -24,11 +24,31 @@ authClient.interceptors.request.use((cfg) => {
   return cfg;
 });
 
+// Endpoints whose 401s must not trigger the refresh-then-logout flow:
+//   /auth/logout — a 401 here is expected when the token is already invalid;
+//     re-triggering logout from the interceptor recurses infinitely (each
+//     logout posts through authClient and re-enters this handler).
+//   /auth/refresh — handled by api/auth.ts via raw axios, but be defensive.
+//   /auth/login   — same reason.
+function isAuthFlowEndpoint(url: string | undefined): boolean {
+  if (!url) return false;
+  return (
+    url.endsWith('/auth/logout') ||
+    url.endsWith('/auth/refresh') ||
+    url.endsWith('/auth/login')
+  );
+}
+
 authClient.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     const cfg = error.config as RetryConfig | undefined;
-    if (error.response?.status === 401 && cfg && !cfg._retry) {
+    if (
+      error.response?.status === 401 &&
+      cfg &&
+      !cfg._retry &&
+      !isAuthFlowEndpoint(cfg.url)
+    ) {
       cfg._retry = true;
       const refreshed = await useAuthStore.getState().refreshAccessToken();
       if (refreshed) {
