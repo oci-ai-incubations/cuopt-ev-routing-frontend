@@ -1,22 +1,8 @@
-/**
- * Auth admin panel — data-driven tab container.
- *
- * Tab visibility is gated by the active pack model (loaded once from
- * `/auth/pack/model`). Each auth tab is associated with a permission key
- * defined by the pack's RBAC model in accelerator-pack-auth-service. Tabs
- * appear only when their gating permission is in the active pack model's
- * permissions list — this gives each pack a different admin surface
- * without per-pack FE forks.
- *
- * The "Configuration" tab is always visible (legacy cuopt local-state UI;
- * not auth-gated).
- *
- * Mounted by App.tsx when `mode === 'admin'`. ProtectedRoute already gates
- * the route on `requiredRole='admin'`, but tab-level filtering also reads
- * the user's role from authStore as defence-in-depth: non-admins see only
- * the Configuration tab regardless of which permissions the pack model
- * declares.
- */
+// Tab visibility is driven by GET /auth/pack/model: each auth tab is gated
+// on a permission key, and only shows when the active pack model lists it.
+// Same FE binary serves every pack with a pack-specific admin surface.
+// Configuration is always visible (not auth-gated). The user-role check is
+// defence-in-depth on top of ProtectedRoute(requiredRole='admin').
 
 import {
   FileSearch,

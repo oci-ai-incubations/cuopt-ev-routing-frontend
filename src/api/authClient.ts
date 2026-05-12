@@ -10,21 +10,10 @@ interface RetryConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
 
-/**
- * Auth-aware axios instance.
- *
- * Use for any call that should carry the user's Bearer token.
- *
- * Behavior:
- * - Request interceptor injects `Authorization: Bearer <token>` when the
- *   auth store has a token.
- * - Response interceptor: on 401, attempts a single refresh-and-retry. If
- *   refresh fails, it calls `logout()` and rejects the original error.
- *
- * NOT used by `login`/`register`/`refresh` themselves — those endpoints
- * are how the token is created in the first place, so they go through raw
- * axios in `src/api/auth.ts`.
- */
+// Bearer-injecting axios with one-shot 401 → refresh-and-retry. Login /
+// register / refresh use raw axios (in api/auth.ts) since they precede the
+// token's existence and routing them through here would cause interceptor
+// recursion on 401s.
 export const authClient: AxiosInstance = axios.create({ baseURL: '/' });
 
 authClient.interceptors.request.use((cfg) => {

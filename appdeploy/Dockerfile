@@ -1,13 +1,8 @@
-# ============================================================================
-# CuOPT Frontend - Multi-stage Dockerfile for OKE Deployment
-# ============================================================================
 # syntax=docker/dockerfile:1.7
 #
-# Static SPA only. Backend logic was moved to cuopt-ev-routing-backend
-# (FastAPI). The OKE ingress (configured in ai-accelerator-starter-packs)
-# routes `/api/*` to the cuopt-backend pod and `/auth/*` to the
-# accelerator-pack-auth-service pod, so this image just serves dist/ via
-# nginx.
+# Static SPA. The OKE ingress routes /api/* to the cuopt-ev-routing-backend
+# pod and /auth/* to the accelerator-pack-auth-service pod, so this image
+# only serves dist/ via nginx.
 
 # Stage 1: Install deps on build platform (fast, avoids QEMU issues)
 FROM --platform=$BUILDPLATFORM node:20-alpine AS deps

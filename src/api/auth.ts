@@ -10,14 +10,9 @@ import type {
   User,
 } from '@/types/auth';
 
-/**
- * Wrappers around accelerator-pack-auth-service `/auth/*` endpoints.
- *
- * `login` / `register` / `refresh` use bare `axios` because they precede the
- * existence of a Bearer token (or, in `refresh`'s case, a valid one). Every
- * other endpoint is invoked via `authClient` so the Bearer token is attached
- * and the 401 → refresh-retry interceptor applies.
- */
+// login / register / refresh use raw axios — they precede the existence
+// of a Bearer token (or, for refresh, a valid one), and routing through
+// authClient's 401-refresh interceptor would recurse on a bad refresh.
 
 const AUTH_BASE = '/auth';
 

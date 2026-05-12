@@ -2,13 +2,10 @@ import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
-// In dev, Vite proxies /api → cuopt-ev-routing-backend (FastAPI) and
-// /auth → accelerator-pack-auth-service. Run them on different ports
-// (defaults: BE 8081, auth 8080) since both default to 8080.
-//
-// In production, the OKE ingress (configured in ai-accelerator-starter-packs
-// blueprint_files.tf) routes /api/* and /auth/* to the right pods. The
-// proxy below is dev-only.
+// Dev proxies /api and /auth to the local backend / auth-service. Both
+// services default to port 8080 — run the cuopt backend on 8081 locally
+// (VITE_CUOPT_BACKEND_URL) so they don't collide. In production the OKE
+// ingress handles this routing; this config doesn't apply.
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const cuoptBackendUrl = env.VITE_CUOPT_BACKEND_URL || 'http://localhost:8081';
