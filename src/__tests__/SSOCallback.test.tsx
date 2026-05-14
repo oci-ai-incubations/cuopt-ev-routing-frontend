@@ -99,4 +99,16 @@ describe('SSOCallback page', () => {
 
     expect(await screen.findByRole('alert')).toHaveTextContent(/missing authorization code/i);
   });
+
+  it('shows an error when sessionStorage CSRF state is absent (fresh-tab callback)', async () => {
+    // No sessionStorage seed — simulates a fresh tab landing on the callback
+    // URL with attacker-supplied code+state. Previously the check
+    // short-circuited on the falsy expectedState; now it must fail closed.
+    const ssoLoginSpy = vi.spyOn(useAuthStore.getState(), 'ssoLogin');
+
+    renderAt('/sso/callback/oracle-idcs?code=abc&state=whatever');
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(/csrf|state mismatch/i);
+    expect(ssoLoginSpy).not.toHaveBeenCalled();
+  });
 });
