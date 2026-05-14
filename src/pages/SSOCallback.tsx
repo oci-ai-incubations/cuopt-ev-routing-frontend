@@ -26,13 +26,17 @@ export default function SSOCallback() {
       setError('Missing authorization code from identity provider');
       return;
     }
-    if (state && expectedState && state !== expectedState) {
+    if (!state) {
+      setError('Missing state from identity provider');
+      return;
+    }
+    if (expectedState && state !== expectedState) {
       setError('SSO state mismatch — possible CSRF. Please try signing in again.');
       return;
     }
 
     const redirectUri = `${window.location.origin}/sso/callback/${slug}`;
-    ssoLogin(slug, code, redirectUri).then((result) => {
+    ssoLogin(slug, code, redirectUri, state).then((result) => {
       if (result.success) {
         navigate('/');
       } else {

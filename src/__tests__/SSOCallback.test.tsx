@@ -58,6 +58,7 @@ describe('SSOCallback page', () => {
         'oracle-idcs',
         'abc',
         expect.stringMatching(/\/sso\/callback\/oracle-idcs$/),
+        'csrf-1',
       );
       expect(navigateMock).toHaveBeenCalledWith('/');
     });

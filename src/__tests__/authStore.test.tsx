@@ -210,7 +210,7 @@ describe('authStore.ssoLogin', () => {
 
     const result = await useAuthStore
       .getState()
-      .ssoLogin('oracle-idcs', 'code-abc', 'http://app/cb');
+      .ssoLogin('oracle-idcs', 'code-abc', 'http://app/cb', 'state-xyz');
 
     expect(result.success).toBe(true);
     expect(useAuthStore.getState().token).toBe('access-tok');
@@ -218,13 +218,14 @@ describe('authStore.ssoLogin', () => {
       'oracle-idcs',
       'code-abc',
       'http://app/cb',
+      'state-xyz',
     );
   });
 
   it('clears state and returns error on failure', async () => {
     vi.mocked(authApi.exchangeSSOCode).mockRejectedValue(new Error('bad code'));
 
-    const result = await useAuthStore.getState().ssoLogin('idcs', 'x', 'http://app/cb');
+    const result = await useAuthStore.getState().ssoLogin('idcs', 'x', 'http://app/cb', 'st');
 
     expect(result.success).toBe(false);
     expect(useAuthStore.getState().isAuthenticated).toBe(false);

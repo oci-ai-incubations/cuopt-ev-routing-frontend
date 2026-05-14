@@ -22,7 +22,7 @@ interface AuthState {
   logout: () => void;
   refreshAccessToken: () => Promise<boolean>;
   loadCurrentUser: () => Promise<boolean>;
-  ssoLogin: (slug: string, code: string, redirectUri: string) => Promise<LoginResult>;
+  ssoLogin: (slug: string, code: string, redirectUri: string, state: string) => Promise<LoginResult>;
   setUserFromToken: (token: string) => void;
 }
 
@@ -118,9 +118,9 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      ssoLogin: async (slug, code, redirectUri) => {
+      ssoLogin: async (slug, code, redirectUri, state) => {
         try {
-          const data = await authApi.exchangeSSOCode(slug, code, redirectUri);
+          const data = await authApi.exchangeSSOCode(slug, code, redirectUri, state);
           set({
             user: data.user,
             token: data.access_token,

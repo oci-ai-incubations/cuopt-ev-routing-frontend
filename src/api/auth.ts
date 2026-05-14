@@ -69,10 +69,12 @@ export async function exchangeSSOCode(
   slug: string,
   code: string,
   redirectUri: string,
+  state: string,
 ): Promise<TokenResponse> {
   const { data } = await axios.post<TokenResponse>(`${AUTH_BASE}/sso/${slug}/token`, {
     code,
     redirect_uri: redirectUri,
+    state,
   });
   return data;
 }
