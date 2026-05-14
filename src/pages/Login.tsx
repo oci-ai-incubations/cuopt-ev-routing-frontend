@@ -71,7 +71,7 @@ export default function Login() {
     setSsoLoading(provider.slug);
     setError('');
     try {
-      const redirectUri = `${window.location.origin}/auth/callback/${provider.slug}`;
+      const redirectUri = `${window.location.origin}/sso/callback/${provider.slug}`;
       const data = await getAuthorizeUrl(provider.slug, redirectUri);
       sessionStorage.setItem('sso_state', data.state);
       window.location.href = data.authorize_url;

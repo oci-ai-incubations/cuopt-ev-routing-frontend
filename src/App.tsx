@@ -108,7 +108,7 @@ function AppShell({ initialMode = 'dashboard' }: AppShellProps) {
  *
  * Routing:
  *   /login                 — public, LoginGuard redirects authenticated users to /
- *   /auth/callback/:slug   — OIDC callback exchange, also LoginGuarded
+ *   /sso/callback/:slug    — OIDC callback exchange, also LoginGuarded
  *   /                      — ProtectedRoute → AppShell (default mode dashboard)
  *   /admin                 — ProtectedRoute requiredRole="admin" → AppShell pinned to admin mode
  *   *                      — redirect to /
@@ -140,7 +140,7 @@ export default function App() {
           }
         />
         <Route
-          path="/auth/callback/:slug"
+          path="/sso/callback/:slug"
           element={
             <LoginGuard>
               <SSOCallback />

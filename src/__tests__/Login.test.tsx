@@ -140,7 +140,7 @@ describe('Login page', () => {
       await waitFor(() => {
         expect(authApi.getAuthorizeUrl).toHaveBeenCalledWith(
           'oracle-idcs',
-          expect.stringMatching(/\/auth\/callback\/oracle-idcs$/),
+          expect.stringMatching(/\/sso\/callback\/oracle-idcs$/),
         );
         expect(sessionStorage.getItem('sso_state')).toBe('csrf-token-abc');
         expect(hrefSetter).toHaveBeenCalledWith('https://idp.example/authorize?x=y');

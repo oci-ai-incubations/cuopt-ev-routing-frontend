@@ -31,7 +31,7 @@ export default function SSOCallback() {
       return;
     }
 
-    const redirectUri = `${window.location.origin}/auth/callback/${slug}`;
+    const redirectUri = `${window.location.origin}/sso/callback/${slug}`;
     ssoLogin(slug, code, redirectUri).then((result) => {
       if (result.success) {
         navigate('/');
