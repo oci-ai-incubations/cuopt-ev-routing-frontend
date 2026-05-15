@@ -178,7 +178,6 @@ cuopt-ev-routing-frontend/
 │   ├── api/                 # API clients (cuOPT, GenAI, Weather)
 │   ├── components/
 │   │   ├── Admin/           # Configuration settings page
-│   │   ├── Auth/            # Login screen
 │   │   ├── Chat/            # AI assistant interface
 │   │   ├── Dashboard/       # Main dashboard (Input, Results panels)
 │   │   ├── Map/             # Google Maps & Leaflet components
@@ -189,24 +188,18 @@ cuopt-ev-routing-frontend/
 │   ├── store/               # Zustand state management
 │   ├── types/               # TypeScript type definitions
 │   └── utils/               # Helper functions & formatters
-├── server/
-│   ├── app.js               # Express application (exported for testing)
-│   ├── index.js              # Server entrypoint (listen)
-│   └── __tests__/            # Backend unit tests (Supertest)
 ├── appdeploy/
-│   ├── Dockerfile            # Multi-stage production build
+│   ├── Dockerfile            # Multi-stage production build (nginx-only image)
 │   ├── docker-compose.yml    # Local Docker Compose
-│   ├── docker-entrypoint.sh  # Container startup script
-│   ├── nginx.conf            # Nginx reverse proxy config
+│   ├── nginx.conf            # SPA fallback config (no /api proxy — handled by OKE ingress)
 │   └── k8s/                  # Kubernetes manifests for OKE
 ├── .github/
 │   ├── workflows/ci.yml      # GitHub Actions CI/CD pipeline
 │   ├── pull_request_template.md
 │   └── ISSUE_TEMPLATE/       # Bug report & feature request templates
 ├── .husky/pre-commit         # Pre-commit hook (lint, test, audit)
-├── eslint.config.js          # ESLint flat config (TS frontend + JS backend)
+├── eslint.config.js          # ESLint flat config (TS frontend)
 ├── vitest.config.ts          # Frontend test config (jsdom)
-├── server/vitest.config.js   # Backend test config (node)
 ├── vite.config.ts            # Vite bundler config
 ├── tsconfig.json             # TypeScript config
 ├── tailwind.config.js        # Tailwind CSS config
@@ -217,24 +210,15 @@ cuopt-ev-routing-frontend/
 
 ## API Reference
 
-The Express backend (port 3001) proxies requests to external services. See [docs/API.md](./docs/API.md) for full request/response examples.
+API endpoints are served by the **`cuopt-ev-routing-backend`** repo (FastAPI). All `/api/*` paths are auth-protected (HS256 JWT issued by `accelerator-pack-auth-service`). Authentication endpoints live at `/auth/*` on the auth service. See [docs/API.md](./docs/API.md) for full request/response examples (legacy doc — being updated to point at the FastAPI backend).
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/health` | GET | Server health check |
-| `/api/auth/login` | POST | Authenticate user |
-| `/api/config` | GET | Runtime configuration (Maps API key) |
-| `/api/cuopt/health` | GET | cuOPT service health |
-| `/api/cuopt/request` | POST | Submit optimization request |
-| `/api/cuopt/solution/:reqId` | GET | Fetch optimization solution |
-| `/api/cuopt-health` | GET | cuOPT connectivity check |
-| `/api/models` | GET | List available LLM models |
-| `/api/genai/chat` | POST | AI chat completion |
-| `/api/genai/health` | GET | LlamaStack connectivity check |
-| `/api/weather/current` | GET | Current weather conditions |
-| `/api/weather/forecast` | GET | 5-day weather forecast |
-| `/api/weather/alerts` | GET | Weather alerts |
-| `/api/weather/health` | GET | Weather service status |
+| Endpoint | Method | Where it lives |
+|----------|--------|----------------|
+| `/auth/login`, `/auth/refresh`, `/auth/me`, `/auth/sso/*` | various | `accelerator-pack-auth-service` |
+| `/api/config` | GET | `cuopt-ev-routing-backend` |
+| `/api/cuopt/health`, `/api/cuopt/request`, `/api/cuopt/solution/:reqId`, `/api/cuopt-health` | various | `cuopt-ev-routing-backend` |
+| `/api/models`, `/api/genai/chat`, `/api/genai/health` | various | `cuopt-ev-routing-backend` |
+| `/api/weather/current`, `/api/weather/forecast`, `/api/weather/alerts`, `/api/weather/health` | various | `cuopt-ev-routing-backend` |
 
 ---
 
@@ -244,29 +228,30 @@ The Express backend (port 3001) proxies requests to external services. See [docs
 
 | Script | Description |
 |--------|-------------|
-| `npm start` | Start frontend + backend concurrently |
-| `npm run dev` | Start Vite dev server only |
-| `npm run server` | Start Express backend only |
+| `npm start` | Start Vite dev server (alias for `npm run dev`) |
+| `npm run dev` | Start Vite dev server |
 | `npm run build` | TypeScript check + Vite production build |
-| `npm run lint` | ESLint (frontend + backend) |
+| `npm run lint` | ESLint |
 | `npm run lint:fix` | ESLint with auto-fix |
 | `npm run test:frontend` | Run frontend tests |
-| `npm run test:backend` | Run backend tests |
 | `npm run test:coverage` | Frontend tests with coverage report |
-| `npm run test:backend:coverage` | Backend tests with 80% coverage gate |
 | `npm run audit:security` | npm audit (high severity) |
 | `npm run ci` | Run all checks (lint, tests, audit) |
+
+**Local dev needs two sibling services running:**
+- `accelerator-pack-auth-service` on port **8080** (override via `VITE_AUTH_HOST`)
+- `cuopt-ev-routing-backend` on port **8081** (override via `VITE_CUOPT_BACKEND_URL`)
+
+Vite proxies `/auth/*` and `/api/*` to those endpoints in dev. In production, the OKE ingress (configured in `ai-accelerator-starter-packs`) routes them to the right pods directly.
 
 ### CI Pipeline
 
 The CI runs automatically on PRs and merges to `main` via GitHub Actions:
 
-1. **lint-frontend** — ESLint + TypeScript build check
-2. **lint-backend** — ESLint on server code
-3. **test-frontend** — Vitest with coverage report
-4. **test-backend** — Vitest + Supertest with 80% coverage gate
-5. **security-scan** — `npm audit --audit-level=high`
-6. **build-and-push** — Docker image build and push to OCIR (on passing checks)
+1. **lint** — ESLint + TypeScript build check
+2. **test** — Vitest with coverage report
+3. **security-scan** — `npm audit --audit-level=high`
+4. **build-and-push** — Docker image build and push to OCIR (on passing checks)
 
 Image tag format: `iad.ocir.io/<namespace>/corrino-devops-repository:cuopt-interactive-frontend-<sha>`
 
@@ -275,8 +260,8 @@ A **Husky pre-commit hook** runs lint, tests, and audit locally before every com
 ### Writing Tests
 
 - **Frontend tests** go in `src/__tests__/*.test.tsx` using Testing Library
-- **Backend tests** go in `server/__tests__/*.test.js` using Supertest
 - Mock all external API calls — tests must not depend on external services
+- Backend tests live in the `cuopt-ev-routing-backend` repo (pytest)
 - See [`.claude/rules/testing.md`](./.claude/rules/testing.md) for conventions
 
 ---

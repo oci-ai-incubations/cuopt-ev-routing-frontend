@@ -1,5 +1,4 @@
-import axios, { type AxiosInstance } from 'axios';
-
+import { authClient } from '@/api/authClient';
 import {
   CUOPT_SCHEMA_PROMPT,
   CUOPT_RESPONSE_PROMPT,
@@ -12,19 +11,11 @@ import {
   type Stop,
 } from '@/types';
 
+const GENAI_TIMEOUT_MS = 120000;
+
 class GenAIClient {
-  private client: AxiosInstance;
   private model: ModelId = '';
   private maxTokens = 4096;
-  constructor() {
-    this.client = axios.create({
-      baseURL: '/api',
-      timeout: 120000,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-  }
 
   setModel(model: ModelId): void {
     this.model = model;
@@ -32,7 +23,9 @@ class GenAIClient {
 
   async fetchModels(): Promise<ModelInfo[]> {
     try {
-      const response = await this.client.get<{ data: ModelInfo[] }>('/models');
+      const response = await authClient.get<{ data: ModelInfo[] }>('/api/models', {
+        timeout: GENAI_TIMEOUT_MS,
+      });
       return response.data.data || [];
     } catch {
       return [];
@@ -41,7 +34,9 @@ class GenAIClient {
 
   async healthCheck(): Promise<boolean> {
     try {
-      const response = await this.client.get('/genai/health');
+      const response = await authClient.get('/api/genai/health', {
+        timeout: GENAI_TIMEOUT_MS,
+      });
       return response.status === 200;
     } catch {
       return false;
@@ -54,7 +49,9 @@ class GenAIClient {
   ): Promise<{ content: string; tokensUsed: number }> {
     const payload = this.buildPayloadForChat(messages, systemPrompt);
 
-    const response = await this.client.post<ChatResponse>('/genai/chat', payload);
+    const response = await authClient.post<ChatResponse>('/api/genai/chat', payload, {
+      timeout: GENAI_TIMEOUT_MS,
+    });
     const data = response.data;
 
     let content = '';

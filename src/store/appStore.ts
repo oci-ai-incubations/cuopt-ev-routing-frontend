@@ -116,13 +116,14 @@ export const useAppStore = create<AppState>((set) => ({
   googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '',
   setGoogleMapsApiKey: (key) => set({ googleMapsApiKey: key }),
   fetchRuntimeConfig: async () => {
+    // Lazy-import authClient to avoid circular deps with the auth store
+    // at module init time (this store is created before authStore in some
+    // import orders).
     try {
-      const res = await fetch('/api/config');
-      if (res.ok) {
-        const config = await res.json();
-        if (config.googleMapsApiKey) {
-          set({ googleMapsApiKey: config.googleMapsApiKey });
-        }
+      const { authClient } = await import('@/api/authClient');
+      const res = await authClient.get<{ googleMapsApiKey?: string }>('/api/config');
+      if (res.data?.googleMapsApiKey) {
+        set({ googleMapsApiKey: res.data.googleMapsApiKey });
       }
     } catch {
       // Fall back to build-time env var (already set as default)

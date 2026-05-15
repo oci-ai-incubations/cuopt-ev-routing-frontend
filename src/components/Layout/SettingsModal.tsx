@@ -2,11 +2,11 @@ import { clsx } from 'clsx';
 import { LogOut, Moon, Sun, User } from 'lucide-react';
 
 import { Modal } from '@/components/shared/Modal';
+import { useAuthStore } from '@/store/authStore';
 
 interface SettingsModalProps {
   isOpen: boolean;
   onClose: () => void;
-  currentUser: string | null;
   mapTheme: string;
   onToggleMapTheme: () => void;
   onLogoutClick: () => void;
@@ -15,11 +15,13 @@ interface SettingsModalProps {
 export function SettingsModal({
   isOpen,
   onClose,
-  currentUser,
   mapTheme,
   onToggleMapTheme,
   onLogoutClick,
 }: SettingsModalProps) {
+  const user = useAuthStore((s) => s.user);
+  const displayName = user?.name || user?.email || 'User';
+  const subtext = user?.role ? `Logged in · ${user.role}` : 'Logged in';
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Settings" size="md">
       <div className="space-y-6">
@@ -29,8 +31,8 @@ export function SettingsModal({
               <User className="w-5 h-5 text-oracle-red" />
             </div>
             <div>
-              <div className="font-medium text-white">{currentUser || 'User'}</div>
-              <div className="text-xs text-gray-400">Logged in</div>
+              <div className="font-medium text-white">{displayName}</div>
+              <div className="text-xs text-gray-400">{subtext}</div>
             </div>
           </div>
           <button

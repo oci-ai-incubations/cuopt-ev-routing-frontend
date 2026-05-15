@@ -1,4 +1,6 @@
-import axios, { type AxiosInstance } from 'axios';
+import axios from 'axios';
+
+import { authClient } from '@/api/authClient';
 
 import type {
   CuOptRequest,
@@ -11,24 +13,17 @@ import type {
   Vehicle,
 } from '@/types';
 
+const CUOPT_TIMEOUT_MS = 300000;
+
 class CuOptClient {
-  private client: AxiosInstance;
   private pollInterval = 3000; // 3 seconds between polls
   private maxPollAttempts = 120; // 120 attempts = 6 minutes max wait per job
 
-  constructor() {
-    this.client = axios.create({
-      baseURL: '/api/cuopt',
-      timeout: 300000,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-  }
-
   async healthCheck(): Promise<boolean> {
     try {
-      const response = await this.client.get('/health');
+      const response = await authClient.get('/api/cuopt/health', {
+        timeout: CUOPT_TIMEOUT_MS,
+      });
       return response.status === 200;
     } catch {
       return false;
@@ -38,7 +33,9 @@ class CuOptClient {
   async solveVRP(payload: CuOptRequest): Promise<CuOptResponse> {
     try {
       // Submit request
-      const submitResponse = await this.client.post('/request', payload);
+      const submitResponse = await authClient.post('/api/cuopt/request', payload, {
+        timeout: CUOPT_TIMEOUT_MS,
+      });
       const reqId = submitResponse.data.reqId;
 
       if (!reqId) {
@@ -62,7 +59,9 @@ class CuOptClient {
       attempts++;
       await this.delay(this.pollInterval);
 
-      const response = await this.client.get(`/solution/${reqId}`);
+      const response = await authClient.get(`/api/cuopt/solution/${reqId}`, {
+        timeout: CUOPT_TIMEOUT_MS,
+      });
       const data = response.data;
 
       if (data.error) {

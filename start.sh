@@ -1,54 +1,28 @@
 #!/bin/bash
+#
+# Local dev startup for the Vite server. Expects two sibling services
+# already running:
+#   - accelerator-pack-auth-service on $VITE_AUTH_HOST (default :8080)
+#   - cuopt-ev-routing-backend on $VITE_CUOPT_BACKEND_URL (default :8081)
 
-# cuOPT Frontend Startup Script
-# ==============================
+set -euo pipefail
 
-echo "╔══════════════════════════════════════════════════════════════════╗"
-echo "║          cuOPT Frontend - Startup Script                         ║"
-echo "╚══════════════════════════════════════════════════════════════════╝"
-echo ""
-
-# Check if OCI config exists
-if [ ! -f ~/.oci/config ]; then
-    echo "❌ ERROR: OCI config file not found at ~/.oci/config"
-    echo ""
-    echo "Please configure OCI CLI first:"
-    echo "  oci setup config"
-    echo ""
+if ! command -v node > /dev/null; then
+    echo "ERROR: Node.js is not installed" >&2
     exit 1
 fi
 
-echo "✅ OCI config found"
+echo "Node.js: $(node -v)"
 
-# Check Node.js
-if ! command -v node &> /dev/null; then
-    echo "❌ ERROR: Node.js is not installed"
-    exit 1
-fi
-
-echo "✅ Node.js: $(node -v)"
-
-# Change to project directory
 cd "$(dirname "$0")"
 
-# Install dependencies if node_modules doesn't exist
 if [ ! -d "node_modules" ]; then
-    echo ""
-    echo "📦 Installing dependencies..."
+    echo "Installing dependencies..."
     npm install
 fi
 
-echo ""
-echo "🚀 Starting cuOPT Frontend..."
-echo ""
-echo "   Frontend:  http://localhost:5173"
-echo "   Server:    http://localhost:3001"
-echo ""
-echo "   cuOPT API: https://cuopt-2-cuopt.137-131-27-21.nip.io"
-echo "   GenAI:     https://inference.generativeai.us-phoenix-1.oci.oraclecloud.com"
-echo ""
-echo "Press Ctrl+C to stop"
-echo ""
+echo "Starting cuOPT Frontend (Vite dev server) on http://localhost:5173"
+echo "  /auth proxied to ${VITE_AUTH_HOST:-http://localhost:8080}"
+echo "  /api  proxied to ${VITE_CUOPT_BACKEND_URL:-http://localhost:8081}"
 
-# Start both frontend and server
-npm run start
+npm run dev

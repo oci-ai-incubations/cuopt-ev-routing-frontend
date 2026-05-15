@@ -1,8 +1,35 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen } from "@testing-library/react";
-import { describe, it, expect, beforeEach } from "vitest";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { render, screen, waitFor } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import App from "../App";
+import App from '../App';
+import { useAuthStore } from '../store/authStore';
+
+// Avoid hitting the network for the public-providers fetch on Login mount,
+// for /auth/me on app mount when authenticated, and for /api/config from
+// AppShell.
+vi.mock('../api/auth', () => ({
+  fetchPublicProviders: vi.fn().mockResolvedValue([]),
+  getAuthorizeUrl: vi.fn(),
+  exchangeSSOCode: vi.fn(),
+  login: vi.fn(),
+  register: vi.fn(),
+  refresh: vi.fn(),
+  logout: vi.fn(),
+  me: vi.fn(),
+}));
+
+vi.mock('../api/authClient', () => ({
+  authClient: {
+    get: vi.fn().mockResolvedValue({ data: {} }),
+    post: vi.fn(),
+    request: vi.fn(),
+    interceptors: {
+      request: { use: vi.fn() },
+      response: { use: vi.fn() },
+    },
+  },
+}));
 
 function renderApp() {
   const queryClient = new QueryClient({
@@ -11,21 +38,38 @@ function renderApp() {
   return render(
     <QueryClientProvider client={queryClient}>
       <App />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 }
 
-describe("App", () => {
+describe('App', () => {
   beforeEach(() => {
-    // Clear any stored auth so we start at login screen
-    localStorage.removeItem("cuopt_auth");
+    // Default: unauthenticated.
+    useAuthStore.setState({
+      user: null,
+      token: null,
+      refreshToken: null,
+      isAuthenticated: false,
+    });
+    // Wipe any persisted state across tests so we always start clean.
+    localStorage.clear();
   });
 
-  it("renders the login screen when not authenticated", () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('redirects unauthenticated visitors to the login screen', async () => {
     renderApp();
-    // The login screen should show a sign-in prompt
-    expect(
-      screen.getByRole("button", { name: /sign in/i })
-    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: /sign in/i }),
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('does not show the legacy AUTH_KEY localStorage entry after login flow refactor', () => {
+    renderApp();
+    expect(localStorage.getItem('cuopt_auth')).toBeNull();
   });
 });
