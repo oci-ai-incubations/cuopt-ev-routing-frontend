@@ -9,7 +9,16 @@ interface NumberFieldProps {
   unit?: string;
 }
 
-export function NumberField({ label, value, onChange, min, max, step = 1, hint, unit }: NumberFieldProps) {
+export function NumberField({
+  label,
+  value,
+  onChange,
+  min,
+  max,
+  step = 1,
+  hint,
+  unit,
+}: NumberFieldProps) {
   return (
     <div className="space-y-1">
       <label className="text-sm text-gray-400">{label}</label>

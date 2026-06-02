@@ -1,4 +1,5 @@
-import { authClient } from '@/api/authClient';
+import { authClient } from '@/api';
+import { GENAI_TIMEOUT_MS } from '@/constants';
 import {
   CUOPT_SCHEMA_PROMPT,
   CUOPT_RESPONSE_PROMPT,
@@ -10,8 +11,6 @@ import {
   type ModelInfo,
   type Stop,
 } from '@/types';
-
-const GENAI_TIMEOUT_MS = 120000;
 
 class GenAIClient {
   private model: ModelId = '';
@@ -26,6 +25,7 @@ class GenAIClient {
       const response = await authClient.get<{ data: ModelInfo[] }>('/api/models', {
         timeout: GENAI_TIMEOUT_MS,
       });
+
       return response.data.data || [];
     } catch {
       return [];
@@ -37,6 +37,7 @@ class GenAIClient {
       const response = await authClient.get('/api/genai/health', {
         timeout: GENAI_TIMEOUT_MS,
       });
+
       return response.status === 200;
     } catch {
       return false;
@@ -45,7 +46,7 @@ class GenAIClient {
 
   async chat(
     messages: Message[],
-    systemPrompt?: string
+    systemPrompt?: string,
   ): Promise<{ content: string; tokensUsed: number }> {
     const payload = this.buildPayloadForChat(messages, systemPrompt);
 
@@ -55,6 +56,7 @@ class GenAIClient {
     const data = response.data;
 
     let content = '';
+
     if (data.chatResponse.text) {
       content = data.chatResponse.text;
     } else if (data.chatResponse.choices?.[0]?.message?.content) {
@@ -67,8 +69,7 @@ class GenAIClient {
     return {
       content,
       tokensUsed:
-        (data.usageMetadata?.inputTokenCount || 0) +
-        (data.usageMetadata?.outputTokenCount || 0),
+        (data.usageMetadata?.inputTokenCount || 0) + (data.usageMetadata?.outputTokenCount || 0),
     };
   }
 
@@ -81,19 +82,26 @@ class GenAIClient {
     const lowerMessage = userMessage.toLowerCase().trim();
 
     // Only intercept obvious greetings locally
-    const greetingPatterns = /^(hi|hello|hey|good morning|good afternoon|good evening|howdy|greetings)\s*[!.]?\s*$/i;
+    const greetingPatterns =
+      /^(hi|hello|hey|good morning|good afternoon|good evening|howdy|greetings)\s*[!.]?\s*$/i;
+
     if (greetingPatterns.test(lowerMessage)) {
       return { intent: 'greeting', confidence: 0.95 };
     }
 
     // If it has numbers + optimization keywords, it's clearly an optimization request
-    const optimizationKeywords = /(optimize|deliver|route|vehicle|stop|location|cluster|parallel|dispatch|schedule|pickup|drop|fleet|driver|technician|job|service)/i;
+    const optimizationKeywords =
+      /(optimize|deliver|route|vehicle|stop|location|cluster|parallel|dispatch|schedule|pickup|drop|fleet|driver|technician|job|service)/i;
+
     if (optimizationKeywords.test(lowerMessage) && /\d+/.test(lowerMessage)) {
       return { intent: 'optimization', confidence: 0.9 };
     }
 
     // If it has numbers + location terms, likely optimization
-    if (/\d+/.test(lowerMessage) && /(uk|london|manchester|birmingham|city|region|area|across)/i.test(lowerMessage)) {
+    if (
+      /\d+/.test(lowerMessage) &&
+      /(uk|london|manchester|birmingham|city|region|area|across)/i.test(lowerMessage)
+    ) {
       return { intent: 'optimization', confidence: 0.8 };
     }
 
@@ -107,10 +115,11 @@ Determine if it is:
 2. A general question — answer it directly and helpfully. Focus on route optimization, logistics, cuOPT, and VRP topics but answer any reasonable question.
 
 If it is a question, just answer it naturally. Do NOT prefix your answer with "INTENT:question".
-If it is an optimization request, respond with exactly "INTENT:optimization" and nothing else.`
+If it is an optimization request, respond with exactly "INTENT:optimization" and nothing else.`,
       );
 
       const text = response.content.trim();
+
       if (text.startsWith('INTENT:optimization')) {
         return { intent: 'optimization', confidence: 0.85 };
       }
@@ -139,13 +148,14 @@ If it is an optimization request, respond with exactly "INTENT:optimization" and
     try {
       const response = await this.chat(
         [{ id: '1', role: 'user', content: userMessage, timestamp: new Date() }],
-        systemPrompt
+        systemPrompt,
       );
 
       const content = response.content;
 
       // Try to extract JSON from response
       const jsonMatch = content.match(/\{[\s\S]*\}/);
+
       if (!jsonMatch) {
         return {
           request: null,
@@ -186,6 +196,7 @@ If it is an optimization request, respond with exactly "INTENT:optimization" and
       // For service/maintenance tasks or when user wants balanced workload,
       // set capacity to force distribution across vehicles
       const shouldBalance = forceAllVehicles || balanceWorkload;
+
       if (shouldBalance) {
         // Set capacity so stops are distributed across all vehicles
         // This forces the optimizer to use multiple vehicles
@@ -195,107 +206,113 @@ If it is an optimization request, respond with exactly "INTENT:optimization" and
       // Extract parallel processing parameters
       // Auto-enable parallel if explicitly requested or if stops >= 500
       const useParallel = params.use_parallel === true || numStops >= 500;
-      const numClusters = params.num_clusters || (useParallel ? Math.min(Math.ceil(numStops / 500), 8) : null);
+      const numClusters =
+        params.num_clusters || (useParallel ? Math.min(Math.ceil(numStops / 500), 8) : null);
 
       // Generate interpretation with parallel info
-      const parallelInfo = useParallel ? ` Using parallel processing with ${numClusters} clusters.` : '';
-      const distributeInfo = shouldBalance ? ` Balancing workload across all ${numVehicles} vehicles (max ${maxRouteHours}h per driver).` : '';
+      const parallelInfo = useParallel
+        ? ` Using parallel processing with ${numClusters} clusters.`
+        : '';
+      const distributeInfo = shouldBalance
+        ? ` Balancing workload across all ${numVehicles} vehicles (max ${maxRouteHours}h per driver).`
+        : '';
       const interpretation = `Optimizing ${numStops} deliveries with ${numVehicles} vehicles in ${location}. Vehicle capacity: ${vehicleCapacity} units. Solver time limit: ${timeLimit}s.${parallelInfo}${distributeInfo}`;
 
       // Location coordinates lookup for cities/regions worldwide
       const locationCoords: Record<string, { lat: number; lng: number; radius: number }> = {
         // UK Cities
-        'london': { lat: 51.5074, lng: -0.1278, radius: 30 },
+        london: { lat: 51.5074, lng: -0.1278, radius: 30 },
         'greater london': { lat: 51.5074, lng: -0.1278, radius: 40 },
-        'manchester': { lat: 53.4808, lng: -2.2426, radius: 25 },
-        'birmingham': { lat: 52.4862, lng: -1.8904, radius: 25 },
-        'leeds': { lat: 53.8008, lng: -1.5491, radius: 20 },
-        'glasgow': { lat: 55.8642, lng: -4.2518, radius: 25 },
-        'edinburgh': { lat: 55.9533, lng: -3.1883, radius: 20 },
-        'liverpool': { lat: 53.4084, lng: -2.9916, radius: 20 },
-        'bristol': { lat: 51.4545, lng: -2.5879, radius: 20 },
-        'sheffield': { lat: 53.3811, lng: -1.4701, radius: 20 },
-        'newcastle': { lat: 54.9783, lng: -1.6178, radius: 20 },
-        'nottingham': { lat: 52.9548, lng: -1.1581, radius: 20 },
-        'cardiff': { lat: 51.4816, lng: -3.1791, radius: 20 },
-        'belfast': { lat: 54.5973, lng: -5.9301, radius: 20 },
-        'midlands': { lat: 52.6369, lng: -1.1398, radius: 60 },
-        'scotland': { lat: 56.4907, lng: -4.2026, radius: 150 },
-        'wales': { lat: 52.1307, lng: -3.7837, radius: 100 },
+        manchester: { lat: 53.4808, lng: -2.2426, radius: 25 },
+        birmingham: { lat: 52.4862, lng: -1.8904, radius: 25 },
+        leeds: { lat: 53.8008, lng: -1.5491, radius: 20 },
+        glasgow: { lat: 55.8642, lng: -4.2518, radius: 25 },
+        edinburgh: { lat: 55.9533, lng: -3.1883, radius: 20 },
+        liverpool: { lat: 53.4084, lng: -2.9916, radius: 20 },
+        bristol: { lat: 51.4545, lng: -2.5879, radius: 20 },
+        sheffield: { lat: 53.3811, lng: -1.4701, radius: 20 },
+        newcastle: { lat: 54.9783, lng: -1.6178, radius: 20 },
+        nottingham: { lat: 52.9548, lng: -1.1581, radius: 20 },
+        cardiff: { lat: 51.4816, lng: -3.1791, radius: 20 },
+        belfast: { lat: 54.5973, lng: -5.9301, radius: 20 },
+        midlands: { lat: 52.6369, lng: -1.1398, radius: 60 },
+        scotland: { lat: 56.4907, lng: -4.2026, radius: 150 },
+        wales: { lat: 52.1307, lng: -3.7837, radius: 100 },
         'south east': { lat: 51.3, lng: 0.5, radius: 80 },
         'north west': { lat: 53.8, lng: -2.6, radius: 80 },
         'united kingdom': { lat: 54.5, lng: -2.0, radius: 300 },
-        'uk': { lat: 54.5, lng: -2.0, radius: 300 },
+        uk: { lat: 54.5, lng: -2.0, radius: 300 },
         // France
-        'paris': { lat: 48.8566, lng: 2.3522, radius: 25 },
-        'lyon': { lat: 45.7640, lng: 4.8357, radius: 20 },
-        'marseille': { lat: 43.2965, lng: 5.3698, radius: 20 },
-        'toulouse': { lat: 43.6047, lng: 1.4442, radius: 20 },
-        'nice': { lat: 43.7102, lng: 7.2620, radius: 15 },
-        'bordeaux': { lat: 44.8378, lng: -0.5792, radius: 20 },
-        'lille': { lat: 50.6292, lng: 3.0573, radius: 20 },
-        'france': { lat: 46.6034, lng: 1.8883, radius: 400 },
+        paris: { lat: 48.8566, lng: 2.3522, radius: 25 },
+        lyon: { lat: 45.764, lng: 4.8357, radius: 20 },
+        marseille: { lat: 43.2965, lng: 5.3698, radius: 20 },
+        toulouse: { lat: 43.6047, lng: 1.4442, radius: 20 },
+        nice: { lat: 43.7102, lng: 7.262, radius: 15 },
+        bordeaux: { lat: 44.8378, lng: -0.5792, radius: 20 },
+        lille: { lat: 50.6292, lng: 3.0573, radius: 20 },
+        france: { lat: 46.6034, lng: 1.8883, radius: 400 },
         // Germany
-        'berlin': { lat: 52.5200, lng: 13.4050, radius: 30 },
-        'munich': { lat: 48.1351, lng: 11.5820, radius: 25 },
-        'frankfurt': { lat: 50.1109, lng: 8.6821, radius: 25 },
-        'hamburg': { lat: 53.5511, lng: 9.9937, radius: 25 },
-        'cologne': { lat: 50.9375, lng: 6.9603, radius: 20 },
-        'düsseldorf': { lat: 51.2277, lng: 6.7735, radius: 20 },
-        'germany': { lat: 51.1657, lng: 10.4515, radius: 400 },
+        berlin: { lat: 52.52, lng: 13.405, radius: 30 },
+        munich: { lat: 48.1351, lng: 11.582, radius: 25 },
+        frankfurt: { lat: 50.1109, lng: 8.6821, radius: 25 },
+        hamburg: { lat: 53.5511, lng: 9.9937, radius: 25 },
+        cologne: { lat: 50.9375, lng: 6.9603, radius: 20 },
+        düsseldorf: { lat: 51.2277, lng: 6.7735, radius: 20 },
+        germany: { lat: 51.1657, lng: 10.4515, radius: 400 },
         // USA
-        'new york': { lat: 40.7128, lng: -74.0060, radius: 30 },
-        'nyc': { lat: 40.7128, lng: -74.0060, radius: 30 },
+        'new york': { lat: 40.7128, lng: -74.006, radius: 30 },
+        nyc: { lat: 40.7128, lng: -74.006, radius: 30 },
         'los angeles': { lat: 34.0522, lng: -118.2437, radius: 40 },
-        'chicago': { lat: 41.8781, lng: -87.6298, radius: 30 },
-        'houston': { lat: 29.7604, lng: -95.3698, radius: 35 },
-        'phoenix': { lat: 33.4484, lng: -112.0740, radius: 35 },
+        chicago: { lat: 41.8781, lng: -87.6298, radius: 30 },
+        houston: { lat: 29.7604, lng: -95.3698, radius: 35 },
+        phoenix: { lat: 33.4484, lng: -112.074, radius: 35 },
         'san francisco': { lat: 37.7749, lng: -122.4194, radius: 25 },
-        'seattle': { lat: 47.6062, lng: -122.3321, radius: 25 },
-        'miami': { lat: 25.7617, lng: -80.1918, radius: 25 },
-        'usa': { lat: 39.8283, lng: -98.5795, radius: 2000 },
+        seattle: { lat: 47.6062, lng: -122.3321, radius: 25 },
+        miami: { lat: 25.7617, lng: -80.1918, radius: 25 },
+        usa: { lat: 39.8283, lng: -98.5795, radius: 2000 },
         'united states': { lat: 39.8283, lng: -98.5795, radius: 2000 },
         // Spain
-        'madrid': { lat: 40.4168, lng: -3.7038, radius: 25 },
-        'barcelona': { lat: 41.3851, lng: 2.1734, radius: 25 },
-        'valencia': { lat: 39.4699, lng: -0.3763, radius: 20 },
-        'seville': { lat: 37.3891, lng: -5.9845, radius: 20 },
-        'spain': { lat: 40.4637, lng: -3.7492, radius: 400 },
+        madrid: { lat: 40.4168, lng: -3.7038, radius: 25 },
+        barcelona: { lat: 41.3851, lng: 2.1734, radius: 25 },
+        valencia: { lat: 39.4699, lng: -0.3763, radius: 20 },
+        seville: { lat: 37.3891, lng: -5.9845, radius: 20 },
+        spain: { lat: 40.4637, lng: -3.7492, radius: 400 },
         // India
-        'mumbai': { lat: 19.05, lng: 72.88, radius: 12 }, // Tighter radius to keep stops in urban core
-        'delhi': { lat: 28.7041, lng: 77.1025, radius: 30 },
-        'bangalore': { lat: 12.9716, lng: 77.5946, radius: 25 },
-        'chennai': { lat: 13.0827, lng: 80.2707, radius: 25 },
-        'hyderabad': { lat: 17.3850, lng: 78.4867, radius: 25 },
-        'kolkata': { lat: 22.5726, lng: 88.3639, radius: 25 },
-        'india': { lat: 20.5937, lng: 78.9629, radius: 1500 },
+        mumbai: { lat: 19.05, lng: 72.88, radius: 12 }, // Tighter radius to keep stops in urban core
+        delhi: { lat: 28.7041, lng: 77.1025, radius: 30 },
+        bangalore: { lat: 12.9716, lng: 77.5946, radius: 25 },
+        chennai: { lat: 13.0827, lng: 80.2707, radius: 25 },
+        hyderabad: { lat: 17.385, lng: 78.4867, radius: 25 },
+        kolkata: { lat: 22.5726, lng: 88.3639, radius: 25 },
+        india: { lat: 20.5937, lng: 78.9629, radius: 1500 },
         // Australia
-        'sydney': { lat: -33.8688, lng: 151.2093, radius: 35 },
-        'melbourne': { lat: -37.8136, lng: 144.9631, radius: 35 },
-        'brisbane': { lat: -27.4698, lng: 153.0251, radius: 30 },
-        'perth': { lat: -31.9505, lng: 115.8605, radius: 30 },
-        'australia': { lat: -25.2744, lng: 133.7751, radius: 2000 },
+        sydney: { lat: -33.8688, lng: 151.2093, radius: 35 },
+        melbourne: { lat: -37.8136, lng: 144.9631, radius: 35 },
+        brisbane: { lat: -27.4698, lng: 153.0251, radius: 30 },
+        perth: { lat: -31.9505, lng: 115.8605, radius: 30 },
+        australia: { lat: -25.2744, lng: 133.7751, radius: 2000 },
         // Netherlands
-        'amsterdam': { lat: 52.3676, lng: 4.9041, radius: 20 },
-        'rotterdam': { lat: 51.9244, lng: 4.4777, radius: 20 },
-        'netherlands': { lat: 52.1326, lng: 5.2913, radius: 150 },
+        amsterdam: { lat: 52.3676, lng: 4.9041, radius: 20 },
+        rotterdam: { lat: 51.9244, lng: 4.4777, radius: 20 },
+        netherlands: { lat: 52.1326, lng: 5.2913, radius: 150 },
         // Italy
-        'rome': { lat: 41.9028, lng: 12.4964, radius: 25 },
-        'milan': { lat: 45.4642, lng: 9.1900, radius: 25 },
-        'naples': { lat: 40.8518, lng: 14.2681, radius: 20 },
-        'italy': { lat: 41.8719, lng: 12.5674, radius: 400 },
+        rome: { lat: 41.9028, lng: 12.4964, radius: 25 },
+        milan: { lat: 45.4642, lng: 9.19, radius: 25 },
+        naples: { lat: 40.8518, lng: 14.2681, radius: 20 },
+        italy: { lat: 41.8719, lng: 12.5674, radius: 400 },
         // Canada
-        'toronto': { lat: 43.6532, lng: -79.3832, radius: 30 },
-        'vancouver': { lat: 49.2827, lng: -123.1207, radius: 25 },
-        'montreal': { lat: 45.5017, lng: -73.5673, radius: 25 },
-        'canada': { lat: 56.1304, lng: -106.3468, radius: 2000 },
+        toronto: { lat: 43.6532, lng: -79.3832, radius: 30 },
+        vancouver: { lat: 49.2827, lng: -123.1207, radius: 25 },
+        montreal: { lat: 45.5017, lng: -73.5673, radius: 25 },
+        canada: { lat: 56.1304, lng: -106.3468, radius: 2000 },
       };
 
       // Find matching location (case-insensitive)
       const locationKey = location.toLowerCase();
-      const coords = Object.entries(locationCoords).find(([key]) =>
-        locationKey.includes(key) || key.includes(locationKey)
-      )?.[1] || locationCoords['united kingdom'];
+      const coords =
+        Object.entries(locationCoords).find(
+          ([key]) => locationKey.includes(key) || key.includes(locationKey),
+        )?.[1] || locationCoords['united kingdom'];
 
       // Generate random stops in the specified location
       const { generateRandomStops } = await import('@/data/benchmarkData');
@@ -325,7 +342,16 @@ If it is an optimization request, respond with exactly "INTENT:optimization" and
         solverMode: 'balanced',
       });
 
-      return { request, interpretation, numStops, numVehicles, useParallel, numClusters, stops, location };
+      return {
+        request,
+        interpretation,
+        numStops,
+        numVehicles,
+        useParallel,
+        numClusters,
+        stops,
+        location,
+      };
     } catch (error) {
       return {
         request: null,
@@ -339,7 +365,7 @@ If it is an optimization request, respond with exactly "INTENT:optimization" and
     cuoptResult: CuOptResponse,
     originalPrompt: string,
     weatherContext?: string,
-    stops?: Stop[]
+    stops?: Stop[],
   ): Promise<string> {
     // Include weather context if available
     const weatherSection = weatherContext
@@ -348,8 +374,11 @@ If it is an optimization request, respond with exactly "INTENT:optimization" and
 
     // Calculate operational impact metrics
     const vehicleData = cuoptResult.vehicle_data || [];
-    const vehiclesUsed = vehicleData.filter(v => v.route && v.route.length > 2).length;
-    const stopsServed = vehicleData.reduce((sum, v) => sum + Math.max(0, (v.route?.length || 2) - 2), 0);
+    const vehiclesUsed = vehicleData.filter((v) => v.route && v.route.length > 2).length;
+    const stopsServed = vehicleData.reduce(
+      (sum, v) => sum + Math.max(0, (v.route?.length || 2) - 2),
+      0,
+    );
     const totalDuration = vehicleData.reduce((sum, v) => sum + (v.route_duration || 0), 0);
 
     // Calculate job time from stops (if available)
@@ -360,9 +389,10 @@ If it is an optimization request, respond with exactly "INTENT:optimization" and
     // Calculate business metrics (Belron-calibrated)
     const jobsPerTechPerDay = vehiclesUsed > 0 ? stopsServed / vehiclesUsed : 0;
     const baselineJobsPerTech = 3.2;
-    const efficiencyImprovement = baselineJobsPerTech > 0
-      ? ((jobsPerTechPerDay - baselineJobsPerTech) / baselineJobsPerTech) * 100
-      : 0;
+    const efficiencyImprovement =
+      baselineJobsPerTech > 0
+        ? ((jobsPerTechPerDay - baselineJobsPerTech) / baselineJobsPerTech) * 100
+        : 0;
 
     // Calculate savings (simplified Belron model)
     const totalDistance = cuoptResult.solution_cost || 0;
@@ -370,7 +400,8 @@ If it is an optimization request, respond with exactly "INTENT:optimization" and
     const avgRevenuePerJob = 185; // GBP
     const distanceReduction = totalDistance * 0.15; // 15% assumed optimization benefit
     const fuelSavingsDaily = distanceReduction * fuelCostPerKm;
-    const additionalJobsPerDay = Math.max(0, jobsPerTechPerDay - baselineJobsPerTech) * vehiclesUsed;
+    const additionalJobsPerDay =
+      Math.max(0, jobsPerTechPerDay - baselineJobsPerTech) * vehiclesUsed;
     const additionalRevenueDaily = additionalJobsPerDay * avgRevenuePerJob;
     const totalDailySavings = fuelSavingsDaily + additionalRevenueDaily;
     const annualSavings = totalDailySavings * 250; // 250 working days
@@ -403,7 +434,7 @@ ${JSON.stringify(cuoptResult, null, 2)}`;
           timestamp: new Date(),
         },
       ],
-      systemPrompt
+      systemPrompt,
     );
 
     return response.content;
@@ -411,7 +442,7 @@ ${JSON.stringify(cuoptResult, null, 2)}`;
 
   async *streamChat(
     messages: Message[],
-    systemPrompt?: string
+    systemPrompt?: string,
   ): AsyncGenerator<string, void, unknown> {
     // For now, simulate streaming with chunked response
     // In production, this would use Server-Sent Events
@@ -419,7 +450,7 @@ ${JSON.stringify(cuoptResult, null, 2)}`;
     const words = response.content.split(' ');
 
     for (const word of words) {
-      yield `${word  } `;
+      yield `${word} `;
       await this.delay(30); // Simulate typing
     }
   }

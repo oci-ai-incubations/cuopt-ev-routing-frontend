@@ -24,7 +24,7 @@ export function ChatAttachmentStatus({
         <div
           className={clsx(
             'flex items-center gap-2 text-red-400 text-sm',
-            'bg-red-500/10 px-3 py-2 rounded-lg'
+            'bg-red-500/10 px-3 py-2 rounded-lg',
           )}
         >
           <AlertTriangle className="w-4 h-4" />
@@ -38,7 +38,7 @@ export function ChatAttachmentStatus({
         <div
           className={clsx(
             'flex items-center gap-2 text-[#C74634] text-sm',
-            'bg-[#C74634]/10 px-3 py-2 rounded-lg'
+            'bg-[#C74634]/10 px-3 py-2 rounded-lg',
           )}
         >
           <FileText className="w-4 h-4" />

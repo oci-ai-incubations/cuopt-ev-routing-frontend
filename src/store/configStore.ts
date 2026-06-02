@@ -44,16 +44,16 @@ export interface AppConfig {
 
 // Typical dispatcher hourly rates by country (in local currency)
 const HOURLY_RATES_BY_COUNTRY: Record<string, number> = {
-  'GB': 25,    // £25/hr
-  'US': 30,    // $30/hr
-  'DE': 28,    // €28/hr
-  'FR': 26,    // €26/hr
-  'AU': 35,    // A$35/hr
-  'IN': 500,   // ₹500/hr
-  'NL': 27,    // €27/hr
-  'ES': 22,    // €22/hr
-  'IT': 24,    // €24/hr
-  'CA': 32,    // C$32/hr
+  GB: 25, // £25/hr
+  US: 30, // $30/hr
+  DE: 28, // €28/hr
+  FR: 26, // €26/hr
+  AU: 35, // A$35/hr
+  IN: 500, // ₹500/hr
+  NL: 27, // €27/hr
+  ES: 22, // €22/hr
+  IT: 24, // €24/hr
+  CA: 32, // C$32/hr
 };
 
 // Default configuration (UK - London - Belron)
@@ -74,7 +74,7 @@ const DEFAULT_CONFIG: AppConfig = {
   vehicleLabelType: 'license_plate',
   dispatcherHourlyRate: 25,
   activeScenario: 'belron',
-  scenarioJobTypes: SCENARIO_PRESETS.find(s => s.id === 'belron')?.jobTypes || [],
+  scenarioJobTypes: SCENARIO_PRESETS.find((s) => s.id === 'belron')?.jobTypes || [],
   useScenarioJobTypes: true,
   useScenarioRevenue: true,
   useScenarioMetrics: true,
@@ -125,9 +125,11 @@ export const useConfigStore = create<ConfigStore>()(
 
       setCountry: (countryCode: string) => {
         const country = getCountryByCode(countryCode);
+
         if (country) {
           const firstCity = country.cities[0];
           const hourlyRate = HOURLY_RATES_BY_COUNTRY[countryCode] || 25;
+
           set({
             config: {
               ...get().config,
@@ -148,6 +150,7 @@ export const useConfigStore = create<ConfigStore>()(
 
       setCity: (cityId: string) => {
         const city = getCityById(get().config.countryCode, cityId);
+
         if (city) {
           set({
             config: {
@@ -198,7 +201,8 @@ export const useConfigStore = create<ConfigStore>()(
       },
 
       setActiveScenario: (scenarioId: string) => {
-        const scenario = SCENARIO_PRESETS.find(s => s.id === scenarioId);
+        const scenario = SCENARIO_PRESETS.find((s) => s.id === scenarioId);
+
         if (scenario) {
           set({
             config: {
@@ -239,8 +243,8 @@ export const useConfigStore = create<ConfigStore>()(
     {
       name: 'cuopt-config', // localStorage key
       version: 1,
-    }
-  )
+    },
+  ),
 );
 
 // Export helper to get current config outside of React components

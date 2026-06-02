@@ -1,13 +1,13 @@
 import { Layers, MapPin, Play, RotateCcw, Settings, Truck, Zap } from 'lucide-react';
 import { useState } from 'react';
 
-import { Button } from '@/components/shared/Button';
+import { Button } from '@/components';
+import { useInputPanelActions } from '@/hooks';
 import { useAppStore, useConfigStore, useOptimizationStore } from '@/store';
 
 import { FleetSection } from './sections/FleetSection';
 import { SolverSection } from './sections/SolverSection';
 import { StopsSection } from './sections/StopsSection';
-import { useInputPanelActions } from './useInputPanelActions';
 
 interface InputPanelProps {
   onRunOptimization: () => void;
@@ -67,7 +67,9 @@ export function InputPanel({ onRunOptimization, onRunParallel }: InputPanelProps
             className={`flex-1 py-3 text-sm font-medium transition-colors ${
               activeSection === tab.id ? 'border-b-2' : 'text-gray-400 hover:text-white'
             }`}
-            style={activeSection === tab.id ? { color: '#C74634', borderColor: '#C74634' } : undefined}
+            style={
+              activeSection === tab.id ? { color: '#C74634', borderColor: '#C74634' } : undefined
+            }
           >
             <tab.icon className="w-4 h-4 mx-auto mb-1" />
             {tab.label}

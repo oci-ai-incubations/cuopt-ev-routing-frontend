@@ -16,7 +16,7 @@ import {
   listCollectionPermissions,
   listUsers,
   setCollectionPermission,
-} from '@/api/admin';
+} from '@/api';
 import {
   Badge,
   Button,
@@ -28,18 +28,8 @@ import {
   Spinner,
   TextInput,
 } from '@/components/Admin/auth/_primitives';
-
-import type {
-  AdminUser,
-  CollectionPermission,
-  PermissionLevel,
-} from '@/types/admin';
-
-const LEVEL_VARIANT: Record<PermissionLevel, 'success' | 'info' | 'oracle'> = {
-  read: 'success',
-  write: 'info',
-  manage: 'oracle',
-};
+import { LEVEL_VARIANT } from '@/constants';
+import type { AdminUser, CollectionPermission, PermissionLevel } from '@/types';
 
 export function CollectionPermissions() {
   const [users, setUsers] = useState<AdminUser[]>([]);
@@ -64,9 +54,12 @@ export function CollectionPermissions() {
   const fetchPerms = useCallback(async (id: string) => {
     if (!id) {
       setPerms([]);
+
       return;
     }
+
     setPermsLoading(true);
+
     try {
       setPerms(await listCollectionPermissions(id));
     } finally {

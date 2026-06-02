@@ -4,6 +4,7 @@ export function formatDistance(km: number): string {
   if (km >= 1000) {
     return `${(km / 1000).toFixed(1)}K km`;
   }
+
   return `${km.toFixed(1)} km`;
 }
 
@@ -11,8 +12,10 @@ export function formatDuration(minutes: number): string {
   if (minutes >= 60) {
     const hours = Math.floor(minutes / 60);
     const mins = Math.round(minutes % 60);
+
     return `${hours}h ${mins}m`;
   }
+
   return `${Math.round(minutes)} min`;
 }
 
@@ -20,6 +23,7 @@ export function formatSolveTime(ms: number): string {
   if (ms >= 1000) {
     return `${(ms / 1000).toFixed(2)}s`;
   }
+
   return `${Math.round(ms)}ms`;
 }
 
@@ -27,12 +31,15 @@ export function formatBytes(bytes: number): string {
   if (bytes >= 1024 * 1024 * 1024) {
     return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
   }
+
   if (bytes >= 1024 * 1024) {
     return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
   }
+
   if (bytes >= 1024) {
     return `${(bytes / 1024).toFixed(2)} KB`;
   }
+
   return `${bytes} B`;
 }
 
@@ -40,14 +47,17 @@ export function formatNumber(num: number): string {
   if (num >= 1000000) {
     return `${(num / 1000000).toFixed(1)}M`;
   }
+
   if (num >= 1000) {
     return `${(num / 1000).toFixed(1)}K`;
   }
+
   return num.toLocaleString();
 }
 
 export function formatPercent(value: number, total: number): string {
   if (total === 0) return '0%';
+
   return `${((value / total) * 100).toFixed(1)}%`;
 }
 
@@ -221,9 +231,13 @@ export function getVehicleCountry(): string {
  * Get vehicle plate and name for a vehicle ID based on current country
  * Returns consistent plate for the same vehicle ID
  */
-export function getVehiclePlate(vehicleId: number, countryCode?: string): { plate: string; region: string; name: string } {
+export function getVehiclePlate(
+  vehicleId: number,
+  countryCode?: string,
+): { plate: string; region: string; name: string } {
   const country = countryCode || currentCountryCode;
   const plates = VEHICLE_PLATES_BY_COUNTRY[country] || VEHICLE_PLATES_BY_COUNTRY.GB;
+
   return plates[vehicleId % plates.length];
 }
 
@@ -233,6 +247,7 @@ export function getVehiclePlate(vehicleId: number, countryCode?: string): { plat
  */
 export function formatVehicleName(vehicleId: number, countryCode?: string): string {
   const vehicle = getVehiclePlate(vehicleId, countryCode);
+
   return `${vehicle.plate}`;
 }
 
@@ -242,6 +257,7 @@ export function formatVehicleName(vehicleId: number, countryCode?: string): stri
  */
 export function getVehicleDisplayName(vehicleId: number): string {
   const vehicle = getVehiclePlate(vehicleId);
+
   return `${vehicle.plate} (${vehicle.name})`;
 }
 
@@ -266,6 +282,7 @@ export function getVehicleColor(vehicleId: number): { color: string; stroke: str
 // Estimate payload size in MB
 export function estimatePayloadSize(numStops: number): number {
   const n = numStops + 1; // +1 for depot
+
   return (43.2 * n * n) / (1024 * 1024);
 }
 
@@ -277,6 +294,8 @@ export function willExceedLimit(numStops: number): boolean {
 // Recommend cluster count for large payloads
 export function recommendClusterCount(numStops: number): number {
   const payloadMB = estimatePayloadSize(numStops);
+
   if (payloadMB <= 250) return 1;
+
   return Math.ceil(payloadMB / 250);
 }

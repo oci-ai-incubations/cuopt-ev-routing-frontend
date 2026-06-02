@@ -15,7 +15,7 @@ import {
   listClaimMappings,
   listProviders,
   updateProvider,
-} from '@/api/admin';
+} from '@/api';
 import {
   Badge,
   Button,
@@ -27,13 +27,8 @@ import {
   TextInput,
   Toggle,
 } from '@/components/Admin/auth/_primitives';
-
-import type { ClaimMapping, IdentityProvider } from '@/types/admin';
-
-const TYPE_VARIANT: Record<string, 'info' | 'oracle' | 'default'> = {
-  oidc: 'info',
-  saml: 'oracle',
-};
+import { TYPE_VARIANT } from '@/constants';
+import type { ClaimMapping, IdentityProvider } from '@/types';
 
 export function IdentityProviders() {
   const [providers, setProviders] = useState<IdentityProvider[]>([]);
@@ -59,6 +54,7 @@ export function IdentityProviders() {
 
   const refresh = useCallback(async () => {
     setLoading(true);
+
     try {
       setProviders(await listProviders());
     } finally {
@@ -72,6 +68,7 @@ export function IdentityProviders() {
 
   const refreshMappings = async (providerId: number) => {
     const m = await listClaimMappings(providerId);
+
     setMappingsCache((prev) => ({ ...prev, [providerId]: m }));
   };
 
@@ -86,8 +83,10 @@ export function IdentityProviders() {
 
   const toggleActive = async (provider: IdentityProvider) => {
     setTogglingId(provider.id);
+
     try {
       const updated = await updateProvider(provider.id, { is_active: !provider.is_active });
+
       setProviders((prev) => prev.map((p) => (p.id === provider.id ? updated : p)));
     } finally {
       setTogglingId(null);
@@ -97,12 +96,15 @@ export function IdentityProviders() {
   const handleCreateProvider = async () => {
     if (!newName.trim() || !newSlug.trim()) return;
     let config: Record<string, unknown>;
+
     try {
       config = JSON.parse(newConfig) as Record<string, unknown>;
     } catch {
       return;
     }
+
     setCreating(true);
+
     try {
       await createProvider({ type: newType, name: newName, slug: newSlug, config });
       setNewName('');
@@ -119,6 +121,7 @@ export function IdentityProviders() {
   const handleCreateMapping = async () => {
     if (!mappingProviderId || !mappingClaimKey.trim() || !mappingTargetRole.trim()) return;
     setCreatingMapping(true);
+
     try {
       await createClaimMapping(mappingProviderId, {
         claim_key: mappingClaimKey,
@@ -174,6 +177,7 @@ export function IdentityProviders() {
           {providers.map((provider) => {
             const mappings = mappingsCache[provider.id] ?? [];
             const expanded = expandedId === provider.id;
+
             return (
               <div
                 key={provider.id}
@@ -346,9 +350,7 @@ export function IdentityProviders() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-white mb-1">
-              Claim Value Pattern
-            </label>
+            <label className="block text-sm font-medium text-white mb-1">Claim Value Pattern</label>
             <TextInput
               value={mappingClaimValue}
               onChange={setMappingClaimValue}

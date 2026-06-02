@@ -54,6 +54,7 @@ export const useWeatherStore = create<WeatherState>((set, get) => ({
 
     try {
       const weatherMap = await weatherClient.getWeatherForStops(stops);
+
       set({
         weatherByStop: weatherMap,
         lastUpdate: new Date(),
@@ -83,6 +84,7 @@ export const useWeatherStore = create<WeatherState>((set, get) => ({
       impacts.forEach((impact) => {
         const currentIndex = levelOrder.indexOf(impact.assessment.level);
         const worstIndex = levelOrder.indexOf(worstLevel);
+
         if (currentIndex > worstIndex) {
           worstLevel = impact.assessment.level;
         }
@@ -91,7 +93,7 @@ export const useWeatherStore = create<WeatherState>((set, get) => ({
       // Aggregate all factors
       const allFactors = impacts.flatMap((i) => i.assessment.factors);
       const uniqueFactors = allFactors.filter(
-        (f, i, arr) => arr.findIndex((x) => x.type === f.type && x.severity === f.severity) === i
+        (f, i, arr) => arr.findIndex((x) => x.type === f.type && x.severity === f.severity) === i,
       );
 
       // Calculate average multiplier
@@ -133,6 +135,7 @@ export const useWeatherStore = create<WeatherState>((set, get) => ({
 
   setEnabled: (enabled: boolean) => {
     set({ enabled });
+
     if (!enabled) {
       set({
         weatherByStop: new Map(),

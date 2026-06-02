@@ -1,9 +1,8 @@
+import type { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
-import { useAuthStore } from '@/store/authStore';
-
-import type { UserRole } from '@/types/auth';
-import type { ReactNode } from 'react';
+import { useAuthStore } from '@/store';
+import type { UserRole } from '@/types';
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -21,6 +20,7 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
 
   if (requiredRole && user) {
     const allowed = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
+
     if (!allowed.includes(user.role)) {
       return <Navigate to="/" replace />;
     }

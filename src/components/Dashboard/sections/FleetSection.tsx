@@ -1,10 +1,9 @@
 import { Briefcase, ChevronDown, ChevronRight } from 'lucide-react';
+import type { Dispatch, SetStateAction } from 'react';
 
-import { Select } from '@/components/shared/Select';
-import { Slider } from '@/components/shared/Slider';
-import { Toggle } from '@/components/shared/Toggle';
-import { Tooltip } from '@/components/shared/Tooltip';
-import { formatCurrency } from '@/data/locationData';
+import { Select, Slider, Toggle, Tooltip } from '@/components';
+import { formatCurrency } from '@/data';
+import type { AppConfig } from '@/store';
 import {
   DEFAULT_JOB_TYPE_MIX,
   JOB_TYPE_CONFIGS,
@@ -13,10 +12,6 @@ import {
   type OptimizationConfig,
   type Stop,
 } from '@/types';
-
-import type { AppConfig } from '@/store/configStore';
-import type { Dispatch, SetStateAction } from 'react';
-
 
 interface FleetSectionProps {
   config: OptimizationConfig;
@@ -140,9 +135,16 @@ export function FleetSection({
             content={
               <div className="space-y-1">
                 <p className="font-medium">Field Service Mode</p>
-                <p>When enabled, technicians start from their home locations instead of a central depot.</p>
-                <p className="text-gray-400">Home locations are randomly generated within the service area.</p>
-                <p className="text-green-400 mt-1">Ideal for Belron-style field service operations.</p>
+                <p>
+                  When enabled, technicians start from their home locations instead of a central
+                  depot.
+                </p>
+                <p className="text-gray-400">
+                  Home locations are randomly generated within the service area.
+                </p>
+                <p className="text-green-400 mt-1">
+                  Ideal for Belron-style field service operations.
+                </p>
               </div>
             }
             position="right"
@@ -160,8 +162,14 @@ export function FleetSection({
               content={
                 <div className="space-y-1">
                   <p className="font-medium">End-of-Day Location</p>
-                  <p><span className="text-green-400">Enabled:</span> Vehicles return to depot at end of shift.</p>
-                  <p><span className="text-yellow-400">Disabled:</span> Vehicles end at their home location.</p>
+                  <p>
+                    <span className="text-green-400">Enabled:</span> Vehicles return to depot at end
+                    of shift.
+                  </p>
+                  <p>
+                    <span className="text-yellow-400">Disabled:</span> Vehicles end at their home
+                    location.
+                  </p>
                 </div>
               }
               position="right"
@@ -182,7 +190,9 @@ export function FleetSection({
               <div className="space-y-1">
                 <p className="font-medium">Revenue-Based Priority</p>
                 <p>When enabled, the optimizer will prioritize higher-revenue jobs.</p>
-                <p className="text-gray-400">Useful when capacity is limited and not all jobs can be served.</p>
+                <p className="text-gray-400">
+                  Useful when capacity is limited and not all jobs can be served.
+                </p>
                 <p className="text-green-400 mt-1">Requires job types to be enabled.</p>
               </div>
             }
@@ -198,9 +208,16 @@ export function FleetSection({
             content={
               <div className="space-y-1">
                 <p className="font-medium">Optimization Goal</p>
-                <p><span className="text-blue-400">Distance:</span> Shortest total route length</p>
-                <p><span className="text-green-400">Time:</span> Fastest completion time</p>
-                <p><span className="text-yellow-400">Vehicles:</span> Use fewest vehicles (balanced routes)</p>
+                <p>
+                  <span className="text-blue-400">Distance:</span> Shortest total route length
+                </p>
+                <p>
+                  <span className="text-green-400">Time:</span> Fastest completion time
+                </p>
+                <p>
+                  <span className="text-yellow-400">Vehicles:</span> Use fewest vehicles (balanced
+                  routes)
+                </p>
               </div>
             }
             position="right"
@@ -215,7 +232,9 @@ export function FleetSection({
             { value: 'minimize_vehicles', label: 'Minimize Vehicles' },
           ]}
           value={config.objective}
-          onChange={(e) => setConfig({ objective: e.target.value as OptimizationConfig['objective'] })}
+          onChange={(e) =>
+            setConfig({ objective: e.target.value as OptimizationConfig['objective'] })
+          }
         />
       </div>
 
@@ -228,10 +247,16 @@ export function FleetSection({
             <Briefcase className="w-4 h-4 text-[#C74634]" />
             <span>Job Type Mix</span>
             {isBelron && (
-              <span className="text-xs bg-oracle-red/20 text-oracle-red px-2 py-0.5 rounded">Belron</span>
+              <span className="text-xs bg-oracle-red/20 text-oracle-red px-2 py-0.5 rounded">
+                Belron
+              </span>
             )}
           </div>
-          {showJobTypes ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+          {showJobTypes ? (
+            <ChevronDown className="w-4 h-4" />
+          ) : (
+            <ChevronRight className="w-4 h-4" />
+          )}
         </button>
 
         {showJobTypes && (
@@ -246,7 +271,10 @@ export function FleetSection({
                     style={{ borderLeftColor: jt.color, borderLeftWidth: 3 }}
                   >
                     <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: jt.color }} />
+                      <div
+                        className="w-3 h-3 rounded-full shrink-0"
+                        style={{ backgroundColor: jt.color }}
+                      />
                       <span className="text-sm text-white">{jt.label}</span>
                     </div>
                     <div className="text-right">
@@ -283,7 +311,10 @@ export function FleetSection({
                     content={
                       <div className="space-y-1">
                         <p className="font-medium">Job Type Differentiation</p>
-                        <p>When enabled, stops are assigned different job types with varying service durations:</p>
+                        <p>
+                          When enabled, stops are assigned different job types with varying service
+                          durations:
+                        </p>
                         <ul className="text-gray-400 list-disc list-inside mt-1">
                           <li>Chip Repair: 30-60 min</li>
                           <li>Replacement: 60-120 min</li>
@@ -299,18 +330,24 @@ export function FleetSection({
                 {useJobTypes && (
                   <div className="space-y-2 bg-dark-bg rounded-lg p-3">
                     <div className="text-xs text-gray-400 mb-2">
-                      Adjust job type distribution (total: {Object.values(jobTypeMix).reduce((a, b) => a + b, 0)}%)
+                      Adjust job type distribution (total:{' '}
+                      {Object.values(jobTypeMix).reduce((a, b) => a + b, 0)}%)
                     </div>
                     {(Object.keys(JOB_TYPE_CONFIGS) as JobType[]).map((type) => {
                       const typeConfig = JOB_TYPE_CONFIGS[type];
+
                       return (
                         <div key={type} className="flex items-center gap-2">
-                          <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: typeConfig.color }} />
+                          <div
+                            className="w-3 h-3 rounded-full shrink-0"
+                            style={{ backgroundColor: typeConfig.color }}
+                          />
                           <div className="flex-1 min-w-0">
                             <div className="flex justify-between text-xs mb-1">
                               <span className="text-gray-300 truncate">{typeConfig.label}</span>
                               <span className="text-[#C74634] font-mono">
-                                {formatCurrency(typeConfig.revenue, appConfig.currency)} | {jobTypeMix[type]}%
+                                {formatCurrency(typeConfig.revenue, appConfig.currency)} |{' '}
+                                {jobTypeMix[type]}%
                               </span>
                             </div>
                             <input
@@ -321,12 +358,15 @@ export function FleetSection({
                               value={jobTypeMix[type]}
                               onChange={(e) => {
                                 const newMix = { ...jobTypeMix, [type]: parseInt(e.target.value) };
+
                                 setConfig({ jobTypeMix: newMix });
                               }}
                               className="w-full h-1 bg-dark-border rounded-lg appearance-none cursor-pointer accent-[#C74634]"
                             />
                           </div>
-                          <span className="text-xs text-gray-500 w-16 shrink-0">~{typeConfig.defaultDuration}min</span>
+                          <span className="text-xs text-gray-500 w-16 shrink-0">
+                            ~{typeConfig.defaultDuration}min
+                          </span>
                         </div>
                       );
                     })}

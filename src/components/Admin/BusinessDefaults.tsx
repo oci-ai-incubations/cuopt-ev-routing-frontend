@@ -1,11 +1,10 @@
 import { Building2 } from 'lucide-react';
 
+import type { AppConfig } from '@/store';
 
 import { NumberField } from './NumberField';
 import { RadioGroup } from './RadioGroup';
 import { Section } from './Section';
-
-import type { AppConfig } from '@/store/configStore';
 
 interface BusinessDefaultsProps {
   config: AppConfig;
@@ -27,13 +26,30 @@ export function BusinessDefaults({
   return (
     <Section title="Business Defaults" icon={<Building2 className="w-4 h-4 text-oracle-red" />}>
       <div className="grid grid-cols-2 gap-4">
-        <NumberField label="Default Vehicles" value={config.defaultVehicles} onChange={onVehiclesChange} min={1} max={100} hint="Number of vehicles/technicians" />
-        <NumberField label="Shift Duration" value={config.defaultShiftHours} onChange={onShiftHoursChange} min={4} max={12} step={0.5} unit="hours" hint="Default shift length" />
+        <NumberField
+          label="Default Vehicles"
+          value={config.defaultVehicles}
+          onChange={onVehiclesChange}
+          min={1}
+          max={100}
+          hint="Number of vehicles/technicians"
+        />
+        <NumberField
+          label="Shift Duration"
+          value={config.defaultShiftHours}
+          onChange={onShiftHoursChange}
+          min={4}
+          max={12}
+          step={0.5}
+          unit="hours"
+          hint="Default shift length"
+        />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         {(['Start', 'End'] as const).map((label) => {
           const key = label === 'Start' ? 'workingHoursStart' : 'workingHoursEnd';
+
           return (
             <div key={label} className="space-y-1">
               <label className="text-sm text-gray-400">Working Hours {label}</label>
@@ -43,7 +59,7 @@ export function BusinessDefaults({
                 onChange={(e) =>
                   onWorkingHoursChange(
                     label === 'Start' ? e.target.value : config.workingHoursStart,
-                    label === 'End' ? e.target.value : config.workingHoursEnd
+                    label === 'End' ? e.target.value : config.workingHoursEnd,
                   )
                 }
                 className="w-full bg-dark-bg border border-dark-border rounded-lg px-3 py-2 text-white focus:outline-none focus:border-oracle-red transition-colors"

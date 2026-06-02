@@ -8,13 +8,7 @@
 import { Check, Pencil, Plus, Shield, Trash2, X } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 
-import {
-  createRole,
-  deleteRole,
-  listPermissions,
-  listRoles,
-  setRolePermissions,
-} from '@/api/admin';
+import { createRole, deleteRole, listPermissions, listRoles, setRolePermissions } from '@/api';
 import {
   Badge,
   Button,
@@ -25,8 +19,7 @@ import {
   PanelLoading,
   TextInput,
 } from '@/components/Admin/auth/_primitives';
-
-import type { Permission, Role } from '@/types/admin';
+import type { Permission, Role } from '@/types';
 
 export function RolesPermissions() {
   const [roles, setRoles] = useState<Role[]>([]);
@@ -44,6 +37,7 @@ export function RolesPermissions() {
 
   const refresh = useCallback(async () => {
     setLoading(true);
+
     try {
       setRoles(await listRoles());
     } finally {
@@ -58,6 +52,7 @@ export function RolesPermissions() {
   const handleCreateRole = async () => {
     if (!newName.trim()) return;
     setCreating(true);
+
     try {
       await createRole({ name: newName, description: newDescription });
       setNewName('');
@@ -77,9 +72,11 @@ export function RolesPermissions() {
 
   const startEditPermissions = async (role: Role) => {
     setSelectedRole(role);
+
     if (allPermissions.length === 0) {
       setAllPermissions(await listPermissions());
     }
+
     setSelectedPermCodenames(new Set(role.permissions));
     setEditingPermissions(true);
   };
@@ -87,8 +84,10 @@ export function RolesPermissions() {
   const togglePerm = (codename: string) => {
     setSelectedPermCodenames((prev) => {
       const next = new Set(prev);
+
       if (next.has(codename)) next.delete(codename);
       else next.add(codename);
+
       return next;
     });
   };
@@ -96,6 +95,7 @@ export function RolesPermissions() {
   const savePermissions = async () => {
     if (!selectedRole) return;
     setSaving(true);
+
     try {
       await setRolePermissions(selectedRole.id, Array.from(selectedPermCodenames));
       setEditingPermissions(false);
@@ -111,9 +111,7 @@ export function RolesPermissions() {
     <div className="space-y-6">
       <div>
         <h2 className="text-xl font-bold text-white">Roles &amp; Permissions</h2>
-        <p className="text-sm text-gray-400 mt-1">
-          Manage roles and their associated permissions
-        </p>
+        <p className="text-sm text-gray-400 mt-1">Manage roles and their associated permissions</p>
       </div>
 
       <Card>
@@ -297,11 +295,7 @@ export function RolesPermissions() {
             />
           </div>
           <div className="flex gap-3 justify-end pt-2">
-            <Button
-              variant="ghost"
-              onClick={() => setShowCreateModal(false)}
-              disabled={creating}
-            >
+            <Button variant="ghost" onClick={() => setShowCreateModal(false)} disabled={creating}>
               Cancel
             </Button>
             <Button

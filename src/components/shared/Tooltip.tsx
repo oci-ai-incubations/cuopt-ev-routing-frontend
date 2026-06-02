@@ -50,9 +50,11 @@ export function Tooltip({
 
       // Keep tooltip within viewport
       if (left < 8) left = 8;
+
       if (left + tooltipRect.width > window.innerWidth - 8) {
         left = window.innerWidth - tooltipRect.width - 8;
       }
+
       if (top < 8) top = triggerRect.bottom + 8; // Flip to bottom
 
       setTooltipPosition({ top, left });
@@ -76,7 +78,9 @@ export function Tooltip({
         className={`cursor-help ${children ? 'ml-1' : ''}`}
       >
         {showIcon && (
-          <HelpCircle className={`w-3.5 h-3.5 text-gray-500 hover:text-gray-300 transition-colors ${iconClassName}`} />
+          <HelpCircle
+            className={`w-3.5 h-3.5 text-gray-500 hover:text-gray-300 transition-colors ${iconClassName}`}
+          />
         )}
       </div>
       {isVisible && (
@@ -86,7 +90,9 @@ export function Tooltip({
           style={{ top: tooltipPosition.top, left: tooltipPosition.left }}
         >
           {content}
-          <div className={`absolute w-2 h-2 bg-gray-800 border-gray-700 transform rotate-45 ${arrowPositionClass[position]}`} />
+          <div
+            className={`absolute w-2 h-2 bg-gray-800 border-gray-700 transform rotate-45 ${arrowPositionClass[position]}`}
+          />
         </div>
       )}
     </div>

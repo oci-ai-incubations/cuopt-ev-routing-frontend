@@ -17,8 +17,8 @@ export interface PackAuthModel {
 
 // ─── Instance settings (from cuopt-backend /api/admin/config) ─────────────
 export interface InstanceConfig {
-  google_maps_api_key: string;       // "***" when set, "" when unset
-  openweathermap_api_key: string;    // "***" when set, "" when unset
+  google_maps_api_key: string; // "***" when set, "" when unset
+  openweathermap_api_key: string; // "***" when set, "" when unset
   genai_chat_enabled: boolean;
   weather_enabled: boolean;
   sso_enabled: boolean;

@@ -105,7 +105,7 @@ export const skyEVStations: EVChargingStation[] = [
     lat: 51.088351,
     lng: -0.725915,
     name: 'Farnham Lane',
-    address: 'St Christopher\'s Green',
+    address: "St Christopher's Green",
     postTown: 'Haslemere',
     county: 'Surrey',
     region: 'South East',
@@ -560,7 +560,7 @@ export const skyEVStations: EVChargingStation[] = [
     id: 28,
     lat: 51.462488,
     lng: -0.186464,
-    name: 'McDonald\'s Wandsworth',
+    name: "McDonald's Wandsworth",
     address: '1 Marl Road',
     postTown: 'Wandsworth',
     county: 'Wandsworth',
@@ -902,8 +902,8 @@ export const skyEVStations: EVChargingStation[] = [
     id: 46,
     lat: 51.476814,
     lng: -0.058756,
-    name: '109 King\'s Grove',
-    address: '109 King\'s Grove',
+    name: "109 King's Grove",
+    address: "109 King's Grove",
     postTown: 'Nunhead',
     county: 'Southwark',
     region: 'Greater London',
@@ -992,7 +992,7 @@ export const skyEVStations: EVChargingStation[] = [
     powerGroup: 'Slow',
     locationClass: 'On-street',
     contactless: false,
-  }
+  },
 ];
 
 // 392 Utilisation Records for demand forecasting
@@ -1014,7 +1014,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 35.0,
     meanDurationMins: 37.4,
     utilisationRate: 19.1,
-    peakHours: [{ hour: 11, count: 7 }, { hour: 8, count: 4 }, { hour: 10, count: 4 }],
+    peakHours: [
+      { hour: 11, count: 7 },
+      { hour: 8, count: 4 },
+      { hour: 10, count: 4 },
+    ],
   },
   {
     evseId: '00dccd33b7ea410cb0efc86cda6d478e',
@@ -1033,7 +1037,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 61.4,
     meanDurationMins: 55.9,
     utilisationRate: 25.8,
-    peakHours: [{ hour: 7, count: 5 }, { hour: 12, count: 3 }, { hour: 13, count: 3 }],
+    peakHours: [
+      { hour: 7, count: 5 },
+      { hour: 12, count: 3 },
+      { hour: 13, count: 3 },
+    ],
   },
   {
     evseId: '017e91ac746a2ddb0c24830b979247ce',
@@ -1052,7 +1060,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 49.0,
     meanDurationMins: 58.1,
     utilisationRate: 40.5,
-    peakHours: [{ hour: 11, count: 7 }, { hour: 19, count: 7 }, { hour: 9, count: 5 }],
+    peakHours: [
+      { hour: 11, count: 7 },
+      { hour: 19, count: 7 },
+      { hour: 9, count: 5 },
+    ],
   },
   {
     evseId: '018c513ca13090d8da451cc455cf240b',
@@ -1071,7 +1083,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 25.5,
     meanDurationMins: 30.3,
     utilisationRate: 136.4,
-    peakHours: [{ hour: 17, count: 2 }, { hour: 19, count: 2 }],
+    peakHours: [
+      { hour: 17, count: 2 },
+      { hour: 19, count: 2 },
+    ],
   },
   {
     evseId: '01aa278d182f4ca699dbe9beaa2363e9',
@@ -1090,7 +1105,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 29.6,
     meanDurationMins: 31.2,
     utilisationRate: 16.2,
-    peakHours: [{ hour: 13, count: 8 }, { hour: 11, count: 7 }, { hour: 10, count: 6 }],
+    peakHours: [
+      { hour: 13, count: 8 },
+      { hour: 11, count: 7 },
+      { hour: 10, count: 6 },
+    ],
   },
   {
     evseId: '01d784d686707f9efb53de61bc388747',
@@ -1109,7 +1128,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 534.9,
     meanDurationMins: 525.3,
     utilisationRate: 41.6,
-    peakHours: [{ hour: 23, count: 6 }, { hour: 20, count: 2 }, { hour: 21, count: 2 }],
+    peakHours: [
+      { hour: 23, count: 6 },
+      { hour: 20, count: 2 },
+      { hour: 21, count: 2 },
+    ],
   },
   {
     evseId: '02061acca346fbd548647bb5aa1fd0c2',
@@ -1128,7 +1151,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 918.7,
     meanDurationMins: 774.1,
     utilisationRate: 38.8,
-    peakHours: [{ hour: 14, count: 2 }, { hour: 17, count: 2 }, { hour: 20, count: 2 }],
+    peakHours: [
+      { hour: 14, count: 2 },
+      { hour: 17, count: 2 },
+      { hour: 20, count: 2 },
+    ],
   },
   {
     evseId: '0295e6eab0024a41185a5b9afec06f33',
@@ -1147,7 +1174,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 27.1,
     meanDurationMins: 27.1,
     utilisationRate: 452.1,
-    peakHours: [{ hour: 15, count: 1 }, { hour: 17, count: 1 }],
+    peakHours: [
+      { hour: 15, count: 1 },
+      { hour: 17, count: 1 },
+    ],
   },
   {
     evseId: '0373c6a7fc09d5a622feef31cf8d2523',
@@ -1166,7 +1196,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 35.6,
     meanDurationMins: 43.4,
     utilisationRate: 7.1,
-    peakHours: [{ hour: 15, count: 5 }, { hour: 11, count: 3 }, { hour: 9, count: 2 }],
+    peakHours: [
+      { hour: 15, count: 5 },
+      { hour: 11, count: 3 },
+      { hour: 9, count: 2 },
+    ],
   },
   {
     evseId: '03747f721058ab201680f0def63db2be',
@@ -1185,7 +1219,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 480.6,
     meanDurationMins: 480.6,
     utilisationRate: 3.3,
-    peakHours: [{ hour: 10, count: 1 }, { hour: 19, count: 1 }],
+    peakHours: [
+      { hour: 10, count: 1 },
+      { hour: 19, count: 1 },
+    ],
   },
   {
     evseId: '0518fe48cc299b3a98b0a154550dbcee',
@@ -1204,7 +1241,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 27.0,
     meanDurationMins: 32.6,
     utilisationRate: 11.8,
-    peakHours: [{ hour: 13, count: 8 }, { hour: 15, count: 8 }, { hour: 10, count: 7 }],
+    peakHours: [
+      { hour: 13, count: 8 },
+      { hour: 15, count: 8 },
+      { hour: 10, count: 7 },
+    ],
   },
   {
     evseId: '05258b8fc336b3bcd2ad24458c21066c',
@@ -1223,7 +1264,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 29.7,
     meanDurationMins: 31.7,
     utilisationRate: 47.5,
-    peakHours: [{ hour: 11, count: 2 }, { hour: 17, count: 2 }, { hour: 21, count: 2 }],
+    peakHours: [
+      { hour: 11, count: 2 },
+      { hour: 17, count: 2 },
+      { hour: 21, count: 2 },
+    ],
   },
   {
     evseId: '0590ce1b14a04d65939b06bc50642b2f',
@@ -1261,7 +1306,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 45.9,
     meanDurationMins: 99.0,
     utilisationRate: 23.9,
-    peakHours: [{ hour: 11, count: 6 }, { hour: 14, count: 4 }, { hour: 9, count: 3 }],
+    peakHours: [
+      { hour: 11, count: 6 },
+      { hour: 14, count: 4 },
+      { hour: 9, count: 3 },
+    ],
   },
   {
     evseId: '0755aa591a3483416d504f002ce3d1a4',
@@ -1280,7 +1329,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 40.0,
     meanDurationMins: 33.2,
     utilisationRate: 174.9,
-    peakHours: [{ hour: 12, count: 2 }, { hour: 13, count: 1 }],
+    peakHours: [
+      { hour: 12, count: 2 },
+      { hour: 13, count: 1 },
+    ],
   },
   {
     evseId: '0840942f1c29c843a74557b1f27b0712',
@@ -1299,7 +1351,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 254.4,
     meanDurationMins: 428.8,
     utilisationRate: 295.1,
-    peakHours: [{ hour: 15, count: 4 }, { hour: 8, count: 3 }, { hour: 14, count: 2 }],
+    peakHours: [
+      { hour: 15, count: 4 },
+      { hour: 8, count: 3 },
+      { hour: 14, count: 2 },
+    ],
   },
   {
     evseId: '089ad81f06e65bc326cea3939c33fb93',
@@ -1318,7 +1374,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 175.0,
     meanDurationMins: 154.1,
     utilisationRate: 90.7,
-    peakHours: [{ hour: 8, count: 1 }, { hour: 9, count: 1 }, { hour: 11, count: 1 }],
+    peakHours: [
+      { hour: 8, count: 1 },
+      { hour: 9, count: 1 },
+      { hour: 11, count: 1 },
+    ],
   },
   {
     evseId: '09b66a83b185f826566f816a29ca0487',
@@ -1337,7 +1397,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 41.9,
     meanDurationMins: 51.3,
     utilisationRate: 82.1,
-    peakHours: [{ hour: 9, count: 2 }, { hour: 15, count: 2 }, { hour: 17, count: 2 }],
+    peakHours: [
+      { hour: 9, count: 2 },
+      { hour: 15, count: 2 },
+      { hour: 17, count: 2 },
+    ],
   },
   {
     evseId: '09d39edcfc72195fa44ccc94025c2754',
@@ -1375,7 +1439,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 209.9,
     meanDurationMins: 209.9,
     utilisationRate: 98.0,
-    peakHours: [{ hour: 6, count: 1 }, { hour: 18, count: 1 }],
+    peakHours: [
+      { hour: 6, count: 1 },
+      { hour: 18, count: 1 },
+    ],
   },
   {
     evseId: '0acfec34c9bfbcbf321c3f75736e2a23',
@@ -1394,7 +1461,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 21.6,
     meanDurationMins: 21.6,
     utilisationRate: 1699.5,
-    peakHours: [{ hour: 8, count: 1 }, { hour: 10, count: 1 }],
+    peakHours: [
+      { hour: 8, count: 1 },
+      { hour: 10, count: 1 },
+    ],
   },
   {
     evseId: '0b29435f27a7041463ecb66d3bac2be1',
@@ -1413,7 +1483,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 28.6,
     meanDurationMins: 30.8,
     utilisationRate: 14.7,
-    peakHours: [{ hour: 11, count: 3 }, { hour: 14, count: 3 }, { hour: 18, count: 3 }],
+    peakHours: [
+      { hour: 11, count: 3 },
+      { hour: 14, count: 3 },
+      { hour: 18, count: 3 },
+    ],
   },
   {
     evseId: '0b4b29e9dc86d684474a6e704587ec00',
@@ -1451,7 +1525,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 35.6,
     meanDurationMins: 43.7,
     utilisationRate: 24.4,
-    peakHours: [{ hour: 9, count: 3 }, { hour: 19, count: 2 }, { hour: 10, count: 1 }],
+    peakHours: [
+      { hour: 9, count: 3 },
+      { hour: 19, count: 2 },
+      { hour: 10, count: 1 },
+    ],
   },
   {
     evseId: '0c094890ff054efda82181ceecfdabc1',
@@ -1470,7 +1548,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 380.3,
     meanDurationMins: 437.7,
     utilisationRate: 43.3,
-    peakHours: [{ hour: 12, count: 2 }, { hour: 22, count: 2 }, { hour: 0, count: 1 }],
+    peakHours: [
+      { hour: 12, count: 2 },
+      { hour: 22, count: 2 },
+      { hour: 0, count: 1 },
+    ],
   },
   {
     evseId: '0db7a8ab62e756528fe03f46aa0c0530',
@@ -1527,7 +1609,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 175.2,
     meanDurationMins: 328.4,
     utilisationRate: 70.2,
-    peakHours: [{ hour: 18, count: 4 }, { hour: 10, count: 3 }, { hour: 15, count: 3 }],
+    peakHours: [
+      { hour: 18, count: 4 },
+      { hour: 10, count: 3 },
+      { hour: 15, count: 3 },
+    ],
   },
   {
     evseId: '10c8d2352f96211abd9166d0597f1cdf',
@@ -1546,7 +1632,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 25.1,
     meanDurationMins: 49.4,
     utilisationRate: 2025.2,
-    peakHours: [{ hour: 8, count: 2 }, { hour: 12, count: 2 }, { hour: 16, count: 2 }],
+    peakHours: [
+      { hour: 8, count: 2 },
+      { hour: 12, count: 2 },
+      { hour: 16, count: 2 },
+    ],
   },
   {
     evseId: '10d789f65fac2950a7625f35008f9355',
@@ -1565,7 +1655,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 634.0,
     meanDurationMins: 708.2,
     utilisationRate: 282.7,
-    peakHours: [{ hour: 10, count: 2 }, { hour: 18, count: 2 }, { hour: 0, count: 1 }],
+    peakHours: [
+      { hour: 10, count: 2 },
+      { hour: 18, count: 2 },
+      { hour: 0, count: 1 },
+    ],
   },
   {
     evseId: '10f6bb847649c21bede6656b3e2ad64c',
@@ -1603,7 +1697,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 56.8,
     meanDurationMins: 79.9,
     utilisationRate: 79.4,
-    peakHours: [{ hour: 15, count: 2 }, { hour: 13, count: 1 }, { hour: 14, count: 1 }],
+    peakHours: [
+      { hour: 15, count: 2 },
+      { hour: 13, count: 1 },
+      { hour: 14, count: 1 },
+    ],
   },
   {
     evseId: '11db2e0642d25c0263ca1ccb8567bc8e',
@@ -1622,7 +1720,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 520.4,
     meanDurationMins: 470.5,
     utilisationRate: 40.9,
-    peakHours: [{ hour: 23, count: 3 }, { hour: 17, count: 2 }, { hour: 22, count: 2 }],
+    peakHours: [
+      { hour: 23, count: 3 },
+      { hour: 17, count: 2 },
+      { hour: 22, count: 2 },
+    ],
   },
   {
     evseId: '128b7d29f642a444b8b4ad2ef8fa77b6',
@@ -1660,7 +1762,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 90.8,
     meanDurationMins: 129.9,
     utilisationRate: 29.0,
-    peakHours: [{ hour: 8, count: 7 }, { hour: 11, count: 6 }, { hour: 10, count: 3 }],
+    peakHours: [
+      { hour: 8, count: 7 },
+      { hour: 11, count: 6 },
+      { hour: 10, count: 3 },
+    ],
   },
   {
     evseId: '1301cd292aae7bcefc66d5292ed83f50',
@@ -1679,7 +1785,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 20.2,
     meanDurationMins: 39.0,
     utilisationRate: 74.6,
-    peakHours: [{ hour: 12, count: 1 }, { hour: 14, count: 1 }, { hour: 21, count: 1 }],
+    peakHours: [
+      { hour: 12, count: 1 },
+      { hour: 14, count: 1 },
+      { hour: 21, count: 1 },
+    ],
   },
   {
     evseId: '133e603053387c1b070d3a566e25203a',
@@ -1698,7 +1808,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 40.4,
     meanDurationMins: 45.0,
     utilisationRate: 23.0,
-    peakHours: [{ hour: 13, count: 11 }, { hour: 14, count: 9 }, { hour: 16, count: 8 }],
+    peakHours: [
+      { hour: 13, count: 11 },
+      { hour: 14, count: 9 },
+      { hour: 16, count: 8 },
+    ],
   },
   {
     evseId: '1382e0a0dd5055945b140d957db63642',
@@ -1736,7 +1850,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 555.0,
     meanDurationMins: 521.7,
     utilisationRate: 945.4,
-    peakHours: [{ hour: 8, count: 2 }, { hour: 7, count: 1 }],
+    peakHours: [
+      { hour: 8, count: 2 },
+      { hour: 7, count: 1 },
+    ],
   },
   {
     evseId: '15cd50329d5c493d82d0385bf9c7c27a',
@@ -1755,7 +1872,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 44.6,
     meanDurationMins: 72.5,
     utilisationRate: 20.1,
-    peakHours: [{ hour: 9, count: 2 }, { hour: 14, count: 2 }, { hour: 15, count: 2 }],
+    peakHours: [
+      { hour: 9, count: 2 },
+      { hour: 14, count: 2 },
+      { hour: 15, count: 2 },
+    ],
   },
   {
     evseId: '16b28d6274b3b4e67359993900e0234c',
@@ -1774,7 +1895,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 59.3,
     meanDurationMins: 56.9,
     utilisationRate: 48.2,
-    peakHours: [{ hour: 14, count: 5 }, { hour: 12, count: 3 }, { hour: 16, count: 3 }],
+    peakHours: [
+      { hour: 14, count: 5 },
+      { hour: 12, count: 3 },
+      { hour: 16, count: 3 },
+    ],
   },
   {
     evseId: '16ba0d66c56743798b6a2318dffc5624',
@@ -1850,7 +1975,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 31.2,
     meanDurationMins: 34.3,
     utilisationRate: 23.4,
-    peakHours: [{ hour: 10, count: 11 }, { hour: 11, count: 9 }, { hour: 17, count: 7 }],
+    peakHours: [
+      { hour: 10, count: 11 },
+      { hour: 11, count: 9 },
+      { hour: 17, count: 7 },
+    ],
   },
   {
     evseId: '185ccd4c6391e67ce474485e0ee4188c',
@@ -1869,7 +1998,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 30.9,
     meanDurationMins: 26.0,
     utilisationRate: 56.1,
-    peakHours: [{ hour: 12, count: 4 }, { hour: 8, count: 1 }, { hour: 9, count: 1 }],
+    peakHours: [
+      { hour: 12, count: 4 },
+      { hour: 8, count: 1 },
+      { hour: 9, count: 1 },
+    ],
   },
   {
     evseId: '18ce25a8532b05e6a90e9689f1aab5e2',
@@ -1888,7 +2021,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 38.9,
     meanDurationMins: 41.8,
     utilisationRate: 185.3,
-    peakHours: [{ hour: 4, count: 1 }, { hour: 5, count: 1 }, { hour: 6, count: 1 }],
+    peakHours: [
+      { hour: 4, count: 1 },
+      { hour: 5, count: 1 },
+      { hour: 6, count: 1 },
+    ],
   },
   {
     evseId: '18efa9b326774e1c852a064b80ad61b0',
@@ -1907,7 +2044,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 220.0,
     meanDurationMins: 297.5,
     utilisationRate: 276.3,
-    peakHours: [{ hour: 8, count: 6 }, { hour: 12, count: 3 }, { hour: 17, count: 2 }],
+    peakHours: [
+      { hour: 8, count: 6 },
+      { hour: 12, count: 3 },
+      { hour: 17, count: 2 },
+    ],
   },
   {
     evseId: '1cdce41dded234e1fae06000a9812193',
@@ -1926,7 +2067,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 44.8,
     meanDurationMins: 47.0,
     utilisationRate: 25.7,
-    peakHours: [{ hour: 13, count: 7 }, { hour: 14, count: 6 }, { hour: 10, count: 5 }],
+    peakHours: [
+      { hour: 13, count: 7 },
+      { hour: 14, count: 6 },
+      { hour: 10, count: 5 },
+    ],
   },
   {
     evseId: '1d506e68142cf4d73c3491177b78941c',
@@ -1945,7 +2090,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 37.3,
     meanDurationMins: 48.6,
     utilisationRate: 12.1,
-    peakHours: [{ hour: 11, count: 7 }, { hour: 14, count: 6 }, { hour: 16, count: 3 }],
+    peakHours: [
+      { hour: 11, count: 7 },
+      { hour: 14, count: 6 },
+      { hour: 16, count: 3 },
+    ],
   },
   {
     evseId: '1f46574a5d144507fd3fc9c18845eff1',
@@ -1964,7 +2113,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 39.4,
     meanDurationMins: 36.6,
     utilisationRate: 17.8,
-    peakHours: [{ hour: 13, count: 4 }, { hour: 11, count: 3 }, { hour: 16, count: 3 }],
+    peakHours: [
+      { hour: 13, count: 4 },
+      { hour: 11, count: 3 },
+      { hour: 16, count: 3 },
+    ],
   },
   {
     evseId: '206276a4e8dd4f25b6728c3caee03347',
@@ -1983,7 +2136,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 36.8,
     meanDurationMins: 41.0,
     utilisationRate: 27.7,
-    peakHours: [{ hour: 18, count: 13 }, { hour: 9, count: 11 }, { hour: 10, count: 10 }],
+    peakHours: [
+      { hour: 18, count: 13 },
+      { hour: 9, count: 11 },
+      { hour: 10, count: 10 },
+    ],
   },
   {
     evseId: '20dc86aa349d42ac96b1417a2b0203f0',
@@ -2002,7 +2159,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 45.2,
     meanDurationMins: 56.8,
     utilisationRate: 20.1,
-    peakHours: [{ hour: 15, count: 10 }, { hour: 13, count: 8 }, { hour: 18, count: 8 }],
+    peakHours: [
+      { hour: 15, count: 10 },
+      { hour: 13, count: 8 },
+      { hour: 18, count: 8 },
+    ],
   },
   {
     evseId: '21b97f88002ffd0524c324fd974b676a',
@@ -2021,7 +2182,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 22.7,
     meanDurationMins: 23.6,
     utilisationRate: 51.9,
-    peakHours: [{ hour: 0, count: 1 }, { hour: 14, count: 1 }, { hour: 19, count: 1 }],
+    peakHours: [
+      { hour: 0, count: 1 },
+      { hour: 14, count: 1 },
+      { hour: 19, count: 1 },
+    ],
   },
   {
     evseId: '224ff88b998640c599e453e33943de3e',
@@ -2040,7 +2205,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 795.8,
     meanDurationMins: 691.2,
     utilisationRate: 55.6,
-    peakHours: [{ hour: 16, count: 5 }, { hour: 21, count: 2 }, { hour: 23, count: 2 }],
+    peakHours: [
+      { hour: 16, count: 5 },
+      { hour: 21, count: 2 },
+      { hour: 23, count: 2 },
+    ],
   },
   {
     evseId: '22f79cbd55aa1ee047b4a1cc228876f8',
@@ -2059,7 +2228,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 696.3,
     meanDurationMins: 696.3,
     utilisationRate: 17.7,
-    peakHours: [{ hour: 6, count: 1 }, { hour: 12, count: 1 }],
+    peakHours: [
+      { hour: 6, count: 1 },
+      { hour: 12, count: 1 },
+    ],
   },
   {
     evseId: '2361fc55ab3dd10419c593503eec9d3b',
@@ -2078,7 +2250,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 45.4,
     meanDurationMins: 45.4,
     utilisationRate: 172.4,
-    peakHours: [{ hour: 9, count: 1 }, { hour: 11, count: 1 }],
+    peakHours: [
+      { hour: 9, count: 1 },
+      { hour: 11, count: 1 },
+    ],
   },
   {
     evseId: '23b1be4b8feeb4b9a5036899a0402300',
@@ -2097,7 +2272,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 38.8,
     meanDurationMins: 41.6,
     utilisationRate: 92.9,
-    peakHours: [{ hour: 6, count: 8 }, { hour: 21, count: 8 }, { hour: 10, count: 7 }],
+    peakHours: [
+      { hour: 6, count: 8 },
+      { hour: 21, count: 8 },
+      { hour: 10, count: 7 },
+    ],
   },
   {
     evseId: '2475cda01c8da19d1134bbf5f1ad87e0',
@@ -2116,7 +2295,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 38.5,
     meanDurationMins: 49.1,
     utilisationRate: 15.9,
-    peakHours: [{ hour: 12, count: 9 }, { hour: 14, count: 9 }, { hour: 18, count: 9 }],
+    peakHours: [
+      { hour: 12, count: 9 },
+      { hour: 14, count: 9 },
+      { hour: 18, count: 9 },
+    ],
   },
   {
     evseId: '251835036da34cbc8b1c30273acaeb60',
@@ -2135,7 +2318,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 182.0,
     meanDurationMins: 239.2,
     utilisationRate: 80.1,
-    peakHours: [{ hour: 13, count: 5 }, { hour: 11, count: 4 }, { hour: 10, count: 2 }],
+    peakHours: [
+      { hour: 13, count: 5 },
+      { hour: 11, count: 4 },
+      { hour: 10, count: 2 },
+    ],
   },
   {
     evseId: '253f0623b69440f1a30b1ca8e04c8740',
@@ -2154,7 +2341,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 40.0,
     meanDurationMins: 38.7,
     utilisationRate: 13.2,
-    peakHours: [{ hour: 8, count: 6 }, { hour: 10, count: 6 }, { hour: 13, count: 4 }],
+    peakHours: [
+      { hour: 8, count: 6 },
+      { hour: 10, count: 6 },
+      { hour: 13, count: 4 },
+    ],
   },
   {
     evseId: '253f68ee0aba3c84000b00e9cd9847a2',
@@ -2173,7 +2364,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 30.1,
     meanDurationMins: 43.9,
     utilisationRate: 106.3,
-    peakHours: [{ hour: 0, count: 2 }, { hour: 3, count: 2 }, { hour: 14, count: 1 }],
+    peakHours: [
+      { hour: 0, count: 2 },
+      { hour: 3, count: 2 },
+      { hour: 14, count: 1 },
+    ],
   },
   {
     evseId: '256e5153c7c13745fb310ba21fd78ee7',
@@ -2192,7 +2387,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 39.0,
     meanDurationMins: 39.6,
     utilisationRate: 11.3,
-    peakHours: [{ hour: 8, count: 6 }, { hour: 18, count: 6 }, { hour: 5, count: 5 }],
+    peakHours: [
+      { hour: 8, count: 6 },
+      { hour: 18, count: 6 },
+      { hour: 5, count: 5 },
+    ],
   },
   {
     evseId: '26ec59bb22b1e953c8780f3fe0a43365',
@@ -2211,7 +2410,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 490.1,
     meanDurationMins: 432.0,
     utilisationRate: 98.1,
-    peakHours: [{ hour: 7, count: 8 }, { hour: 8, count: 3 }, { hour: 9, count: 3 }],
+    peakHours: [
+      { hour: 7, count: 8 },
+      { hour: 8, count: 3 },
+      { hour: 9, count: 3 },
+    ],
   },
   {
     evseId: '298b9cfb0cdd2c6da82565002f808471',
@@ -2230,7 +2433,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 30.0,
     meanDurationMins: 28.4,
     utilisationRate: 0.5,
-    peakHours: [{ hour: 10, count: 1 }, { hour: 12, count: 1 }, { hour: 23, count: 1 }],
+    peakHours: [
+      { hour: 10, count: 1 },
+      { hour: 12, count: 1 },
+      { hour: 23, count: 1 },
+    ],
   },
   {
     evseId: '2a8fb8101d77a278bafc07b06073c542',
@@ -2287,7 +2494,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 38.0,
     meanDurationMins: 42.3,
     utilisationRate: 40.3,
-    peakHours: [{ hour: 15, count: 22 }, { hour: 16, count: 21 }, { hour: 7, count: 18 }],
+    peakHours: [
+      { hour: 15, count: 22 },
+      { hour: 16, count: 21 },
+      { hour: 7, count: 18 },
+    ],
   },
   {
     evseId: '2bf653f3fde7b79cfffe9a3534ce42f9',
@@ -2306,7 +2517,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 10.0,
     meanDurationMins: 10.8,
     utilisationRate: 257.3,
-    peakHours: [{ hour: 9, count: 1 }, { hour: 10, count: 1 }, { hour: 13, count: 1 }],
+    peakHours: [
+      { hour: 9, count: 1 },
+      { hour: 10, count: 1 },
+      { hour: 13, count: 1 },
+    ],
   },
   {
     evseId: '2c41905e27939a165a8e70be93e5dbeb',
@@ -2325,7 +2540,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 304.7,
     meanDurationMins: 377.7,
     utilisationRate: 49.1,
-    peakHours: [{ hour: 13, count: 3 }, { hour: 21, count: 3 }, { hour: 8, count: 2 }],
+    peakHours: [
+      { hour: 13, count: 3 },
+      { hour: 21, count: 3 },
+      { hour: 8, count: 2 },
+    ],
   },
   {
     evseId: '2c55a6b324a63dc14f4d737c97a9ef0e',
@@ -2344,7 +2563,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 39.5,
     meanDurationMins: 53.6,
     utilisationRate: 11.8,
-    peakHours: [{ hour: 11, count: 5 }, { hour: 12, count: 5 }, { hour: 10, count: 2 }],
+    peakHours: [
+      { hour: 11, count: 5 },
+      { hour: 12, count: 5 },
+      { hour: 10, count: 2 },
+    ],
   },
   {
     evseId: '2c66eb4f513f974da19056296514d363',
@@ -2363,7 +2586,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 28.6,
     meanDurationMins: 33.6,
     utilisationRate: 15.6,
-    peakHours: [{ hour: 13, count: 6 }, { hour: 10, count: 5 }, { hour: 12, count: 5 }],
+    peakHours: [
+      { hour: 13, count: 6 },
+      { hour: 10, count: 5 },
+      { hour: 12, count: 5 },
+    ],
   },
   {
     evseId: '2cd493c6942c4b81a9f75c4008a51740',
@@ -2382,7 +2609,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 674.8,
     meanDurationMins: 690.6,
     utilisationRate: 7.2,
-    peakHours: [{ hour: 21, count: 2 }, { hour: 20, count: 1 }],
+    peakHours: [
+      { hour: 21, count: 2 },
+      { hour: 20, count: 1 },
+    ],
   },
   {
     evseId: '2dbbb6a09c49426293321ed2f97a77f4',
@@ -2401,7 +2631,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 40.4,
     meanDurationMins: 51.3,
     utilisationRate: 19.9,
-    peakHours: [{ hour: 15, count: 8 }, { hour: 12, count: 5 }, { hour: 13, count: 4 }],
+    peakHours: [
+      { hour: 15, count: 8 },
+      { hour: 12, count: 5 },
+      { hour: 13, count: 4 },
+    ],
   },
   {
     evseId: '2dbdd7dac73849a4aa697fcdfa1f6716',
@@ -2420,7 +2654,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 30.9,
     meanDurationMins: 30.9,
     utilisationRate: 0.7,
-    peakHours: [{ hour: 9, count: 1 }, { hour: 10, count: 1 }],
+    peakHours: [
+      { hour: 9, count: 1 },
+      { hour: 10, count: 1 },
+    ],
   },
   {
     evseId: '2defc494f04342aab4b6f4a74c886957',
@@ -2439,7 +2676,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 425.2,
     meanDurationMins: 460.2,
     utilisationRate: 63.4,
-    peakHours: [{ hour: 8, count: 5 }, { hour: 21, count: 2 }, { hour: 15, count: 1 }],
+    peakHours: [
+      { hour: 8, count: 5 },
+      { hour: 21, count: 2 },
+      { hour: 15, count: 1 },
+    ],
   },
   {
     evseId: '2fcb74b468d14b4380a14d3440fefa58',
@@ -2458,7 +2699,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 792.5,
     meanDurationMins: 871.3,
     utilisationRate: 42.6,
-    peakHours: [{ hour: 18, count: 2 }, { hour: 13, count: 1 }, { hour: 21, count: 1 }],
+    peakHours: [
+      { hour: 18, count: 2 },
+      { hour: 13, count: 1 },
+      { hour: 21, count: 1 },
+    ],
   },
   {
     evseId: '2fcd72489741ac7e843a9b65860581cc',
@@ -2477,7 +2722,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 42.1,
     meanDurationMins: 47.6,
     utilisationRate: 11.4,
-    peakHours: [{ hour: 15, count: 4 }, { hour: 19, count: 3 }, { hour: 8, count: 2 }],
+    peakHours: [
+      { hour: 15, count: 4 },
+      { hour: 19, count: 3 },
+      { hour: 8, count: 2 },
+    ],
   },
   {
     evseId: '30b8dfac87d0d3dd660b3e190635a6ec',
@@ -2515,7 +2764,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 40.0,
     meanDurationMins: 47.9,
     utilisationRate: 20.7,
-    peakHours: [{ hour: 12, count: 13 }, { hour: 11, count: 12 }, { hour: 9, count: 11 }],
+    peakHours: [
+      { hour: 12, count: 13 },
+      { hour: 11, count: 12 },
+      { hour: 9, count: 11 },
+    ],
   },
   {
     evseId: '31deef09c4cb2d7a36e1fbf4729c95c1',
@@ -2572,7 +2825,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 40.2,
     meanDurationMins: 48.9,
     utilisationRate: 32.3,
-    peakHours: [{ hour: 12, count: 4 }, { hour: 8, count: 3 }, { hour: 18, count: 3 }],
+    peakHours: [
+      { hour: 12, count: 4 },
+      { hour: 8, count: 3 },
+      { hour: 18, count: 3 },
+    ],
   },
   {
     evseId: '3301bea79fa15fd54ae2f20f1c5528fe',
@@ -2591,7 +2848,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 34.9,
     meanDurationMins: 32.5,
     utilisationRate: 54.7,
-    peakHours: [{ hour: 10, count: 2 }, { hour: 12, count: 1 }, { hour: 13, count: 1 }],
+    peakHours: [
+      { hour: 10, count: 2 },
+      { hour: 12, count: 1 },
+      { hour: 13, count: 1 },
+    ],
   },
   {
     evseId: '34d0c2604ac8e6c23ecc1912a2e6b258',
@@ -2629,7 +2890,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 685.2,
     meanDurationMins: 611.7,
     utilisationRate: 47.0,
-    peakHours: [{ hour: 0, count: 1 }, { hour: 8, count: 1 }, { hour: 18, count: 1 }],
+    peakHours: [
+      { hour: 0, count: 1 },
+      { hour: 8, count: 1 },
+      { hour: 18, count: 1 },
+    ],
   },
   {
     evseId: '35714cc1766d424181e109892bb30039',
@@ -2648,7 +2913,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 32.4,
     meanDurationMins: 41.6,
     utilisationRate: 25.0,
-    peakHours: [{ hour: 15, count: 12 }, { hour: 10, count: 11 }, { hour: 8, count: 7 }],
+    peakHours: [
+      { hour: 15, count: 12 },
+      { hour: 10, count: 11 },
+      { hour: 8, count: 7 },
+    ],
   },
   {
     evseId: '35a3a97e5235b6197507c7cbfdd8b0a2',
@@ -2686,7 +2955,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 32.5,
     meanDurationMins: 36.7,
     utilisationRate: 13.7,
-    peakHours: [{ hour: 12, count: 8 }, { hour: 10, count: 6 }, { hour: 9, count: 5 }],
+    peakHours: [
+      { hour: 12, count: 8 },
+      { hour: 10, count: 6 },
+      { hour: 9, count: 5 },
+    ],
   },
   {
     evseId: '36863403b24a1b267ce3014cf6ed93cc',
@@ -2724,7 +2997,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 247.0,
     meanDurationMins: 322.2,
     utilisationRate: 53.6,
-    peakHours: [{ hour: 16, count: 2 }, { hour: 9, count: 1 }, { hour: 10, count: 1 }],
+    peakHours: [
+      { hour: 16, count: 2 },
+      { hour: 9, count: 1 },
+      { hour: 10, count: 1 },
+    ],
   },
   {
     evseId: '36f48c9f7b3fd47e1653a3f3b9afa9d9',
@@ -2743,7 +3020,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 302.4,
     meanDurationMins: 399.7,
     utilisationRate: 42.1,
-    peakHours: [{ hour: 8, count: 2 }, { hour: 11, count: 2 }, { hour: 0, count: 1 }],
+    peakHours: [
+      { hour: 8, count: 2 },
+      { hour: 11, count: 2 },
+      { hour: 0, count: 1 },
+    ],
   },
   {
     evseId: '3782ab955eff22d3704f45cd0a3d6d98',
@@ -2762,7 +3043,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 30.5,
     meanDurationMins: 24.2,
     utilisationRate: 25.0,
-    peakHours: [{ hour: 15, count: 2 }, { hour: 9, count: 1 }, { hour: 12, count: 1 }],
+    peakHours: [
+      { hour: 15, count: 2 },
+      { hour: 9, count: 1 },
+      { hour: 12, count: 1 },
+    ],
   },
   {
     evseId: '378ad8f7f2244a538dbedcd2dbfe085b',
@@ -2781,7 +3066,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 222.7,
     meanDurationMins: 286.5,
     utilisationRate: 121.3,
-    peakHours: [{ hour: 8, count: 1 }, { hour: 9, count: 1 }, { hour: 13, count: 1 }],
+    peakHours: [
+      { hour: 8, count: 1 },
+      { hour: 9, count: 1 },
+      { hour: 13, count: 1 },
+    ],
   },
   {
     evseId: '38c70f4b290446f2b02de4e599acb2d0',
@@ -2800,7 +3089,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 25.0,
     meanDurationMins: 32.3,
     utilisationRate: 27.5,
-    peakHours: [{ hour: 12, count: 3 }, { hour: 9, count: 2 }, { hour: 7, count: 1 }],
+    peakHours: [
+      { hour: 12, count: 3 },
+      { hour: 9, count: 2 },
+      { hour: 7, count: 1 },
+    ],
   },
   {
     evseId: '38cbea92f1294a76bfa9a05e929db58a',
@@ -2819,7 +3112,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 36.1,
     meanDurationMins: 59.3,
     utilisationRate: 98.6,
-    peakHours: [{ hour: 11, count: 3 }, { hour: 9, count: 1 }, { hour: 13, count: 1 }],
+    peakHours: [
+      { hour: 11, count: 3 },
+      { hour: 9, count: 1 },
+      { hour: 13, count: 1 },
+    ],
   },
   {
     evseId: '3cc792046dadb4bf8c2d7e091fe71c12',
@@ -2838,7 +3135,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 29.0,
     meanDurationMins: 32.8,
     utilisationRate: 51.7,
-    peakHours: [{ hour: 15, count: 5 }, { hour: 13, count: 3 }, { hour: 10, count: 2 }],
+    peakHours: [
+      { hour: 15, count: 5 },
+      { hour: 13, count: 3 },
+      { hour: 10, count: 2 },
+    ],
   },
   {
     evseId: '3d600c86c017da2c05735be23534647e',
@@ -2857,7 +3158,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 24.4,
     meanDurationMins: 27.1,
     utilisationRate: 8.4,
-    peakHours: [{ hour: 7, count: 6 }, { hour: 9, count: 4 }, { hour: 12, count: 4 }],
+    peakHours: [
+      { hour: 7, count: 6 },
+      { hour: 9, count: 4 },
+      { hour: 12, count: 4 },
+    ],
   },
   {
     evseId: '3d9a14c7d183bf46c000517fb0ee09b0',
@@ -2876,7 +3181,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 34.8,
     meanDurationMins: 43.6,
     utilisationRate: 32.2,
-    peakHours: [{ hour: 9, count: 5 }, { hour: 19, count: 5 }, { hour: 8, count: 4 }],
+    peakHours: [
+      { hour: 9, count: 5 },
+      { hour: 19, count: 5 },
+      { hour: 8, count: 4 },
+    ],
   },
   {
     evseId: '3dd7af7a56d447b598acb092d8849de1',
@@ -2895,7 +3204,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 175.3,
     meanDurationMins: 172.2,
     utilisationRate: 89.5,
-    peakHours: [{ hour: 6, count: 2 }, { hour: 15, count: 2 }, { hour: 10, count: 1 }],
+    peakHours: [
+      { hour: 6, count: 2 },
+      { hour: 15, count: 2 },
+      { hour: 10, count: 1 },
+    ],
   },
   {
     evseId: '3ec4e7b3a887a067bb136ba5503343ba',
@@ -2914,7 +3227,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 28.9,
     meanDurationMins: 39.3,
     utilisationRate: 7.6,
-    peakHours: [{ hour: 16, count: 4 }, { hour: 19, count: 4 }, { hour: 12, count: 3 }],
+    peakHours: [
+      { hour: 16, count: 4 },
+      { hour: 19, count: 4 },
+      { hour: 12, count: 3 },
+    ],
   },
   {
     evseId: '3f5720f9bab18859112333d4ff6a31ad',
@@ -2933,7 +3250,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 36.5,
     meanDurationMins: 47.9,
     utilisationRate: 63.5,
-    peakHours: [{ hour: 17, count: 4 }, { hour: 19, count: 2 }, { hour: 10, count: 1 }],
+    peakHours: [
+      { hour: 17, count: 4 },
+      { hour: 19, count: 2 },
+      { hour: 10, count: 1 },
+    ],
   },
   {
     evseId: '40a1c8c0d2c05e04c43efde9703391c2',
@@ -3009,7 +3330,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 592.3,
     meanDurationMins: 553.1,
     utilisationRate: 107.0,
-    peakHours: [{ hour: 20, count: 6 }, { hour: 19, count: 4 }, { hour: 12, count: 3 }],
+    peakHours: [
+      { hour: 20, count: 6 },
+      { hour: 19, count: 4 },
+      { hour: 12, count: 3 },
+    ],
   },
   {
     evseId: '42976de3670519f30b3d0f5a35558661',
@@ -3028,7 +3353,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 23.6,
     meanDurationMins: 26.8,
     utilisationRate: 10.9,
-    peakHours: [{ hour: 14, count: 8 }, { hour: 16, count: 6 }, { hour: 13, count: 5 }],
+    peakHours: [
+      { hour: 14, count: 8 },
+      { hour: 16, count: 6 },
+      { hour: 13, count: 5 },
+    ],
   },
   {
     evseId: '4358e3c2558ad2d4d12aafe2dc36ea44',
@@ -3047,7 +3376,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 22.5,
     meanDurationMins: 35.7,
     utilisationRate: 26.3,
-    peakHours: [{ hour: 16, count: 5 }, { hour: 8, count: 3 }, { hour: 11, count: 3 }],
+    peakHours: [
+      { hour: 16, count: 5 },
+      { hour: 8, count: 3 },
+      { hour: 11, count: 3 },
+    ],
   },
   {
     evseId: '44240b0c04d14b728cc6fa4be853043f',
@@ -3066,7 +3399,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 453.4,
     meanDurationMins: 404.3,
     utilisationRate: 87.1,
-    peakHours: [{ hour: 9, count: 11 }, { hour: 8, count: 3 }, { hour: 7, count: 1 }],
+    peakHours: [
+      { hour: 9, count: 11 },
+      { hour: 8, count: 3 },
+      { hour: 7, count: 1 },
+    ],
   },
   {
     evseId: '44dd379ee9088b9dca1411aa01803d32',
@@ -3104,7 +3441,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 26.0,
     meanDurationMins: 46.0,
     utilisationRate: 16.7,
-    peakHours: [{ hour: 19, count: 9 }, { hour: 11, count: 7 }, { hour: 10, count: 4 }],
+    peakHours: [
+      { hour: 19, count: 9 },
+      { hour: 11, count: 7 },
+      { hour: 10, count: 4 },
+    ],
   },
   {
     evseId: '4886286edc29676c223ee75f7c8330f3',
@@ -3123,7 +3464,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 136.0,
     meanDurationMins: 175.1,
     utilisationRate: 60.7,
-    peakHours: [{ hour: 11, count: 4 }, { hour: 12, count: 4 }, { hour: 17, count: 3 }],
+    peakHours: [
+      { hour: 11, count: 4 },
+      { hour: 12, count: 4 },
+      { hour: 17, count: 3 },
+    ],
   },
   {
     evseId: '48dac7f03a734b8b5c2d53806914e63c',
@@ -3142,7 +3487,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 36.8,
     meanDurationMins: 42.8,
     utilisationRate: 14.7,
-    peakHours: [{ hour: 15, count: 10 }, { hour: 12, count: 9 }, { hour: 18, count: 8 }],
+    peakHours: [
+      { hour: 15, count: 10 },
+      { hour: 12, count: 9 },
+      { hour: 18, count: 8 },
+    ],
   },
   {
     evseId: '49e3453e41f5e1853e2cfc76cbed09e1',
@@ -3161,7 +3510,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 32.4,
     meanDurationMins: 38.5,
     utilisationRate: 14.9,
-    peakHours: [{ hour: 18, count: 11 }, { hour: 9, count: 10 }, { hour: 13, count: 10 }],
+    peakHours: [
+      { hour: 18, count: 11 },
+      { hour: 9, count: 10 },
+      { hour: 13, count: 10 },
+    ],
   },
   {
     evseId: '4c156058aaeffda970d7597777e1a613',
@@ -3180,7 +3533,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 28.2,
     meanDurationMins: 33.2,
     utilisationRate: 24.4,
-    peakHours: [{ hour: 15, count: 7 }, { hour: 7, count: 5 }, { hour: 17, count: 5 }],
+    peakHours: [
+      { hour: 15, count: 7 },
+      { hour: 7, count: 5 },
+      { hour: 17, count: 5 },
+    ],
   },
   {
     evseId: '4c52b4767775cc2f92fee7b4c0c6d65d',
@@ -3199,7 +3556,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 47.1,
     meanDurationMins: 50.5,
     utilisationRate: 6.7,
-    peakHours: [{ hour: 12, count: 2 }, { hour: 13, count: 2 }, { hour: 9, count: 1 }],
+    peakHours: [
+      { hour: 12, count: 2 },
+      { hour: 13, count: 2 },
+      { hour: 9, count: 1 },
+    ],
   },
   {
     evseId: '4d01eea17541159e088d9b5e1a178207',
@@ -3218,7 +3579,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 222.6,
     meanDurationMins: 222.6,
     utilisationRate: 1057.9,
-    peakHours: [{ hour: 10, count: 1 }, { hour: 16, count: 1 }],
+    peakHours: [
+      { hour: 10, count: 1 },
+      { hour: 16, count: 1 },
+    ],
   },
   {
     evseId: '4d6f34c29b092551e62bddeaccca9613',
@@ -3237,7 +3601,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 42.2,
     meanDurationMins: 38.9,
     utilisationRate: 48.6,
-    peakHours: [{ hour: 7, count: 3 }, { hour: 10, count: 2 }, { hour: 6, count: 1 }],
+    peakHours: [
+      { hour: 7, count: 3 },
+      { hour: 10, count: 2 },
+      { hour: 6, count: 1 },
+    ],
   },
   {
     evseId: '4d94af42354c653562521e7a62b92eab',
@@ -3256,7 +3624,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 221.1,
     meanDurationMins: 154.2,
     utilisationRate: 444.4,
-    peakHours: [{ hour: 13, count: 1 }, { hour: 15, count: 1 }, { hour: 17, count: 1 }],
+    peakHours: [
+      { hour: 13, count: 1 },
+      { hour: 15, count: 1 },
+      { hour: 17, count: 1 },
+    ],
   },
   {
     evseId: '4eb3e1ea889da09ba8703f2b07f056e1',
@@ -3275,7 +3647,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 39.5,
     meanDurationMins: 42.5,
     utilisationRate: 12.6,
-    peakHours: [{ hour: 10, count: 7 }, { hour: 16, count: 6 }, { hour: 9, count: 4 }],
+    peakHours: [
+      { hour: 10, count: 7 },
+      { hour: 16, count: 6 },
+      { hour: 9, count: 4 },
+    ],
   },
   {
     evseId: '4f8f7d4bcd5f4ef5a1d7b641b801b4f9',
@@ -3294,7 +3670,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 57.4,
     meanDurationMins: 53.7,
     utilisationRate: 20.5,
-    peakHours: [{ hour: 13, count: 7 }, { hour: 9, count: 6 }, { hour: 11, count: 5 }],
+    peakHours: [
+      { hour: 13, count: 7 },
+      { hour: 9, count: 6 },
+      { hour: 11, count: 5 },
+    ],
   },
   {
     evseId: '4fcf262dbaf19dfc6d37e68d66c66d28',
@@ -3313,7 +3693,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 23.8,
     meanDurationMins: 30.5,
     utilisationRate: 10.1,
-    peakHours: [{ hour: 15, count: 5 }, { hour: 12, count: 4 }, { hour: 9, count: 2 }],
+    peakHours: [
+      { hour: 15, count: 5 },
+      { hour: 12, count: 4 },
+      { hour: 9, count: 2 },
+    ],
   },
   {
     evseId: '509bd094ca6742acb0ed99906079edfa',
@@ -3332,7 +3716,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 40.0,
     meanDurationMins: 37.2,
     utilisationRate: 32.7,
-    peakHours: [{ hour: 10, count: 4 }, { hour: 11, count: 3 }, { hour: 13, count: 3 }],
+    peakHours: [
+      { hour: 10, count: 4 },
+      { hour: 11, count: 3 },
+      { hour: 13, count: 3 },
+    ],
   },
   {
     evseId: '51b5ef8be89c451c86e76c3aff0a8554',
@@ -3351,7 +3739,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 38.8,
     meanDurationMins: 53.7,
     utilisationRate: 30.5,
-    peakHours: [{ hour: 7, count: 16 }, { hour: 15, count: 11 }, { hour: 14, count: 10 }],
+    peakHours: [
+      { hour: 7, count: 16 },
+      { hour: 15, count: 11 },
+      { hour: 14, count: 10 },
+    ],
   },
   {
     evseId: '51bf039aae465dd1e3798988a741aa2a',
@@ -3370,7 +3762,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 665.2,
     meanDurationMins: 593.9,
     utilisationRate: 61.2,
-    peakHours: [{ hour: 9, count: 3 }, { hour: 14, count: 2 }, { hour: 15, count: 2 }],
+    peakHours: [
+      { hour: 9, count: 3 },
+      { hour: 14, count: 2 },
+      { hour: 15, count: 2 },
+    ],
   },
   {
     evseId: '52431d94993f04d3221464303b8debd4',
@@ -3427,7 +3823,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 189.7,
     meanDurationMins: 303.6,
     utilisationRate: 99.9,
-    peakHours: [{ hour: 10, count: 2 }, { hour: 9, count: 1 }, { hour: 17, count: 1 }],
+    peakHours: [
+      { hour: 10, count: 2 },
+      { hour: 9, count: 1 },
+      { hour: 17, count: 1 },
+    ],
   },
   {
     evseId: '5336bcfb939d45bb9764bd14249a1653',
@@ -3465,7 +3865,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 42.3,
     meanDurationMins: 59.1,
     utilisationRate: 26.0,
-    peakHours: [{ hour: 8, count: 7 }, { hour: 10, count: 6 }, { hour: 12, count: 6 }],
+    peakHours: [
+      { hour: 8, count: 7 },
+      { hour: 10, count: 6 },
+      { hour: 12, count: 6 },
+    ],
   },
   {
     evseId: '55c5de46e42b4087b716e202e7d25285',
@@ -3484,7 +3888,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 27.5,
     meanDurationMins: 28.0,
     utilisationRate: 11.2,
-    peakHours: [{ hour: 13, count: 12 }, { hour: 17, count: 11 }, { hour: 11, count: 10 }],
+    peakHours: [
+      { hour: 13, count: 12 },
+      { hour: 17, count: 11 },
+      { hour: 11, count: 10 },
+    ],
   },
   {
     evseId: '5616bff575ec0f3bb9a99b7835006526',
@@ -3503,7 +3911,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 407.3,
     meanDurationMins: 365.3,
     utilisationRate: 140.0,
-    peakHours: [{ hour: 8, count: 2 }, { hour: 9, count: 1 }, { hour: 17, count: 1 }],
+    peakHours: [
+      { hour: 8, count: 2 },
+      { hour: 9, count: 1 },
+      { hour: 17, count: 1 },
+    ],
   },
   {
     evseId: '56261844274549a70b4f4de98782a695',
@@ -3522,7 +3934,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 63.9,
     meanDurationMins: 63.9,
     utilisationRate: 174.9,
-    peakHours: [{ hour: 0, count: 1 }, { hour: 8, count: 1 }],
+    peakHours: [
+      { hour: 0, count: 1 },
+      { hour: 8, count: 1 },
+    ],
   },
   {
     evseId: '5691021cfdfb5fe8edfa69433361ff07',
@@ -3560,7 +3975,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 298.1,
     meanDurationMins: 353.0,
     utilisationRate: 112.0,
-    peakHours: [{ hour: 11, count: 2 }, { hour: 0, count: 1 }, { hour: 6, count: 1 }],
+    peakHours: [
+      { hour: 11, count: 2 },
+      { hour: 0, count: 1 },
+      { hour: 6, count: 1 },
+    ],
   },
   {
     evseId: '5736bff219ee4558a6df3cf869d102f1',
@@ -3579,7 +3998,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 43.9,
     meanDurationMins: 50.3,
     utilisationRate: 17.2,
-    peakHours: [{ hour: 19, count: 9 }, { hour: 11, count: 8 }, { hour: 17, count: 7 }],
+    peakHours: [
+      { hour: 19, count: 9 },
+      { hour: 11, count: 8 },
+      { hour: 17, count: 7 },
+    ],
   },
   {
     evseId: '580d916b3318400ea3f99b81bcb5fb67',
@@ -3598,7 +4021,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 269.5,
     meanDurationMins: 342.4,
     utilisationRate: 168.1,
-    peakHours: [{ hour: 8, count: 3 }, { hour: 9, count: 2 }, { hour: 18, count: 2 }],
+    peakHours: [
+      { hour: 8, count: 3 },
+      { hour: 9, count: 2 },
+      { hour: 18, count: 2 },
+    ],
   },
   {
     evseId: '58bdcd3402de48d88aabb5488a6fcbe5',
@@ -3674,7 +4101,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 40.0,
     meanDurationMins: 40.9,
     utilisationRate: 18.6,
-    peakHours: [{ hour: 11, count: 7 }, { hour: 17, count: 7 }, { hour: 14, count: 6 }],
+    peakHours: [
+      { hour: 11, count: 7 },
+      { hour: 17, count: 7 },
+      { hour: 14, count: 6 },
+    ],
   },
   {
     evseId: '5a1f96b969ca4bb0918cf6681540b772',
@@ -3693,7 +4124,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 39.3,
     meanDurationMins: 43.5,
     utilisationRate: 37.5,
-    peakHours: [{ hour: 16, count: 16 }, { hour: 11, count: 14 }, { hour: 18, count: 14 }],
+    peakHours: [
+      { hour: 16, count: 16 },
+      { hour: 11, count: 14 },
+      { hour: 18, count: 14 },
+    ],
   },
   {
     evseId: '5b4ec3bb40bb0b65a94fc404078a7fbd',
@@ -3712,7 +4147,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 188.2,
     meanDurationMins: 172.4,
     utilisationRate: 286.4,
-    peakHours: [{ hour: 7, count: 2 }, { hour: 6, count: 1 }, { hour: 17, count: 1 }],
+    peakHours: [
+      { hour: 7, count: 2 },
+      { hour: 6, count: 1 },
+      { hour: 17, count: 1 },
+    ],
   },
   {
     evseId: '5bdc8294e6724f5d5360352c5210d967',
@@ -3731,7 +4170,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 654.5,
     meanDurationMins: 530.5,
     utilisationRate: 48.4,
-    peakHours: [{ hour: 19, count: 2 }, { hour: 7, count: 1 }, { hour: 8, count: 1 }],
+    peakHours: [
+      { hour: 19, count: 2 },
+      { hour: 7, count: 1 },
+      { hour: 8, count: 1 },
+    ],
   },
   {
     evseId: '5de312e548864a76bf4d54bf1523e67c',
@@ -3750,7 +4193,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 615.0,
     meanDurationMins: 622.9,
     utilisationRate: 127.0,
-    peakHours: [{ hour: 0, count: 2 }, { hour: 1, count: 1 }, { hour: 15, count: 1 }],
+    peakHours: [
+      { hour: 0, count: 2 },
+      { hour: 1, count: 1 },
+      { hour: 15, count: 1 },
+    ],
   },
   {
     evseId: '602866f3b406cc2973a2fef432fb53f5',
@@ -3769,7 +4216,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 35.0,
     meanDurationMins: 39.3,
     utilisationRate: 73.0,
-    peakHours: [{ hour: 13, count: 4 }, { hour: 10, count: 2 }, { hour: 11, count: 2 }],
+    peakHours: [
+      { hour: 13, count: 4 },
+      { hour: 10, count: 2 },
+      { hour: 11, count: 2 },
+    ],
   },
   {
     evseId: '605a97582e9880e762d79792b4514a91',
@@ -3788,7 +4239,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 341.6,
     meanDurationMins: 341.6,
     utilisationRate: 17.3,
-    peakHours: [{ hour: 21, count: 1 }, { hour: 23, count: 1 }],
+    peakHours: [
+      { hour: 21, count: 1 },
+      { hour: 23, count: 1 },
+    ],
   },
   {
     evseId: '61ad6c7f751f94040e2514a9638f4a48',
@@ -3807,7 +4261,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 37.3,
     meanDurationMins: 332.2,
     utilisationRate: 78.4,
-    peakHours: [{ hour: 20, count: 2 }, { hour: 9, count: 1 }, { hour: 14, count: 1 }],
+    peakHours: [
+      { hour: 20, count: 2 },
+      { hour: 9, count: 1 },
+      { hour: 14, count: 1 },
+    ],
   },
   {
     evseId: '627326e283d04c37bc1af9cd6d215889',
@@ -3845,7 +4303,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 168.2,
     meanDurationMins: 360.3,
     utilisationRate: 345.0,
-    peakHours: [{ hour: 3, count: 1 }, { hour: 13, count: 1 }, { hour: 18, count: 1 }],
+    peakHours: [
+      { hour: 3, count: 1 },
+      { hour: 13, count: 1 },
+      { hour: 18, count: 1 },
+    ],
   },
   {
     evseId: '6647715f7b8e58da4d77d21a52af66ed',
@@ -3864,7 +4326,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 245.5,
     meanDurationMins: 251.7,
     utilisationRate: 80.2,
-    peakHours: [{ hour: 9, count: 2 }, { hour: 1, count: 1 }, { hour: 8, count: 1 }],
+    peakHours: [
+      { hour: 9, count: 2 },
+      { hour: 1, count: 1 },
+      { hour: 8, count: 1 },
+    ],
   },
   {
     evseId: '667b3b8d8deefcb399e611cf6f4632fd',
@@ -3883,7 +4349,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 659.8,
     meanDurationMins: 534.6,
     utilisationRate: 92.8,
-    peakHours: [{ hour: 19, count: 6 }, { hour: 20, count: 5 }, { hour: 18, count: 4 }],
+    peakHours: [
+      { hour: 19, count: 6 },
+      { hour: 20, count: 5 },
+      { hour: 18, count: 4 },
+    ],
   },
   {
     evseId: '66bc4421958c4eba9b98ab4d74657b61',
@@ -3902,7 +4372,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 32.0,
     meanDurationMins: 36.4,
     utilisationRate: 35.0,
-    peakHours: [{ hour: 8, count: 2 }, { hour: 12, count: 2 }, { hour: 17, count: 2 }],
+    peakHours: [
+      { hour: 8, count: 2 },
+      { hour: 12, count: 2 },
+      { hour: 17, count: 2 },
+    ],
   },
   {
     evseId: '67c3b578124975c7d7193cba496dfeab',
@@ -3921,7 +4395,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 28.8,
     meanDurationMins: 28.7,
     utilisationRate: 24.5,
-    peakHours: [{ hour: 17, count: 9 }, { hour: 11, count: 8 }, { hour: 13, count: 8 }],
+    peakHours: [
+      { hour: 17, count: 9 },
+      { hour: 11, count: 8 },
+      { hour: 13, count: 8 },
+    ],
   },
   {
     evseId: '682203024920c73960a9197fa14f5afd',
@@ -3940,7 +4418,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 40.0,
     meanDurationMins: 42.1,
     utilisationRate: 1061.2,
-    peakHours: [{ hour: 14, count: 3 }, { hour: 22, count: 3 }, { hour: 0, count: 2 }],
+    peakHours: [
+      { hour: 14, count: 3 },
+      { hour: 22, count: 3 },
+      { hour: 0, count: 2 },
+    ],
   },
   {
     evseId: '688fc3903519493789f88978655a4ac0',
@@ -3997,7 +4479,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 30.0,
     meanDurationMins: 34.3,
     utilisationRate: 11.0,
-    peakHours: [{ hour: 11, count: 5 }, { hour: 14, count: 5 }, { hour: 7, count: 4 }],
+    peakHours: [
+      { hour: 11, count: 5 },
+      { hour: 14, count: 5 },
+      { hour: 7, count: 4 },
+    ],
   },
   {
     evseId: '69f4ef57bdbc2dc7e2f491f69df2d249',
@@ -4016,7 +4502,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 39.2,
     meanDurationMins: 56.2,
     utilisationRate: 90.1,
-    peakHours: [{ hour: 15, count: 4 }, { hour: 10, count: 3 }, { hour: 13, count: 3 }],
+    peakHours: [
+      { hour: 15, count: 4 },
+      { hour: 10, count: 3 },
+      { hour: 13, count: 3 },
+    ],
   },
   {
     evseId: '6a69519ae84eab873dcebe2165b76538',
@@ -4035,7 +4525,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 39.5,
     meanDurationMins: 43.4,
     utilisationRate: 24.6,
-    peakHours: [{ hour: 11, count: 6 }, { hour: 13, count: 6 }, { hour: 10, count: 5 }],
+    peakHours: [
+      { hour: 11, count: 6 },
+      { hour: 13, count: 6 },
+      { hour: 10, count: 5 },
+    ],
   },
   {
     evseId: '6a73716a7d3aad9ae21cdeb91de14718',
@@ -4054,7 +4548,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 50.0,
     meanDurationMins: 48.7,
     utilisationRate: 14.3,
-    peakHours: [{ hour: 12, count: 11 }, { hour: 10, count: 9 }, { hour: 13, count: 8 }],
+    peakHours: [
+      { hour: 12, count: 11 },
+      { hour: 10, count: 9 },
+      { hour: 13, count: 8 },
+    ],
   },
   {
     evseId: '6bca0a965d2749f09411576f66366279',
@@ -4073,7 +4571,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 35.0,
     meanDurationMins: 38.7,
     utilisationRate: 17.2,
-    peakHours: [{ hour: 17, count: 8 }, { hour: 18, count: 8 }, { hour: 21, count: 8 }],
+    peakHours: [
+      { hour: 17, count: 8 },
+      { hour: 18, count: 8 },
+      { hour: 21, count: 8 },
+    ],
   },
   {
     evseId: '6c5ef9da018e59660bc09264a1738d5c',
@@ -4092,7 +4594,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 34.5,
     meanDurationMins: 37.7,
     utilisationRate: 21.2,
-    peakHours: [{ hour: 11, count: 10 }, { hour: 15, count: 9 }, { hour: 16, count: 9 }],
+    peakHours: [
+      { hour: 11, count: 10 },
+      { hour: 15, count: 9 },
+      { hour: 16, count: 9 },
+    ],
   },
   {
     evseId: '6cf27a5d84854691b01ea9e559e6db86',
@@ -4111,7 +4617,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 65.9,
     meanDurationMins: 90.7,
     utilisationRate: 77.3,
-    peakHours: [{ hour: 17, count: 2 }, { hour: 5, count: 1 }, { hour: 9, count: 1 }],
+    peakHours: [
+      { hour: 17, count: 2 },
+      { hour: 5, count: 1 },
+      { hour: 9, count: 1 },
+    ],
   },
   {
     evseId: '6d1342769aeab6c3d55de787fd6c226f',
@@ -4130,7 +4640,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 130.4,
     meanDurationMins: 312.4,
     utilisationRate: 93.5,
-    peakHours: [{ hour: 12, count: 2 }, { hour: 10, count: 1 }, { hour: 13, count: 1 }],
+    peakHours: [
+      { hour: 12, count: 2 },
+      { hour: 10, count: 1 },
+      { hour: 13, count: 1 },
+    ],
   },
   {
     evseId: '6df3bacc688ee58c2db072b57d051bd4',
@@ -4149,7 +4663,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 28.3,
     meanDurationMins: 40.6,
     utilisationRate: 104.0,
-    peakHours: [{ hour: 7, count: 2 }, { hour: 9, count: 2 }, { hour: 10, count: 2 }],
+    peakHours: [
+      { hour: 7, count: 2 },
+      { hour: 9, count: 2 },
+      { hour: 10, count: 2 },
+    ],
   },
   {
     evseId: '6f0e1cdedcdc93f304ffd4a8a411b07f',
@@ -4168,7 +4686,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 47.5,
     meanDurationMins: 47.0,
     utilisationRate: 23.8,
-    peakHours: [{ hour: 9, count: 7 }, { hour: 8, count: 4 }, { hour: 6, count: 1 }],
+    peakHours: [
+      { hour: 9, count: 7 },
+      { hour: 8, count: 4 },
+      { hour: 6, count: 1 },
+    ],
   },
   {
     evseId: '6f8f083250185acd7677dd7ee1ddb2d5',
@@ -4187,7 +4709,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 40.0,
     meanDurationMins: 39.8,
     utilisationRate: 19.7,
-    peakHours: [{ hour: 11, count: 7 }, { hour: 14, count: 7 }, { hour: 12, count: 6 }],
+    peakHours: [
+      { hour: 11, count: 7 },
+      { hour: 14, count: 7 },
+      { hour: 12, count: 6 },
+    ],
   },
   {
     evseId: '7206f0ee0bd2984a92b673e2883b8262',
@@ -4206,7 +4732,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 500.7,
     meanDurationMins: 441.4,
     utilisationRate: 94.7,
-    peakHours: [{ hour: 7, count: 11 }, { hour: 6, count: 3 }, { hour: 1, count: 2 }],
+    peakHours: [
+      { hour: 7, count: 11 },
+      { hour: 6, count: 3 },
+      { hour: 1, count: 2 },
+    ],
   },
   {
     evseId: '73a31d49e4ff479b80ab86c07dd81163',
@@ -4225,7 +4755,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 22.6,
     meanDurationMins: 25.4,
     utilisationRate: 16.4,
-    peakHours: [{ hour: 14, count: 4 }, { hour: 16, count: 4 }, { hour: 9, count: 2 }],
+    peakHours: [
+      { hour: 14, count: 4 },
+      { hour: 16, count: 4 },
+      { hour: 9, count: 2 },
+    ],
   },
   {
     evseId: '73d58b6033787504b056f7ef6f643bea',
@@ -4244,7 +4778,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 39.2,
     meanDurationMins: 41.5,
     utilisationRate: 22.8,
-    peakHours: [{ hour: 13, count: 16 }, { hour: 9, count: 12 }, { hour: 15, count: 12 }],
+    peakHours: [
+      { hour: 13, count: 16 },
+      { hour: 9, count: 12 },
+      { hour: 15, count: 12 },
+    ],
   },
   {
     evseId: '73fed39d0c10f2341b55bd6be87c8254',
@@ -4282,7 +4820,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 35.2,
     meanDurationMins: 40.8,
     utilisationRate: 12.3,
-    peakHours: [{ hour: 19, count: 9 }, { hour: 13, count: 8 }, { hour: 10, count: 7 }],
+    peakHours: [
+      { hour: 19, count: 9 },
+      { hour: 13, count: 8 },
+      { hour: 10, count: 7 },
+    ],
   },
   {
     evseId: '75bb1e0cd99be0b4553c372885f76cd4',
@@ -4320,7 +4862,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 79.7,
     meanDurationMins: 79.7,
     utilisationRate: 157.1,
-    peakHours: [{ hour: 7, count: 1 }, { hour: 8, count: 1 }],
+    peakHours: [
+      { hour: 7, count: 1 },
+      { hour: 8, count: 1 },
+    ],
   },
   {
     evseId: '784ae392a015ed0a45e7279689ff25ab',
@@ -4339,7 +4884,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 330.0,
     meanDurationMins: 330.0,
     utilisationRate: 377.1,
-    peakHours: [{ hour: 7, count: 1 }, { hour: 13, count: 1 }],
+    peakHours: [
+      { hour: 7, count: 1 },
+      { hour: 13, count: 1 },
+    ],
   },
   {
     evseId: '78abba0f5a37a228f1c7012d2d315fad',
@@ -4396,7 +4944,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 40.0,
     meanDurationMins: 49.1,
     utilisationRate: 19.3,
-    peakHours: [{ hour: 13, count: 7 }, { hour: 9, count: 6 }, { hour: 10, count: 6 }],
+    peakHours: [
+      { hour: 13, count: 7 },
+      { hour: 9, count: 6 },
+      { hour: 10, count: 6 },
+    ],
   },
   {
     evseId: '7aca3b65603340d09729f2662ec72d03',
@@ -4415,7 +4967,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 492.4,
     meanDurationMins: 518.1,
     utilisationRate: 82.1,
-    peakHours: [{ hour: 9, count: 1 }, { hour: 13, count: 1 }, { hour: 16, count: 1 }],
+    peakHours: [
+      { hour: 9, count: 1 },
+      { hour: 13, count: 1 },
+      { hour: 16, count: 1 },
+    ],
   },
   {
     evseId: '7b7438897bf3475c7b8cffc612b8551a',
@@ -4453,7 +5009,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 34.9,
     meanDurationMins: 39.9,
     utilisationRate: 43.8,
-    peakHours: [{ hour: 0, count: 2 }, { hour: 8, count: 2 }, { hour: 11, count: 2 }],
+    peakHours: [
+      { hour: 0, count: 2 },
+      { hour: 8, count: 2 },
+      { hour: 11, count: 2 },
+    ],
   },
   {
     evseId: '7c7fe5d5c7cdd69aa25480dc075716a9',
@@ -4472,7 +5032,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 54.4,
     meanDurationMins: 53.0,
     utilisationRate: 31.7,
-    peakHours: [{ hour: 11, count: 2 }, { hour: 14, count: 2 }, { hour: 15, count: 2 }],
+    peakHours: [
+      { hour: 11, count: 2 },
+      { hour: 14, count: 2 },
+      { hour: 15, count: 2 },
+    ],
   },
   {
     evseId: '7ca7ed1faabd4d199fb30ca68cc00ddb',
@@ -4510,7 +5074,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 30.0,
     meanDurationMins: 39.1,
     utilisationRate: 12.8,
-    peakHours: [{ hour: 12, count: 8 }, { hour: 17, count: 8 }, { hour: 18, count: 7 }],
+    peakHours: [
+      { hour: 12, count: 8 },
+      { hour: 17, count: 8 },
+      { hour: 18, count: 7 },
+    ],
   },
   {
     evseId: '7d3806a41e2002b32c615ebd809cc528',
@@ -4548,7 +5116,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 35.0,
     meanDurationMins: 39.3,
     utilisationRate: 5.2,
-    peakHours: [{ hour: 9, count: 5 }, { hour: 11, count: 4 }, { hour: 12, count: 4 }],
+    peakHours: [
+      { hour: 9, count: 5 },
+      { hour: 11, count: 4 },
+      { hour: 12, count: 4 },
+    ],
   },
   {
     evseId: '7e279c0a607eaa5b3ed1cd5cd8285e41',
@@ -4586,7 +5158,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 18.2,
     meanDurationMins: 18.2,
     utilisationRate: 44.1,
-    peakHours: [{ hour: 6, count: 1 }, { hour: 10, count: 1 }],
+    peakHours: [
+      { hour: 6, count: 1 },
+      { hour: 10, count: 1 },
+    ],
   },
   {
     evseId: '7f0170ec440dc82850b1bd37fd3a85d4',
@@ -4605,7 +5180,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 27.1,
     meanDurationMins: 33.9,
     utilisationRate: 20.9,
-    peakHours: [{ hour: 6, count: 5 }, { hour: 12, count: 3 }, { hour: 15, count: 3 }],
+    peakHours: [
+      { hour: 6, count: 5 },
+      { hour: 12, count: 3 },
+      { hour: 15, count: 3 },
+    ],
   },
   {
     evseId: '7fd937b9460c2ad589e78b7bf8342182',
@@ -4624,7 +5203,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 86.4,
     meanDurationMins: 117.4,
     utilisationRate: 44.0,
-    peakHours: [{ hour: 9, count: 11 }, { hour: 12, count: 11 }, { hour: 18, count: 9 }],
+    peakHours: [
+      { hour: 9, count: 11 },
+      { hour: 12, count: 11 },
+      { hour: 18, count: 9 },
+    ],
   },
   {
     evseId: '810eab933ac66ccb6498e00549aafb61',
@@ -4643,7 +5226,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 27.9,
     meanDurationMins: 42.2,
     utilisationRate: 30.8,
-    peakHours: [{ hour: 15, count: 4 }, { hour: 11, count: 3 }, { hour: 12, count: 3 }],
+    peakHours: [
+      { hour: 15, count: 4 },
+      { hour: 11, count: 3 },
+      { hour: 12, count: 3 },
+    ],
   },
   {
     evseId: '813764631d456fb176865609d2f8bb53',
@@ -4662,7 +5249,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 35.0,
     meanDurationMins: 34.5,
     utilisationRate: 18.6,
-    peakHours: [{ hour: 12, count: 8 }, { hour: 15, count: 7 }, { hour: 16, count: 5 }],
+    peakHours: [
+      { hour: 12, count: 8 },
+      { hour: 15, count: 7 },
+      { hour: 16, count: 5 },
+    ],
   },
   {
     evseId: '82844288286144c79b5719b1db08c1db',
@@ -4681,7 +5272,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 287.5,
     meanDurationMins: 300.0,
     utilisationRate: 47.4,
-    peakHours: [{ hour: 8, count: 12 }, { hour: 7, count: 4 }, { hour: 12, count: 3 }],
+    peakHours: [
+      { hour: 8, count: 12 },
+      { hour: 7, count: 4 },
+      { hour: 12, count: 3 },
+    ],
   },
   {
     evseId: '841470089feb1a209d6e73b3fb942862',
@@ -4700,7 +5295,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 35.0,
     meanDurationMins: 38.0,
     utilisationRate: 20.8,
-    peakHours: [{ hour: 12, count: 10 }, { hour: 13, count: 10 }, { hour: 11, count: 8 }],
+    peakHours: [
+      { hour: 12, count: 10 },
+      { hour: 13, count: 10 },
+      { hour: 11, count: 8 },
+    ],
   },
   {
     evseId: '8511e6d0768eec2509c493252325fd55',
@@ -4719,7 +5318,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 166.5,
     meanDurationMins: 166.5,
     utilisationRate: 718.9,
-    peakHours: [{ hour: 13, count: 1 }, { hour: 15, count: 1 }],
+    peakHours: [
+      { hour: 13, count: 1 },
+      { hour: 15, count: 1 },
+    ],
   },
   {
     evseId: '85b5714abc33fbfba17e9263dde9af8f',
@@ -4738,7 +5340,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 40.0,
     meanDurationMins: 41.6,
     utilisationRate: 24.9,
-    peakHours: [{ hour: 0, count: 6 }, { hour: 15, count: 6 }, { hour: 16, count: 6 }],
+    peakHours: [
+      { hour: 0, count: 6 },
+      { hour: 15, count: 6 },
+      { hour: 16, count: 6 },
+    ],
   },
   {
     evseId: '85eafb2d8cfd1e31f68d0b8f7939af76',
@@ -4757,7 +5363,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 206.6,
     meanDurationMins: 212.6,
     utilisationRate: 24.5,
-    peakHours: [{ hour: 11, count: 2 }, { hour: 14, count: 1 }],
+    peakHours: [
+      { hour: 11, count: 2 },
+      { hour: 14, count: 1 },
+    ],
   },
   {
     evseId: '86d3a5e0a92803dcde21ebae2bbaee6e',
@@ -4814,7 +5423,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 55.4,
     meanDurationMins: 63.3,
     utilisationRate: 60.2,
-    peakHours: [{ hour: 10, count: 4 }, { hour: 8, count: 2 }, { hour: 9, count: 1 }],
+    peakHours: [
+      { hour: 10, count: 4 },
+      { hour: 8, count: 2 },
+      { hour: 9, count: 1 },
+    ],
   },
   {
     evseId: '8ba4f471c07134de543df4f1137c1fd0',
@@ -4852,7 +5465,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 35.0,
     meanDurationMins: 38.0,
     utilisationRate: 5.7,
-    peakHours: [{ hour: 0, count: 2 }, { hour: 2, count: 2 }, { hour: 8, count: 2 }],
+    peakHours: [
+      { hour: 0, count: 2 },
+      { hour: 2, count: 2 },
+      { hour: 8, count: 2 },
+    ],
   },
   {
     evseId: '8c3395974848edf92923f688df0278f0',
@@ -4871,7 +5488,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 22.2,
     meanDurationMins: 42.4,
     utilisationRate: 38.4,
-    peakHours: [{ hour: 12, count: 7 }, { hour: 7, count: 3 }, { hour: 17, count: 3 }],
+    peakHours: [
+      { hour: 12, count: 7 },
+      { hour: 7, count: 3 },
+      { hour: 17, count: 3 },
+    ],
   },
   {
     evseId: '8c75073879d34f4b8dfdd168b8deaf46',
@@ -4890,7 +5511,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 31.1,
     meanDurationMins: 34.4,
     utilisationRate: 29.2,
-    peakHours: [{ hour: 10, count: 7 }, { hour: 14, count: 6 }, { hour: 8, count: 4 }],
+    peakHours: [
+      { hour: 10, count: 7 },
+      { hour: 14, count: 6 },
+      { hour: 8, count: 4 },
+    ],
   },
   {
     evseId: '8f70cd60eb386bf69e430d7f60ef5262',
@@ -4909,7 +5534,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 30.0,
     meanDurationMins: 28.3,
     utilisationRate: 0.6,
-    peakHours: [{ hour: 13, count: 2 }, { hour: 22, count: 1 }],
+    peakHours: [
+      { hour: 13, count: 2 },
+      { hour: 22, count: 1 },
+    ],
   },
   {
     evseId: '90102399b989218d6ea275fa922e2a0d',
@@ -4947,7 +5575,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 78.3,
     meanDurationMins: 197.1,
     utilisationRate: 34.3,
-    peakHours: [{ hour: 14, count: 2 }, { hour: 0, count: 1 }, { hour: 12, count: 1 }],
+    peakHours: [
+      { hour: 14, count: 2 },
+      { hour: 0, count: 1 },
+      { hour: 12, count: 1 },
+    ],
   },
   {
     evseId: '90b4e257184687b0ab51e87216b8f9b4',
@@ -4966,7 +5598,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 28.7,
     meanDurationMins: 33.2,
     utilisationRate: 167.5,
-    peakHours: [{ hour: 17, count: 4 }, { hour: 12, count: 3 }, { hour: 8, count: 1 }],
+    peakHours: [
+      { hour: 17, count: 4 },
+      { hour: 12, count: 3 },
+      { hour: 8, count: 1 },
+    ],
   },
   {
     evseId: '9108be2e388dddf776af82473fe66602',
@@ -4985,7 +5621,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 15.6,
     meanDurationMins: 17.5,
     utilisationRate: 13.6,
-    peakHours: [{ hour: 7, count: 3 }, { hour: 11, count: 3 }, { hour: 13, count: 3 }],
+    peakHours: [
+      { hour: 7, count: 3 },
+      { hour: 11, count: 3 },
+      { hour: 13, count: 3 },
+    ],
   },
   {
     evseId: '920ee67387274532db075525f0c7912d',
@@ -5004,7 +5644,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 84.4,
     meanDurationMins: 91.8,
     utilisationRate: 14.9,
-    peakHours: [{ hour: 12, count: 4 }, { hour: 6, count: 1 }, { hour: 8, count: 1 }],
+    peakHours: [
+      { hour: 12, count: 4 },
+      { hour: 6, count: 1 },
+      { hour: 8, count: 1 },
+    ],
   },
   {
     evseId: '93fa4747a1d0f133a01306dbb448425b',
@@ -5023,7 +5667,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 10.0,
     meanDurationMins: 13.7,
     utilisationRate: 48.2,
-    peakHours: [{ hour: 6, count: 14 }, { hour: 5, count: 13 }, { hour: 15, count: 11 }],
+    peakHours: [
+      { hour: 6, count: 14 },
+      { hour: 5, count: 13 },
+      { hour: 15, count: 11 },
+    ],
   },
   {
     evseId: '9474d67688a060bd728b045d017b8615',
@@ -5061,7 +5709,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 36.9,
     meanDurationMins: 42.2,
     utilisationRate: 15.6,
-    peakHours: [{ hour: 7, count: 12 }, { hour: 16, count: 11 }, { hour: 14, count: 9 }],
+    peakHours: [
+      { hour: 7, count: 12 },
+      { hour: 16, count: 11 },
+      { hour: 14, count: 9 },
+    ],
   },
   {
     evseId: '9528058b1df146c89247e167ec9e941d',
@@ -5080,7 +5732,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 485.7,
     meanDurationMins: 543.1,
     utilisationRate: 27.5,
-    peakHours: [{ hour: 22, count: 2 }, { hour: 0, count: 1 }, { hour: 1, count: 1 }],
+    peakHours: [
+      { hour: 22, count: 2 },
+      { hour: 0, count: 1 },
+      { hour: 1, count: 1 },
+    ],
   },
   {
     evseId: '958a0b322adb4a68a39a5b65b210ea9c',
@@ -5099,7 +5755,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 274.0,
     meanDurationMins: 356.1,
     utilisationRate: 121.4,
-    peakHours: [{ hour: 0, count: 1 }, { hour: 5, count: 1 }, { hour: 6, count: 1 }],
+    peakHours: [
+      { hour: 0, count: 1 },
+      { hour: 5, count: 1 },
+      { hour: 6, count: 1 },
+    ],
   },
   {
     evseId: '95b9ff7a49041b2310a36183b54fec68',
@@ -5118,7 +5778,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 35.1,
     meanDurationMins: 46.4,
     utilisationRate: 103.0,
-    peakHours: [{ hour: 15, count: 3 }, { hour: 14, count: 2 }, { hour: 11, count: 1 }],
+    peakHours: [
+      { hour: 15, count: 3 },
+      { hour: 14, count: 2 },
+      { hour: 11, count: 1 },
+    ],
   },
   {
     evseId: '95db7067cc334e269795aeba9a5a2949',
@@ -5156,7 +5820,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 30.0,
     meanDurationMins: 37.7,
     utilisationRate: 32.4,
-    peakHours: [{ hour: 7, count: 2 }, { hour: 10, count: 2 }, { hour: 14, count: 2 }],
+    peakHours: [
+      { hour: 7, count: 2 },
+      { hour: 10, count: 2 },
+      { hour: 14, count: 2 },
+    ],
   },
   {
     evseId: '973fe74f0fcc9fa25073bd98de47504a',
@@ -5175,7 +5843,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 48.8,
     meanDurationMins: 52.3,
     utilisationRate: 167.8,
-    peakHours: [{ hour: 12, count: 1 }, { hour: 13, count: 1 }, { hour: 14, count: 1 }],
+    peakHours: [
+      { hour: 12, count: 1 },
+      { hour: 13, count: 1 },
+      { hour: 14, count: 1 },
+    ],
   },
   {
     evseId: '977a4b9cb7fdba866b63f96d2c87a220',
@@ -5194,7 +5866,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 50.0,
     meanDurationMins: 51.1,
     utilisationRate: 13.6,
-    peakHours: [{ hour: 21, count: 4 }, { hour: 15, count: 3 }, { hour: 17, count: 3 }],
+    peakHours: [
+      { hour: 21, count: 4 },
+      { hour: 15, count: 3 },
+      { hour: 17, count: 3 },
+    ],
   },
   {
     evseId: '984b55244df4b20d6831d5499b94b69f',
@@ -5232,7 +5908,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 35.2,
     meanDurationMins: 42.2,
     utilisationRate: 8.7,
-    peakHours: [{ hour: 9, count: 6 }, { hour: 10, count: 6 }, { hour: 16, count: 6 }],
+    peakHours: [
+      { hour: 9, count: 6 },
+      { hour: 10, count: 6 },
+      { hour: 16, count: 6 },
+    ],
   },
   {
     evseId: '9895f209ee5b0c1160fca558bd2e6d77',
@@ -5251,7 +5931,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 245.4,
     meanDurationMins: 431.8,
     utilisationRate: 41.3,
-    peakHours: [{ hour: 16, count: 4 }, { hour: 17, count: 2 }, { hour: 8, count: 1 }],
+    peakHours: [
+      { hour: 16, count: 4 },
+      { hour: 17, count: 2 },
+      { hour: 8, count: 1 },
+    ],
   },
   {
     evseId: '98c04772c281d01919622dd1504fd5bb',
@@ -5289,7 +5973,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 47.5,
     meanDurationMins: 59.2,
     utilisationRate: 4.0,
-    peakHours: [{ hour: 9, count: 2 }, { hour: 11, count: 1 }, { hour: 13, count: 1 }],
+    peakHours: [
+      { hour: 9, count: 2 },
+      { hour: 11, count: 1 },
+      { hour: 13, count: 1 },
+    ],
   },
   {
     evseId: '9a4c2b4755294500888774c95f2d92fb',
@@ -5308,7 +5996,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 61.5,
     meanDurationMins: 54.4,
     utilisationRate: 2.8,
-    peakHours: [{ hour: 8, count: 2 }, { hour: 7, count: 1 }, { hour: 13, count: 1 }],
+    peakHours: [
+      { hour: 8, count: 2 },
+      { hour: 7, count: 1 },
+      { hour: 13, count: 1 },
+    ],
   },
   {
     evseId: '9a94daf25a50c441a7b9a7bbc0a61fd9',
@@ -5365,7 +6057,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 162.5,
     meanDurationMins: 162.5,
     utilisationRate: 181.8,
-    peakHours: [{ hour: 12, count: 1 }, { hour: 14, count: 1 }],
+    peakHours: [
+      { hour: 12, count: 1 },
+      { hour: 14, count: 1 },
+    ],
   },
   {
     evseId: '9c514e9ebffe2ab20f97d461748921b8',
@@ -5384,7 +6079,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 95.0,
     meanDurationMins: 115.6,
     utilisationRate: 27.0,
-    peakHours: [{ hour: 11, count: 4 }, { hour: 13, count: 3 }, { hour: 12, count: 2 }],
+    peakHours: [
+      { hour: 11, count: 4 },
+      { hour: 13, count: 3 },
+      { hour: 12, count: 2 },
+    ],
   },
   {
     evseId: '9c80cc22e190fdb0dee7a59de9c6a439',
@@ -5403,7 +6102,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 10.4,
     meanDurationMins: 20.0,
     utilisationRate: 0.8,
-    peakHours: [{ hour: 9, count: 1 }, { hour: 13, count: 1 }, { hour: 15, count: 1 }],
+    peakHours: [
+      { hour: 9, count: 1 },
+      { hour: 13, count: 1 },
+      { hour: 15, count: 1 },
+    ],
   },
   {
     evseId: '9caaee66412e59c62fc844b64a71a351',
@@ -5422,7 +6125,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 162.3,
     meanDurationMins: 198.0,
     utilisationRate: 63.3,
-    peakHours: [{ hour: 9, count: 5 }, { hour: 18, count: 4 }, { hour: 1, count: 3 }],
+    peakHours: [
+      { hour: 9, count: 5 },
+      { hour: 18, count: 4 },
+      { hour: 1, count: 3 },
+    ],
   },
   {
     evseId: '9d7de1e382cd406197a652a8fb5ac2dd',
@@ -5441,7 +6148,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 731.1,
     meanDurationMins: 679.8,
     utilisationRate: 83.2,
-    peakHours: [{ hour: 3, count: 2 }, { hour: 8, count: 2 }, { hour: 13, count: 2 }],
+    peakHours: [
+      { hour: 3, count: 2 },
+      { hour: 8, count: 2 },
+      { hour: 13, count: 2 },
+    ],
   },
   {
     evseId: '9dd72c02cd16093493fbca63fc21a6aa',
@@ -5479,7 +6190,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 30.0,
     meanDurationMins: 31.4,
     utilisationRate: 6.8,
-    peakHours: [{ hour: 9, count: 5 }, { hour: 12, count: 4 }, { hour: 13, count: 4 }],
+    peakHours: [
+      { hour: 9, count: 5 },
+      { hour: 12, count: 4 },
+      { hour: 13, count: 4 },
+    ],
   },
   {
     evseId: '9f6608aa6cd99151616c140cfb22369b',
@@ -5517,7 +6232,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 37.0,
     meanDurationMins: 46.7,
     utilisationRate: 47.7,
-    peakHours: [{ hour: 15, count: 8 }, { hour: 8, count: 3 }, { hour: 10, count: 2 }],
+    peakHours: [
+      { hour: 15, count: 8 },
+      { hour: 8, count: 3 },
+      { hour: 10, count: 2 },
+    ],
   },
   {
     evseId: 'a1543016ba144ebbb6279925302cb850',
@@ -5536,7 +6255,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 51.0,
     meanDurationMins: 60.8,
     utilisationRate: 31.9,
-    peakHours: [{ hour: 10, count: 6 }, { hour: 15, count: 6 }, { hour: 17, count: 6 }],
+    peakHours: [
+      { hour: 10, count: 6 },
+      { hour: 15, count: 6 },
+      { hour: 17, count: 6 },
+    ],
   },
   {
     evseId: 'a18c3007b19db564527bd05dfb568f44',
@@ -5555,7 +6278,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 84.9,
     meanDurationMins: 85.2,
     utilisationRate: 120.9,
-    peakHours: [{ hour: 7, count: 2 }, { hour: 13, count: 2 }, { hour: 11, count: 1 }],
+    peakHours: [
+      { hour: 7, count: 2 },
+      { hour: 13, count: 2 },
+      { hour: 11, count: 1 },
+    ],
   },
   {
     evseId: 'a1ab1c9222ab9053267bd2c5a08d216d',
@@ -5593,7 +6320,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 35.0,
     meanDurationMins: 36.7,
     utilisationRate: 802.8,
-    peakHours: [{ hour: 10, count: 3 }, { hour: 14, count: 3 }, { hour: 20, count: 3 }],
+    peakHours: [
+      { hour: 10, count: 3 },
+      { hour: 14, count: 3 },
+      { hour: 20, count: 3 },
+    ],
   },
   {
     evseId: 'a2ff84077ed64f13a193ca3367e5073d',
@@ -5631,7 +6362,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 28.0,
     meanDurationMins: 33.5,
     utilisationRate: 5.0,
-    peakHours: [{ hour: 7, count: 3 }, { hour: 12, count: 2 }, { hour: 16, count: 2 }],
+    peakHours: [
+      { hour: 7, count: 3 },
+      { hour: 12, count: 2 },
+      { hour: 16, count: 2 },
+    ],
   },
   {
     evseId: 'a3e1abcd59c84a9fa0ab22fab4cfeb03',
@@ -5650,7 +6385,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 34.7,
     meanDurationMins: 43.7,
     utilisationRate: 18.3,
-    peakHours: [{ hour: 15, count: 3 }, { hour: 8, count: 2 }, { hour: 9, count: 2 }],
+    peakHours: [
+      { hour: 15, count: 3 },
+      { hour: 8, count: 2 },
+      { hour: 9, count: 2 },
+    ],
   },
   {
     evseId: 'a3ed613e00d1be351b7e669c9aeac0c9',
@@ -5688,7 +6427,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 38.9,
     meanDurationMins: 55.5,
     utilisationRate: 1.4,
-    peakHours: [{ hour: 17, count: 3 }, { hour: 12, count: 1 }, { hour: 13, count: 1 }],
+    peakHours: [
+      { hour: 17, count: 3 },
+      { hour: 12, count: 1 },
+      { hour: 13, count: 1 },
+    ],
   },
   {
     evseId: 'a47ac16a8cca208f1b8ee9179d9acead',
@@ -5707,7 +6450,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 22.7,
     meanDurationMins: 29.5,
     utilisationRate: 7.8,
-    peakHours: [{ hour: 9, count: 3 }, { hour: 8, count: 2 }, { hour: 13, count: 1 }],
+    peakHours: [
+      { hour: 9, count: 3 },
+      { hour: 8, count: 2 },
+      { hour: 13, count: 1 },
+    ],
   },
   {
     evseId: 'a4dadf46999247bd21646e90a5d2859d',
@@ -5726,7 +6473,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 369.5,
     meanDurationMins: 456.6,
     utilisationRate: 62.4,
-    peakHours: [{ hour: 21, count: 2 }, { hour: 11, count: 1 }, { hour: 14, count: 1 }],
+    peakHours: [
+      { hour: 21, count: 2 },
+      { hour: 11, count: 1 },
+      { hour: 14, count: 1 },
+    ],
   },
   {
     evseId: 'a59fa2646cee97058926686b01518319',
@@ -5745,7 +6496,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 31.6,
     meanDurationMins: 36.1,
     utilisationRate: 22.4,
-    peakHours: [{ hour: 13, count: 15 }, { hour: 15, count: 11 }, { hour: 14, count: 9 }],
+    peakHours: [
+      { hour: 13, count: 15 },
+      { hour: 15, count: 11 },
+      { hour: 14, count: 9 },
+    ],
   },
   {
     evseId: 'a6810dfd18f3b3a38fc7266c3079a3fb',
@@ -5764,7 +6519,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 36.3,
     meanDurationMins: 35.9,
     utilisationRate: 10.3,
-    peakHours: [{ hour: 15, count: 12 }, { hour: 7, count: 4 }, { hour: 13, count: 4 }],
+    peakHours: [
+      { hour: 15, count: 12 },
+      { hour: 7, count: 4 },
+      { hour: 13, count: 4 },
+    ],
   },
   {
     evseId: 'a73dcb5fd8effd15d6ab0baaf40ac4dd',
@@ -5802,7 +6561,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 30.0,
     meanDurationMins: 37.1,
     utilisationRate: 30.9,
-    peakHours: [{ hour: 11, count: 4 }, { hour: 12, count: 2 }, { hour: 14, count: 2 }],
+    peakHours: [
+      { hour: 11, count: 4 },
+      { hour: 12, count: 2 },
+      { hour: 14, count: 2 },
+    ],
   },
   {
     evseId: 'a85614664bf8ceba233c662a18f987cb',
@@ -5840,7 +6603,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 530.6,
     meanDurationMins: 562.3,
     utilisationRate: 190.9,
-    peakHours: [{ hour: 16, count: 2 }, { hour: 12, count: 1 }, { hour: 17, count: 1 }],
+    peakHours: [
+      { hour: 16, count: 2 },
+      { hour: 12, count: 1 },
+      { hour: 17, count: 1 },
+    ],
   },
   {
     evseId: 'aa12a833a7d33795aa452db400170838',
@@ -5859,7 +6626,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 60.9,
     meanDurationMins: 88.6,
     utilisationRate: 23.8,
-    peakHours: [{ hour: 10, count: 9 }, { hour: 11, count: 5 }, { hour: 13, count: 4 }],
+    peakHours: [
+      { hour: 10, count: 9 },
+      { hour: 11, count: 5 },
+      { hour: 13, count: 4 },
+    ],
   },
   {
     evseId: 'ab1dc319c087636be68751143d3a5cfa',
@@ -5878,7 +6649,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 36.9,
     meanDurationMins: 49.1,
     utilisationRate: 36.6,
-    peakHours: [{ hour: 16, count: 3 }, { hour: 14, count: 2 }, { hour: 9, count: 1 }],
+    peakHours: [
+      { hour: 16, count: 3 },
+      { hour: 14, count: 2 },
+      { hour: 9, count: 1 },
+    ],
   },
   {
     evseId: 'ab6bbd1c1d49439fa666e00191c19161',
@@ -5897,7 +6672,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 26.8,
     meanDurationMins: 34.7,
     utilisationRate: 13.2,
-    peakHours: [{ hour: 12, count: 4 }, { hour: 16, count: 2 }, { hour: 7, count: 1 }],
+    peakHours: [
+      { hour: 12, count: 4 },
+      { hour: 16, count: 2 },
+      { hour: 7, count: 1 },
+    ],
   },
   {
     evseId: 'abb15a0667b84281818b06169a50e50b',
@@ -5916,7 +6695,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 35.0,
     meanDurationMins: 39.6,
     utilisationRate: 54.9,
-    peakHours: [{ hour: 11, count: 11 }, { hour: 13, count: 11 }, { hour: 16, count: 10 }],
+    peakHours: [
+      { hour: 11, count: 11 },
+      { hour: 13, count: 11 },
+      { hour: 16, count: 10 },
+    ],
   },
   {
     evseId: 'abe569e94b1d2344eca27eff247e07c4',
@@ -5935,7 +6718,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 29.9,
     meanDurationMins: 37.4,
     utilisationRate: 23.0,
-    peakHours: [{ hour: 5, count: 4 }, { hour: 9, count: 4 }, { hour: 20, count: 4 }],
+    peakHours: [
+      { hour: 5, count: 4 },
+      { hour: 9, count: 4 },
+      { hour: 20, count: 4 },
+    ],
   },
   {
     evseId: 'ac8d0820b7f7410a8592c5aa30b0f488',
@@ -5954,7 +6741,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 29.3,
     meanDurationMins: 33.6,
     utilisationRate: 9.2,
-    peakHours: [{ hour: 10, count: 4 }, { hour: 16, count: 4 }, { hour: 8, count: 3 }],
+    peakHours: [
+      { hour: 10, count: 4 },
+      { hour: 16, count: 4 },
+      { hour: 8, count: 3 },
+    ],
   },
   {
     evseId: 'acf5aa91a56154ffe56f1a0a5dac1c73',
@@ -5992,7 +6783,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 705.0,
     meanDurationMins: 835.4,
     utilisationRate: 192.3,
-    peakHours: [{ hour: 7, count: 2 }, { hour: 9, count: 2 }, { hour: 8, count: 1 }],
+    peakHours: [
+      { hour: 7, count: 2 },
+      { hour: 9, count: 2 },
+      { hour: 8, count: 1 },
+    ],
   },
   {
     evseId: 'af70fc97727506f987c0ee495611473c',
@@ -6011,7 +6806,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 170.5,
     meanDurationMins: 327.8,
     utilisationRate: 9.5,
-    peakHours: [{ hour: 6, count: 1 }, { hour: 13, count: 1 }, { hour: 19, count: 1 }],
+    peakHours: [
+      { hour: 6, count: 1 },
+      { hour: 13, count: 1 },
+      { hour: 19, count: 1 },
+    ],
   },
   {
     evseId: 'afa2e2af289b03223e02120acb7a54b0',
@@ -6030,7 +6829,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 35.6,
     meanDurationMins: 35.8,
     utilisationRate: 23.4,
-    peakHours: [{ hour: 13, count: 11 }, { hour: 14, count: 10 }, { hour: 12, count: 8 }],
+    peakHours: [
+      { hour: 13, count: 11 },
+      { hour: 14, count: 10 },
+      { hour: 12, count: 8 },
+    ],
   },
   {
     evseId: 'aff4baf3cdc8488e834c46a00eb205e3',
@@ -6068,7 +6871,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 20.9,
     meanDurationMins: 21.9,
     utilisationRate: 5.7,
-    peakHours: [{ hour: 17, count: 2 }, { hour: 21, count: 2 }, { hour: 0, count: 1 }],
+    peakHours: [
+      { hour: 17, count: 2 },
+      { hour: 21, count: 2 },
+      { hour: 0, count: 1 },
+    ],
   },
   {
     evseId: 'b005734f30d34feea411c5cc1e58d952',
@@ -6087,7 +6894,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 264.9,
     meanDurationMins: 523.3,
     utilisationRate: 71.6,
-    peakHours: [{ hour: 10, count: 2 }, { hour: 11, count: 1 }],
+    peakHours: [
+      { hour: 10, count: 2 },
+      { hour: 11, count: 1 },
+    ],
   },
   {
     evseId: 'b0f4ad7cc8b34cbbaff8eb98d97278df',
@@ -6125,7 +6935,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 301.8,
     meanDurationMins: 382.3,
     utilisationRate: 65.9,
-    peakHours: [{ hour: 8, count: 3 }, { hour: 14, count: 2 }, { hour: 12, count: 1 }],
+    peakHours: [
+      { hour: 8, count: 3 },
+      { hour: 14, count: 2 },
+      { hour: 12, count: 1 },
+    ],
   },
   {
     evseId: 'b302245dd0af4ec49900fbfe54861706',
@@ -6144,7 +6958,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 575.0,
     meanDurationMins: 548.0,
     utilisationRate: 69.7,
-    peakHours: [{ hour: 19, count: 2 }, { hour: 0, count: 1 }, { hour: 15, count: 1 }],
+    peakHours: [
+      { hour: 19, count: 2 },
+      { hour: 0, count: 1 },
+      { hour: 15, count: 1 },
+    ],
   },
   {
     evseId: 'b423893d2443777960d699ae6da32185',
@@ -6163,7 +6981,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 35.7,
     meanDurationMins: 37.9,
     utilisationRate: 7.7,
-    peakHours: [{ hour: 7, count: 8 }, { hour: 17, count: 7 }, { hour: 11, count: 5 }],
+    peakHours: [
+      { hour: 7, count: 8 },
+      { hour: 17, count: 7 },
+      { hour: 11, count: 5 },
+    ],
   },
   {
     evseId: 'b4fb1bd4848230bb6501da9a2a355ef5',
@@ -6182,7 +7004,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 65.0,
     meanDurationMins: 62.4,
     utilisationRate: 10.5,
-    peakHours: [{ hour: 8, count: 5 }, { hour: 10, count: 4 }, { hour: 13, count: 3 }],
+    peakHours: [
+      { hour: 8, count: 5 },
+      { hour: 10, count: 4 },
+      { hour: 13, count: 3 },
+    ],
   },
   {
     evseId: 'b4ffc026f6d7f8576697696a2ec89954',
@@ -6258,7 +7084,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 38.9,
     meanDurationMins: 41.3,
     utilisationRate: 25.4,
-    peakHours: [{ hour: 8, count: 20 }, { hour: 9, count: 13 }, { hour: 11, count: 13 }],
+    peakHours: [
+      { hour: 8, count: 20 },
+      { hour: 9, count: 13 },
+      { hour: 11, count: 13 },
+    ],
   },
   {
     evseId: 'b6069435bb079d8da886af24145657e0',
@@ -6277,7 +7107,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 21.3,
     meanDurationMins: 26.8,
     utilisationRate: 96.8,
-    peakHours: [{ hour: 13, count: 2 }, { hour: 8, count: 1 }, { hour: 12, count: 1 }],
+    peakHours: [
+      { hour: 13, count: 2 },
+      { hour: 8, count: 1 },
+      { hour: 12, count: 1 },
+    ],
   },
   {
     evseId: 'b61329d1e83fe12843b426facecf79ed',
@@ -6296,7 +7130,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 175.9,
     meanDurationMins: 344.0,
     utilisationRate: 42.1,
-    peakHours: [{ hour: 10, count: 4 }, { hour: 9, count: 1 }, { hour: 11, count: 1 }],
+    peakHours: [
+      { hour: 10, count: 4 },
+      { hour: 9, count: 1 },
+      { hour: 11, count: 1 },
+    ],
   },
   {
     evseId: 'b69bb0a9072a960bae263663ff3c514a',
@@ -6334,7 +7172,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 26.9,
     meanDurationMins: 53.4,
     utilisationRate: 123.2,
-    peakHours: [{ hour: 9, count: 2 }, { hour: 10, count: 2 }, { hour: 11, count: 2 }],
+    peakHours: [
+      { hour: 9, count: 2 },
+      { hour: 10, count: 2 },
+      { hour: 11, count: 2 },
+    ],
   },
   {
     evseId: 'b6bc92cfbfc7dd0b8c4afeb134454f14',
@@ -6353,7 +7195,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 31.6,
     meanDurationMins: 36.0,
     utilisationRate: 33.2,
-    peakHours: [{ hour: 10, count: 10 }, { hour: 12, count: 10 }, { hour: 14, count: 9 }],
+    peakHours: [
+      { hour: 10, count: 10 },
+      { hour: 12, count: 10 },
+      { hour: 14, count: 9 },
+    ],
   },
   {
     evseId: 'b7645eb0ce96ed445346dd072f92ac89',
@@ -6391,7 +7237,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 57.1,
     meanDurationMins: 57.1,
     utilisationRate: 21.8,
-    peakHours: [{ hour: 10, count: 1 }, { hour: 13, count: 1 }],
+    peakHours: [
+      { hour: 10, count: 1 },
+      { hour: 13, count: 1 },
+    ],
   },
   {
     evseId: 'b80e869104a4a0cd17091da88b987c2c',
@@ -6429,7 +7278,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 41.1,
     meanDurationMins: 69.9,
     utilisationRate: 169.6,
-    peakHours: [{ hour: 1, count: 1 }, { hour: 7, count: 1 }, { hour: 9, count: 1 }],
+    peakHours: [
+      { hour: 1, count: 1 },
+      { hour: 7, count: 1 },
+      { hour: 9, count: 1 },
+    ],
   },
   {
     evseId: 'b87e2637e1ee13db0eb5a74d1a396a75',
@@ -6467,7 +7320,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 33.6,
     meanDurationMins: 41.7,
     utilisationRate: 14.7,
-    peakHours: [{ hour: 12, count: 6 }, { hour: 11, count: 5 }, { hour: 15, count: 5 }],
+    peakHours: [
+      { hour: 12, count: 6 },
+      { hour: 11, count: 5 },
+      { hour: 15, count: 5 },
+    ],
   },
   {
     evseId: 'b9064acf4b5d4c2242d9aaa0b9a00300',
@@ -6505,7 +7362,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 35.5,
     meanDurationMins: 41.7,
     utilisationRate: 11.1,
-    peakHours: [{ hour: 10, count: 6 }, { hour: 11, count: 6 }, { hour: 12, count: 6 }],
+    peakHours: [
+      { hour: 10, count: 6 },
+      { hour: 11, count: 6 },
+      { hour: 12, count: 6 },
+    ],
   },
   {
     evseId: 'b9d3bb499ed079a03727699f47a06de6',
@@ -6524,7 +7385,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 45.0,
     meanDurationMins: 50.5,
     utilisationRate: 59.0,
-    peakHours: [{ hour: 16, count: 4 }, { hour: 19, count: 4 }, { hour: 7, count: 1 }],
+    peakHours: [
+      { hour: 16, count: 4 },
+      { hour: 19, count: 4 },
+      { hour: 7, count: 1 },
+    ],
   },
   {
     evseId: 'badd9b934908dc497d328c6839ccb897',
@@ -6543,7 +7408,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 71.0,
     meanDurationMins: 245.7,
     utilisationRate: 21.2,
-    peakHours: [{ hour: 1, count: 2 }, { hour: 18, count: 2 }, { hour: 22, count: 2 }],
+    peakHours: [
+      { hour: 1, count: 2 },
+      { hour: 18, count: 2 },
+      { hour: 22, count: 2 },
+    ],
   },
   {
     evseId: 'baeb9328c23d3d259c5b5896960a9395',
@@ -6562,7 +7431,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 45.0,
     meanDurationMins: 45.2,
     utilisationRate: 62.0,
-    peakHours: [{ hour: 23, count: 9 }, { hour: 1, count: 8 }, { hour: 22, count: 8 }],
+    peakHours: [
+      { hour: 23, count: 9 },
+      { hour: 1, count: 8 },
+      { hour: 22, count: 8 },
+    ],
   },
   {
     evseId: 'bc3d888f0491427e86eab8d2f8e900e8',
@@ -6581,7 +7454,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 27.0,
     meanDurationMins: 32.6,
     utilisationRate: 50.2,
-    peakHours: [{ hour: 12, count: 4 }, { hour: 17, count: 3 }, { hour: 10, count: 2 }],
+    peakHours: [
+      { hour: 12, count: 4 },
+      { hour: 17, count: 3 },
+      { hour: 10, count: 2 },
+    ],
   },
   {
     evseId: 'bcbaf049a0dc45348e2d811d05ade5c4',
@@ -6600,7 +7477,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 258.3,
     meanDurationMins: 452.0,
     utilisationRate: 63.2,
-    peakHours: [{ hour: 20, count: 4 }, { hour: 23, count: 4 }, { hour: 17, count: 3 }],
+    peakHours: [
+      { hour: 20, count: 4 },
+      { hour: 23, count: 4 },
+      { hour: 17, count: 3 },
+    ],
   },
   {
     evseId: 'bce1c02d8c62e57c4114d6c1cac3a13a',
@@ -6619,7 +7500,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 552.5,
     meanDurationMins: 552.5,
     utilisationRate: 24.5,
-    peakHours: [{ hour: 0, count: 1 }, { hour: 18, count: 1 }],
+    peakHours: [
+      { hour: 0, count: 1 },
+      { hour: 18, count: 1 },
+    ],
   },
   {
     evseId: 'bd212e2d48bae1d6cfb47f0164b5ed49',
@@ -6638,7 +7522,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 594.1,
     meanDurationMins: 515.4,
     utilisationRate: 47.5,
-    peakHours: [{ hour: 3, count: 2 }, { hour: 2, count: 1 }, { hour: 4, count: 1 }],
+    peakHours: [
+      { hour: 3, count: 2 },
+      { hour: 2, count: 1 },
+      { hour: 4, count: 1 },
+    ],
   },
   {
     evseId: 'be8dd6971d7fe3f14d4c6b14a798de07',
@@ -6657,7 +7545,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 17.2,
     meanDurationMins: 20.1,
     utilisationRate: 36.1,
-    peakHours: [{ hour: 10, count: 1 }, { hour: 11, count: 1 }, { hour: 13, count: 1 }],
+    peakHours: [
+      { hour: 10, count: 1 },
+      { hour: 11, count: 1 },
+      { hour: 13, count: 1 },
+    ],
   },
   {
     evseId: 'bfc1033ae07b7ce8ecd576e835c79009',
@@ -6676,7 +7568,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 31.0,
     meanDurationMins: 31.0,
     utilisationRate: 267.4,
-    peakHours: [{ hour: 0, count: 1 }, { hour: 7, count: 1 }],
+    peakHours: [
+      { hour: 0, count: 1 },
+      { hour: 7, count: 1 },
+    ],
   },
   {
     evseId: 'bfed95bf137a898215bb4b7957c35e8f',
@@ -6695,7 +7590,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 27.8,
     meanDurationMins: 30.0,
     utilisationRate: 9.2,
-    peakHours: [{ hour: 14, count: 7 }, { hour: 11, count: 5 }, { hour: 8, count: 4 }],
+    peakHours: [
+      { hour: 14, count: 7 },
+      { hour: 11, count: 5 },
+      { hour: 8, count: 4 },
+    ],
   },
   {
     evseId: 'bfee977dbab9891529ba98a5fe062851',
@@ -6714,7 +7613,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 55.0,
     meanDurationMins: 52.5,
     utilisationRate: 18.0,
-    peakHours: [{ hour: 17, count: 4 }, { hour: 10, count: 3 }, { hour: 21, count: 3 }],
+    peakHours: [
+      { hour: 17, count: 4 },
+      { hour: 10, count: 3 },
+      { hour: 21, count: 3 },
+    ],
   },
   {
     evseId: 'c0b35066072a17f815280aeefe8caaa9',
@@ -6733,7 +7636,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 21.9,
     meanDurationMins: 28.5,
     utilisationRate: 22.5,
-    peakHours: [{ hour: 17, count: 11 }, { hour: 14, count: 10 }, { hour: 15, count: 8 }],
+    peakHours: [
+      { hour: 17, count: 11 },
+      { hour: 14, count: 10 },
+      { hour: 15, count: 8 },
+    ],
   },
   {
     evseId: 'c0bef37678f923cb6bd2d03a32563dfa',
@@ -6771,7 +7678,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 29.4,
     meanDurationMins: 41.3,
     utilisationRate: 36.8,
-    peakHours: [{ hour: 15, count: 12 }, { hour: 8, count: 6 }, { hour: 9, count: 5 }],
+    peakHours: [
+      { hour: 15, count: 12 },
+      { hour: 8, count: 6 },
+      { hour: 9, count: 5 },
+    ],
   },
   {
     evseId: 'c10b62042e2e4394899f57c1d6c1eade',
@@ -6828,7 +7739,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 22.8,
     meanDurationMins: 50.6,
     utilisationRate: 53.5,
-    peakHours: [{ hour: 11, count: 7 }, { hour: 18, count: 3 }, { hour: 10, count: 2 }],
+    peakHours: [
+      { hour: 11, count: 7 },
+      { hour: 18, count: 3 },
+      { hour: 10, count: 2 },
+    ],
   },
   {
     evseId: 'c2391cc7971a80ecb219eb46711304d0',
@@ -6847,7 +7762,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 260.8,
     meanDurationMins: 285.1,
     utilisationRate: 26.2,
-    peakHours: [{ hour: 23, count: 4 }, { hour: 15, count: 2 }, { hour: 17, count: 2 }],
+    peakHours: [
+      { hour: 23, count: 4 },
+      { hour: 15, count: 2 },
+      { hour: 17, count: 2 },
+    ],
   },
   {
     evseId: 'c26dc2d22919c9a6f65e6eb8c12c4757',
@@ -6904,7 +7823,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 95.8,
     meanDurationMins: 114.9,
     utilisationRate: 180.9,
-    peakHours: [{ hour: 9, count: 1 }, { hour: 11, count: 1 }, { hour: 16, count: 1 }],
+    peakHours: [
+      { hour: 9, count: 1 },
+      { hour: 11, count: 1 },
+      { hour: 16, count: 1 },
+    ],
   },
   {
     evseId: 'c4bb8b6511c645a69bc4eae601d4bd81',
@@ -6923,7 +7846,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 53.2,
     meanDurationMins: 55.2,
     utilisationRate: 19.0,
-    peakHours: [{ hour: 11, count: 2 }, { hour: 13, count: 2 }, { hour: 7, count: 1 }],
+    peakHours: [
+      { hour: 11, count: 2 },
+      { hour: 13, count: 2 },
+      { hour: 7, count: 1 },
+    ],
   },
   {
     evseId: 'c4d9cc8f5b4c4b29b18e2cfa31c5b286',
@@ -6942,7 +7869,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 31.6,
     meanDurationMins: 34.1,
     utilisationRate: 21.9,
-    peakHours: [{ hour: 11, count: 8 }, { hour: 12, count: 8 }, { hour: 15, count: 8 }],
+    peakHours: [
+      { hour: 11, count: 8 },
+      { hour: 12, count: 8 },
+      { hour: 15, count: 8 },
+    ],
   },
   {
     evseId: 'c57755a97d064d16ed70107f96fc8ba0',
@@ -6961,7 +7892,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 45.0,
     meanDurationMins: 47.5,
     utilisationRate: 17.8,
-    peakHours: [{ hour: 14, count: 8 }, { hour: 9, count: 7 }, { hour: 10, count: 7 }],
+    peakHours: [
+      { hour: 14, count: 8 },
+      { hour: 9, count: 7 },
+      { hour: 10, count: 7 },
+    ],
   },
   {
     evseId: 'c5ead75851cc9052a5589b3f6d1c9673',
@@ -6980,7 +7915,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 206.8,
     meanDurationMins: 224.0,
     utilisationRate: 93.4,
-    peakHours: [{ hour: 8, count: 7 }, { hour: 9, count: 2 }, { hour: 10, count: 2 }],
+    peakHours: [
+      { hour: 8, count: 7 },
+      { hour: 9, count: 2 },
+      { hour: 10, count: 2 },
+    ],
   },
   {
     evseId: 'c67a7e738d2115d014cede5bc208e006',
@@ -7018,7 +7957,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 563.5,
     meanDurationMins: 555.2,
     utilisationRate: 33.8,
-    peakHours: [{ hour: 23, count: 2 }, { hour: 0, count: 1 }, { hour: 13, count: 1 }],
+    peakHours: [
+      { hour: 23, count: 2 },
+      { hour: 0, count: 1 },
+      { hour: 13, count: 1 },
+    ],
   },
   {
     evseId: 'c7e15682eed7f3f06025d288b6a84bfb',
@@ -7056,7 +7999,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 130.5,
     meanDurationMins: 130.5,
     utilisationRate: 18.3,
-    peakHours: [{ hour: 10, count: 1 }, { hour: 13, count: 1 }],
+    peakHours: [
+      { hour: 10, count: 1 },
+      { hour: 13, count: 1 },
+    ],
   },
   {
     evseId: 'c9b9bd13c928043e7d931f1b7d054975',
@@ -7075,7 +8021,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 41.5,
     meanDurationMins: 41.5,
     utilisationRate: 433.4,
-    peakHours: [{ hour: 13, count: 1 }, { hour: 15, count: 1 }],
+    peakHours: [
+      { hour: 13, count: 1 },
+      { hour: 15, count: 1 },
+    ],
   },
   {
     evseId: 'ca21110d3a9e24d8ce2081a7c300da25',
@@ -7094,7 +8043,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 262.8,
     meanDurationMins: 262.8,
     utilisationRate: 120.1,
-    peakHours: [{ hour: 15, count: 1 }, { hour: 16, count: 1 }],
+    peakHours: [
+      { hour: 15, count: 1 },
+      { hour: 16, count: 1 },
+    ],
   },
   {
     evseId: 'ca79b6aba32d5442f85c22928defb0fb',
@@ -7113,7 +8065,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 52.5,
     meanDurationMins: 56.9,
     utilisationRate: 1.8,
-    peakHours: [{ hour: 17, count: 2 }, { hour: 10, count: 1 }, { hour: 12, count: 1 }],
+    peakHours: [
+      { hour: 17, count: 2 },
+      { hour: 10, count: 1 },
+      { hour: 12, count: 1 },
+    ],
   },
   {
     evseId: 'cc47c87f17cb367ffe700410b57c31b4',
@@ -7132,7 +8088,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 51.1,
     meanDurationMins: 55.9,
     utilisationRate: 10.7,
-    peakHours: [{ hour: 11, count: 5 }, { hour: 9, count: 3 }, { hour: 5, count: 2 }],
+    peakHours: [
+      { hour: 11, count: 5 },
+      { hour: 9, count: 3 },
+      { hour: 5, count: 2 },
+    ],
   },
   {
     evseId: 'cc4976b6c6c2947967d2297f4e7adc8d',
@@ -7151,7 +8111,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 85.8,
     meanDurationMins: 85.8,
     utilisationRate: 66.9,
-    peakHours: [{ hour: 8, count: 1 }, { hour: 14, count: 1 }],
+    peakHours: [
+      { hour: 8, count: 1 },
+      { hour: 14, count: 1 },
+    ],
   },
   {
     evseId: 'cc8881c6b7ca7eedab95201f62c7562c',
@@ -7189,7 +8152,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 7.7,
     meanDurationMins: 7.7,
     utilisationRate: 1062.7,
-    peakHours: [{ hour: 10, count: 1 }, { hour: 11, count: 1 }],
+    peakHours: [
+      { hour: 10, count: 1 },
+      { hour: 11, count: 1 },
+    ],
   },
   {
     evseId: 'cfa877fd20cb4f8cb1206306f9db2684',
@@ -7227,7 +8193,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 1427.4,
     meanDurationMins: 1110.3,
     utilisationRate: 85.1,
-    peakHours: [{ hour: 0, count: 9 }, { hour: 6, count: 1 }],
+    peakHours: [
+      { hour: 0, count: 9 },
+      { hour: 6, count: 1 },
+    ],
   },
   {
     evseId: 'd0eb86cf685d4819b66d8c17d30c871d',
@@ -7246,7 +8215,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 215.4,
     meanDurationMins: 426.0,
     utilisationRate: 55.1,
-    peakHours: [{ hour: 9, count: 1 }, { hour: 10, count: 1 }, { hour: 15, count: 1 }],
+    peakHours: [
+      { hour: 9, count: 1 },
+      { hour: 10, count: 1 },
+      { hour: 15, count: 1 },
+    ],
   },
   {
     evseId: 'd1bac602c334e879f331382bc7150f59',
@@ -7265,7 +8238,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 40.0,
     meanDurationMins: 43.2,
     utilisationRate: 36.5,
-    peakHours: [{ hour: 6, count: 12 }, { hour: 11, count: 11 }, { hour: 15, count: 11 }],
+    peakHours: [
+      { hour: 6, count: 12 },
+      { hour: 11, count: 11 },
+      { hour: 15, count: 11 },
+    ],
   },
   {
     evseId: 'd20ec5d22b24ad3d75e9312264daf06c',
@@ -7284,7 +8261,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 59.0,
     meanDurationMins: 48.3,
     utilisationRate: 85.0,
-    peakHours: [{ hour: 9, count: 2 }, { hour: 11, count: 1 }, { hour: 16, count: 1 }],
+    peakHours: [
+      { hour: 9, count: 2 },
+      { hour: 11, count: 1 },
+      { hour: 16, count: 1 },
+    ],
   },
   {
     evseId: 'd25d677b6ca2dc8dc89339e54e89ee0a',
@@ -7303,7 +8284,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 59.2,
     meanDurationMins: 64.3,
     utilisationRate: 0.8,
-    peakHours: [{ hour: 15, count: 1 }, { hour: 16, count: 1 }, { hour: 17, count: 1 }],
+    peakHours: [
+      { hour: 15, count: 1 },
+      { hour: 16, count: 1 },
+      { hour: 17, count: 1 },
+    ],
   },
   {
     evseId: 'd27323c6a4f30e0bee7ca61f4b10ed70',
@@ -7322,7 +8307,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 20.0,
     meanDurationMins: 24.1,
     utilisationRate: 13.1,
-    peakHours: [{ hour: 17, count: 8 }, { hour: 10, count: 7 }, { hour: 9, count: 6 }],
+    peakHours: [
+      { hour: 17, count: 8 },
+      { hour: 10, count: 7 },
+      { hour: 9, count: 6 },
+    ],
   },
   {
     evseId: 'd286b2926ad2409989f8c1c504de5943',
@@ -7341,7 +8330,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 109.9,
     meanDurationMins: 121.7,
     utilisationRate: 491.1,
-    peakHours: [{ hour: 5, count: 1 }, { hour: 16, count: 1 }, { hour: 19, count: 1 }],
+    peakHours: [
+      { hour: 5, count: 1 },
+      { hour: 16, count: 1 },
+      { hour: 19, count: 1 },
+    ],
   },
   {
     evseId: 'd2bf059265aaa5e608e2408717e8e92e',
@@ -7379,7 +8372,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 55.0,
     meanDurationMins: 108.4,
     utilisationRate: 50.6,
-    peakHours: [{ hour: 12, count: 10 }, { hour: 10, count: 6 }, { hour: 11, count: 4 }],
+    peakHours: [
+      { hour: 12, count: 10 },
+      { hour: 10, count: 6 },
+      { hour: 11, count: 4 },
+    ],
   },
   {
     evseId: 'd512dc9d222b41468145aa66f420440b',
@@ -7398,7 +8395,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 242.1,
     meanDurationMins: 375.6,
     utilisationRate: 61.3,
-    peakHours: [{ hour: 18, count: 3 }, { hour: 8, count: 1 }, { hour: 14, count: 1 }],
+    peakHours: [
+      { hour: 18, count: 3 },
+      { hour: 8, count: 1 },
+      { hour: 14, count: 1 },
+    ],
   },
   {
     evseId: 'd5b89ee0361a610bebd8503d99cd11cf',
@@ -7417,7 +8418,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 53.5,
     meanDurationMins: 130.0,
     utilisationRate: 48.7,
-    peakHours: [{ hour: 10, count: 4 }, { hour: 6, count: 3 }, { hour: 9, count: 2 }],
+    peakHours: [
+      { hour: 10, count: 4 },
+      { hour: 6, count: 3 },
+      { hour: 9, count: 2 },
+    ],
   },
   {
     evseId: 'd66bda3124c610d13422ef89c755676e',
@@ -7436,7 +8441,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 125.0,
     meanDurationMins: 383.3,
     utilisationRate: 52.5,
-    peakHours: [{ hour: 11, count: 1 }, { hour: 17, count: 1 }, { hour: 20, count: 1 }],
+    peakHours: [
+      { hour: 11, count: 1 },
+      { hour: 17, count: 1 },
+      { hour: 20, count: 1 },
+    ],
   },
   {
     evseId: 'd79ba251b9e7660d41c3d6c4c2666be0',
@@ -7455,7 +8464,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 37.5,
     meanDurationMins: 42.1,
     utilisationRate: 27.5,
-    peakHours: [{ hour: 5, count: 7 }, { hour: 18, count: 5 }, { hour: 9, count: 4 }],
+    peakHours: [
+      { hour: 5, count: 7 },
+      { hour: 18, count: 5 },
+      { hour: 9, count: 4 },
+    ],
   },
   {
     evseId: 'd8d1669487d34eae9f750287b00b0e56',
@@ -7474,7 +8487,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 208.8,
     meanDurationMins: 201.8,
     utilisationRate: 44.0,
-    peakHours: [{ hour: 11, count: 2 }, { hour: 10, count: 1 }, { hour: 12, count: 1 }],
+    peakHours: [
+      { hour: 11, count: 2 },
+      { hour: 10, count: 1 },
+      { hour: 12, count: 1 },
+    ],
   },
   {
     evseId: 'd9991dd527e91e9701bc385c92ff6a2c',
@@ -7493,7 +8510,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 44.2,
     meanDurationMins: 187.0,
     utilisationRate: 53.0,
-    peakHours: [{ hour: 9, count: 3 }, { hour: 19, count: 3 }, { hour: 11, count: 2 }],
+    peakHours: [
+      { hour: 9, count: 3 },
+      { hour: 19, count: 3 },
+      { hour: 11, count: 2 },
+    ],
   },
   {
     evseId: 'dcbb96012ec34311b0da7dd729850dfc',
@@ -7531,7 +8552,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 25.0,
     meanDurationMins: 35.8,
     utilisationRate: 69.6,
-    peakHours: [{ hour: 18, count: 4 }, { hour: 10, count: 3 }, { hour: 12, count: 3 }],
+    peakHours: [
+      { hour: 18, count: 4 },
+      { hour: 10, count: 3 },
+      { hour: 12, count: 3 },
+    ],
   },
   {
     evseId: 'dfbc813bddf29c5b454bd37a1124a418',
@@ -7550,7 +8575,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 5.0,
     meanDurationMins: 5.0,
     utilisationRate: 166.2,
-    peakHours: [{ hour: 10, count: 1 }, { hour: 12, count: 1 }],
+    peakHours: [
+      { hour: 10, count: 1 },
+      { hour: 12, count: 1 },
+    ],
   },
   {
     evseId: 'dfdc090fa444f30d4b0ca343f8dd88d4',
@@ -7588,7 +8616,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 25.0,
     meanDurationMins: 35.3,
     utilisationRate: 4.2,
-    peakHours: [{ hour: 15, count: 4 }, { hour: 16, count: 4 }, { hour: 11, count: 2 }],
+    peakHours: [
+      { hour: 15, count: 4 },
+      { hour: 16, count: 4 },
+      { hour: 11, count: 2 },
+    ],
   },
   {
     evseId: 'e2bab8124e2364feb5a03cb476217905',
@@ -7607,7 +8639,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 545.0,
     meanDurationMins: 439.0,
     utilisationRate: 57.0,
-    peakHours: [{ hour: 6, count: 12 }, { hour: 9, count: 3 }, { hour: 10, count: 2 }],
+    peakHours: [
+      { hour: 6, count: 12 },
+      { hour: 9, count: 3 },
+      { hour: 10, count: 2 },
+    ],
   },
   {
     evseId: 'e2d681d273a6b2a06700ce98bf1d6c73',
@@ -7626,7 +8662,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 10.1,
     meanDurationMins: 23.4,
     utilisationRate: 1.4,
-    peakHours: [{ hour: 15, count: 1 }, { hour: 17, count: 1 }, { hour: 20, count: 1 }],
+    peakHours: [
+      { hour: 15, count: 1 },
+      { hour: 17, count: 1 },
+      { hour: 20, count: 1 },
+    ],
   },
   {
     evseId: 'e4e92a9dcb7241fdaf677ffb9db0f37e',
@@ -7664,7 +8704,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 39.9,
     meanDurationMins: 43.9,
     utilisationRate: 39.8,
-    peakHours: [{ hour: 8, count: 10 }, { hour: 16, count: 10 }, { hour: 9, count: 8 }],
+    peakHours: [
+      { hour: 8, count: 10 },
+      { hour: 16, count: 10 },
+      { hour: 9, count: 8 },
+    ],
   },
   {
     evseId: 'e69d7ba460b54e4bc031a18bfa349a5f',
@@ -7683,7 +8727,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 55.0,
     meanDurationMins: 52.5,
     utilisationRate: 15.1,
-    peakHours: [{ hour: 7, count: 3 }, { hour: 20, count: 3 }, { hour: 6, count: 2 }],
+    peakHours: [
+      { hour: 7, count: 3 },
+      { hour: 20, count: 3 },
+      { hour: 6, count: 2 },
+    ],
   },
   {
     evseId: 'e6a66a0523d7e97c77b3dd80aad679dd',
@@ -7702,7 +8750,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 226.9,
     meanDurationMins: 326.5,
     utilisationRate: 93.0,
-    peakHours: [{ hour: 13, count: 5 }, { hour: 17, count: 5 }, { hour: 10, count: 3 }],
+    peakHours: [
+      { hour: 13, count: 5 },
+      { hour: 17, count: 5 },
+      { hour: 10, count: 3 },
+    ],
   },
   {
     evseId: 'e711972f64e8bf2f1ad82ca1ce3567da',
@@ -7721,7 +8773,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 345.9,
     meanDurationMins: 408.4,
     utilisationRate: 127.5,
-    peakHours: [{ hour: 14, count: 2 }, { hour: 0, count: 1 }, { hour: 16, count: 1 }],
+    peakHours: [
+      { hour: 14, count: 2 },
+      { hour: 0, count: 1 },
+      { hour: 16, count: 1 },
+    ],
   },
   {
     evseId: 'e74dfcf5f60f22b20c33f3c31633c3cc',
@@ -7740,7 +8796,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 21.7,
     meanDurationMins: 24.5,
     utilisationRate: 1.1,
-    peakHours: [{ hour: 10, count: 1 }, { hour: 11, count: 1 }, { hour: 12, count: 1 }],
+    peakHours: [
+      { hour: 10, count: 1 },
+      { hour: 11, count: 1 },
+      { hour: 12, count: 1 },
+    ],
   },
   {
     evseId: 'e8ae4af1ed44cc8227a47636aaa3aff6',
@@ -7778,7 +8838,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 76.2,
     meanDurationMins: 225.3,
     utilisationRate: 29.1,
-    peakHours: [{ hour: 19, count: 3 }, { hour: 16, count: 2 }, { hour: 7, count: 1 }],
+    peakHours: [
+      { hour: 19, count: 3 },
+      { hour: 16, count: 2 },
+      { hour: 7, count: 1 },
+    ],
   },
   {
     evseId: 'e996d11fc7184240a7c55f76372e3427',
@@ -7797,7 +8861,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 44.2,
     meanDurationMins: 47.0,
     utilisationRate: 15.8,
-    peakHours: [{ hour: 7, count: 9 }, { hour: 13, count: 9 }, { hour: 15, count: 7 }],
+    peakHours: [
+      { hour: 7, count: 9 },
+      { hour: 13, count: 9 },
+      { hour: 15, count: 7 },
+    ],
   },
   {
     evseId: 'e9c370cf89f23d940d532bdc831c073e',
@@ -7816,7 +8884,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 239.7,
     meanDurationMins: 294.8,
     utilisationRate: 194.9,
-    peakHours: [{ hour: 8, count: 1 }, { hour: 10, count: 1 }, { hour: 11, count: 1 }],
+    peakHours: [
+      { hour: 8, count: 1 },
+      { hour: 10, count: 1 },
+      { hour: 11, count: 1 },
+    ],
   },
   {
     evseId: 'ea100dd07c7e4d0582611041bad6d96a',
@@ -7835,7 +8907,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 30.1,
     meanDurationMins: 34.9,
     utilisationRate: 10.2,
-    peakHours: [{ hour: 11, count: 8 }, { hour: 14, count: 7 }, { hour: 9, count: 3 }],
+    peakHours: [
+      { hour: 11, count: 8 },
+      { hour: 14, count: 7 },
+      { hour: 9, count: 3 },
+    ],
   },
   {
     evseId: 'ea3b8cfece5940a4906fdd5f0d60703e',
@@ -7873,7 +8949,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 40.0,
     meanDurationMins: 43.3,
     utilisationRate: 20.3,
-    peakHours: [{ hour: 13, count: 8 }, { hour: 19, count: 8 }, { hour: 9, count: 7 }],
+    peakHours: [
+      { hour: 13, count: 8 },
+      { hour: 19, count: 8 },
+      { hour: 9, count: 7 },
+    ],
   },
   {
     evseId: 'ea7680e7782946e77195d7873ae1a98f',
@@ -7892,7 +8972,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 71.5,
     meanDurationMins: 66.5,
     utilisationRate: 110.5,
-    peakHours: [{ hour: 10, count: 2 }, { hour: 11, count: 1 }, { hour: 13, count: 1 }],
+    peakHours: [
+      { hour: 10, count: 2 },
+      { hour: 11, count: 1 },
+      { hour: 13, count: 1 },
+    ],
   },
   {
     evseId: 'eaa410ff1b7535b57b02483b85ac8869',
@@ -7911,7 +8995,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 52.1,
     meanDurationMins: 65.4,
     utilisationRate: 168.3,
-    peakHours: [{ hour: 10, count: 2 }, { hour: 16, count: 2 }, { hour: 20, count: 1 }],
+    peakHours: [
+      { hour: 10, count: 2 },
+      { hour: 16, count: 2 },
+      { hour: 20, count: 1 },
+    ],
   },
   {
     evseId: 'eb4e3befbcb842e9b4542aea8f3a590b',
@@ -7930,7 +9018,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 503.4,
     meanDurationMins: 494.3,
     utilisationRate: 42.8,
-    peakHours: [{ hour: 21, count: 5 }, { hour: 20, count: 3 }, { hour: 1, count: 2 }],
+    peakHours: [
+      { hour: 21, count: 5 },
+      { hour: 20, count: 3 },
+      { hour: 1, count: 2 },
+    ],
   },
   {
     evseId: 'ebe7b669fd1b8e2e5697c17595bd3f92',
@@ -7949,7 +9041,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 145.0,
     meanDurationMins: 437.6,
     utilisationRate: 54.3,
-    peakHours: [{ hour: 13, count: 2 }, { hour: 0, count: 1 }, { hour: 10, count: 1 }],
+    peakHours: [
+      { hour: 13, count: 2 },
+      { hour: 0, count: 1 },
+      { hour: 10, count: 1 },
+    ],
   },
   {
     evseId: 'ed8f9349207bf489c3e955ef023df508',
@@ -7968,7 +9064,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 528.6,
     meanDurationMins: 501.2,
     utilisationRate: 111.5,
-    peakHours: [{ hour: 8, count: 5 }, { hour: 7, count: 3 }, { hour: 12, count: 2 }],
+    peakHours: [
+      { hour: 8, count: 5 },
+      { hour: 7, count: 3 },
+      { hour: 12, count: 2 },
+    ],
   },
   {
     evseId: 'ee350e030924e97678f58bdedeaddab8',
@@ -7987,7 +9087,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 719.2,
     meanDurationMins: 719.2,
     utilisationRate: 12.5,
-    peakHours: [{ hour: 20, count: 1 }, { hour: 21, count: 1 }],
+    peakHours: [
+      { hour: 20, count: 1 },
+      { hour: 21, count: 1 },
+    ],
   },
   {
     evseId: 'ee933c19d3f88c79cfa01df56f84eac0',
@@ -8025,7 +9128,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 14.7,
     meanDurationMins: 14.7,
     utilisationRate: 614.5,
-    peakHours: [{ hour: 13, count: 1 }, { hour: 15, count: 1 }],
+    peakHours: [
+      { hour: 13, count: 1 },
+      { hour: 15, count: 1 },
+    ],
   },
   {
     evseId: 'f0010e4ea30c86948f5cedfa5dc1b7fd',
@@ -8044,7 +9150,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 219.9,
     meanDurationMins: 275.4,
     utilisationRate: 130.0,
-    peakHours: [{ hour: 8, count: 4 }, { hour: 10, count: 3 }, { hour: 12, count: 2 }],
+    peakHours: [
+      { hour: 8, count: 4 },
+      { hour: 10, count: 3 },
+      { hour: 12, count: 2 },
+    ],
   },
   {
     evseId: 'f0b67270c9f3461e805ddb66446df882',
@@ -8063,7 +9173,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 955.0,
     meanDurationMins: 696.7,
     utilisationRate: 50.9,
-    peakHours: [{ hour: 17, count: 2 }, { hour: 8, count: 1 }],
+    peakHours: [
+      { hour: 17, count: 2 },
+      { hour: 8, count: 1 },
+    ],
   },
   {
     evseId: 'f142a24ec162032d5751687c6332417f',
@@ -8082,7 +9195,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 30.0,
     meanDurationMins: 25.0,
     utilisationRate: 360.1,
-    peakHours: [{ hour: 12, count: 1 }, { hour: 16, count: 1 }, { hour: 18, count: 1 }],
+    peakHours: [
+      { hour: 12, count: 1 },
+      { hour: 16, count: 1 },
+      { hour: 18, count: 1 },
+    ],
   },
   {
     evseId: 'f1bf2622361b40b9b1e49faa680fcde7',
@@ -8101,7 +9218,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 42.4,
     meanDurationMins: 47.1,
     utilisationRate: 23.6,
-    peakHours: [{ hour: 8, count: 14 }, { hour: 11, count: 12 }, { hour: 9, count: 11 }],
+    peakHours: [
+      { hour: 8, count: 14 },
+      { hour: 11, count: 12 },
+      { hour: 9, count: 11 },
+    ],
   },
   {
     evseId: 'f269eda615fc20e16bcf65a96ecc247b',
@@ -8120,7 +9241,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 584.1,
     meanDurationMins: 550.7,
     utilisationRate: 93.5,
-    peakHours: [{ hour: 9, count: 2 }, { hour: 14, count: 2 }, { hour: 0, count: 1 }],
+    peakHours: [
+      { hour: 9, count: 2 },
+      { hour: 14, count: 2 },
+      { hour: 0, count: 1 },
+    ],
   },
   {
     evseId: 'f3509440d86c441ebb5d26ae0f0b6167',
@@ -8139,7 +9264,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 54.9,
     meanDurationMins: 69.7,
     utilisationRate: 19.9,
-    peakHours: [{ hour: 11, count: 6 }, { hour: 15, count: 5 }, { hour: 10, count: 4 }],
+    peakHours: [
+      { hour: 11, count: 6 },
+      { hour: 15, count: 5 },
+      { hour: 10, count: 4 },
+    ],
   },
   {
     evseId: 'f3ae86684f714deca4a043d7e223eab9',
@@ -8158,7 +9287,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 497.1,
     meanDurationMins: 440.5,
     utilisationRate: 164.2,
-    peakHours: [{ hour: 11, count: 2 }, { hour: 22, count: 2 }, { hour: 18, count: 1 }],
+    peakHours: [
+      { hour: 11, count: 2 },
+      { hour: 22, count: 2 },
+      { hour: 18, count: 1 },
+    ],
   },
   {
     evseId: 'f3aea267ec2f7b8b4a219a4e88177faf',
@@ -8177,7 +9310,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 18.4,
     meanDurationMins: 33.0,
     utilisationRate: 32.0,
-    peakHours: [{ hour: 7, count: 5 }, { hour: 8, count: 3 }, { hour: 13, count: 3 }],
+    peakHours: [
+      { hour: 7, count: 5 },
+      { hour: 8, count: 3 },
+      { hour: 13, count: 3 },
+    ],
   },
   {
     evseId: 'f447a57733a047fc6bbb3122bee9463c',
@@ -8196,7 +9333,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 33.5,
     meanDurationMins: 34.2,
     utilisationRate: 8.4,
-    peakHours: [{ hour: 14, count: 4 }, { hour: 17, count: 4 }, { hour: 8, count: 3 }],
+    peakHours: [
+      { hour: 14, count: 4 },
+      { hour: 17, count: 4 },
+      { hour: 8, count: 3 },
+    ],
   },
   {
     evseId: 'f4f4b5464ae442298edfd6521f76c13f',
@@ -8215,7 +9356,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 262.8,
     meanDurationMins: 414.0,
     utilisationRate: 49.2,
-    peakHours: [{ hour: 14, count: 2 }, { hour: 7, count: 1 }, { hour: 12, count: 1 }],
+    peakHours: [
+      { hour: 14, count: 2 },
+      { hour: 7, count: 1 },
+      { hour: 12, count: 1 },
+    ],
   },
   {
     evseId: 'f6d9f3a66cab2e8049dc64a1c3343e5e',
@@ -8234,7 +9379,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 227.6,
     meanDurationMins: 292.6,
     utilisationRate: 102.8,
-    peakHours: [{ hour: 18, count: 2 }, { hour: 5, count: 1 }, { hour: 19, count: 1 }],
+    peakHours: [
+      { hour: 18, count: 2 },
+      { hour: 5, count: 1 },
+      { hour: 19, count: 1 },
+    ],
   },
   {
     evseId: 'f70a7eb7506ee4b0a2f0b69f7315b012',
@@ -8253,7 +9402,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 40.3,
     meanDurationMins: 41.6,
     utilisationRate: 30.8,
-    peakHours: [{ hour: 7, count: 7 }, { hour: 9, count: 4 }, { hour: 12, count: 4 }],
+    peakHours: [
+      { hour: 7, count: 7 },
+      { hour: 9, count: 4 },
+      { hour: 12, count: 4 },
+    ],
   },
   {
     evseId: 'f7292d070c1b414194de5f363d0fbd86',
@@ -8272,7 +9425,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 48.8,
     meanDurationMins: 60.6,
     utilisationRate: 12.9,
-    peakHours: [{ hour: 16, count: 3 }, { hour: 10, count: 2 }, { hour: 15, count: 2 }],
+    peakHours: [
+      { hour: 16, count: 3 },
+      { hour: 10, count: 2 },
+      { hour: 15, count: 2 },
+    ],
   },
   {
     evseId: 'f7a6e2aef4bd492eb2b4a38cd352673c',
@@ -8291,7 +9448,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 116.5,
     meanDurationMins: 116.5,
     utilisationRate: 82.1,
-    peakHours: [{ hour: 6, count: 1 }, { hour: 8, count: 1 }],
+    peakHours: [
+      { hour: 6, count: 1 },
+      { hour: 8, count: 1 },
+    ],
   },
   {
     evseId: 'f812fea0d2f64e10ba32dd26b4333c4f',
@@ -8310,7 +9470,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 56.6,
     meanDurationMins: 65.3,
     utilisationRate: 65.1,
-    peakHours: [{ hour: 9, count: 1 }, { hour: 10, count: 1 }, { hour: 13, count: 1 }],
+    peakHours: [
+      { hour: 9, count: 1 },
+      { hour: 10, count: 1 },
+      { hour: 13, count: 1 },
+    ],
   },
   {
     evseId: 'f8c170dcd512ff62fbb9aa1fa20159ed',
@@ -8348,7 +9512,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 32.0,
     meanDurationMins: 36.3,
     utilisationRate: 14.1,
-    peakHours: [{ hour: 13, count: 7 }, { hour: 9, count: 6 }, { hour: 15, count: 5 }],
+    peakHours: [
+      { hour: 13, count: 7 },
+      { hour: 9, count: 6 },
+      { hour: 15, count: 5 },
+    ],
   },
   {
     evseId: 'fd1d3a43be5361e9736350b067f4c2a5',
@@ -8367,7 +9535,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 35.0,
     meanDurationMins: 32.9,
     utilisationRate: 11.8,
-    peakHours: [{ hour: 10, count: 7 }, { hour: 17, count: 6 }, { hour: 11, count: 5 }],
+    peakHours: [
+      { hour: 10, count: 7 },
+      { hour: 17, count: 6 },
+      { hour: 11, count: 5 },
+    ],
   },
   {
     evseId: 'fe4e7c019c22423b8920dc4934bb1581',
@@ -8386,7 +9558,10 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 1122.7,
     meanDurationMins: 848.5,
     utilisationRate: 45.5,
-    peakHours: [{ hour: 14, count: 2 }, { hour: 15, count: 1 }],
+    peakHours: [
+      { hour: 14, count: 2 },
+      { hour: 15, count: 1 },
+    ],
   },
   {
     evseId: 'feffa9d50e0443f4ac0d60740ec63426',
@@ -8405,7 +9580,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 193.6,
     meanDurationMins: 276.3,
     utilisationRate: 147.4,
-    peakHours: [{ hour: 8, count: 1 }, { hour: 11, count: 1 }, { hour: 17, count: 1 }],
+    peakHours: [
+      { hour: 8, count: 1 },
+      { hour: 11, count: 1 },
+      { hour: 17, count: 1 },
+    ],
   },
   {
     evseId: 'ff430e07295ec44abc2892f9b28398c0',
@@ -8424,7 +9603,11 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 24.8,
     meanDurationMins: 28.0,
     utilisationRate: 9.4,
-    peakHours: [{ hour: 14, count: 6 }, { hour: 9, count: 5 }, { hour: 12, count: 5 }],
+    peakHours: [
+      { hour: 14, count: 6 },
+      { hour: 9, count: 5 },
+      { hour: 12, count: 5 },
+    ],
   },
   {
     evseId: 'ff737476e534467f14cd3870ec033079',
@@ -8443,10 +9626,13 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
     medianDurationMins: 27.9,
     meanDurationMins: 30.2,
     utilisationRate: 24.9,
-    peakHours: [{ hour: 11, count: 11 }, { hour: 16, count: 11 }, { hour: 12, count: 9 }],
-  }
+    peakHours: [
+      { hour: 11, count: 11 },
+      { hour: 16, count: 11 },
+      { hour: 12, count: 9 },
+    ],
+  },
 ];
-
 
 /**
  * Calculate demand for a station based on utilisation data
@@ -8455,28 +9641,29 @@ export const skyEVUtilisation: EVUtilisationRecord[] = [
 export function calculateStationDemand(station: EVChargingStation): number {
   // Find matching utilisation records by postcode
   const postcodeOutward = station.postcode.split(' ')[0];
-  const matchingUtils = skyEVUtilisation.filter(
-    (u) => u.postcodeOutward === postcodeOutward
-  );
-  
+  const matchingUtils = skyEVUtilisation.filter((u) => u.postcodeOutward === postcodeOutward);
+
   // Base demand from power output (1-5 scale based on power)
   const baseDemand = Math.max(1, Math.ceil(station.maxPowerKW / 50));
-  
+
   if (matchingUtils.length > 0) {
     // Average utilisation rate across matching records
-    const avgUtilisation = matchingUtils.reduce((sum, u) => sum + u.utilisationRate, 0) / matchingUtils.length;
-    
+    const avgUtilisation =
+      matchingUtils.reduce((sum, u) => sum + u.utilisationRate, 0) / matchingUtils.length;
+
     // Average daily events
-    const avgEvents = matchingUtils.reduce((sum, u) => sum + u.startEventsCount / Math.max(1, u.activeDays), 0) / matchingUtils.length;
-    
+    const avgEvents =
+      matchingUtils.reduce((sum, u) => sum + u.startEventsCount / Math.max(1, u.activeDays), 0) /
+      matchingUtils.length;
+
     // Adjust demand based on utilisation (high util = higher priority)
     // Scale: 0-20% util -> 1, 20-40% -> 2, 40-60% -> 3, 60-80% -> 4, 80%+ -> 5
     const utilDemand = Math.min(5, Math.ceil(avgUtilisation / 20));
-    
+
     // Combine base demand with utilisation-based demand
     return Math.max(1, Math.round((baseDemand + utilDemand) / 2 + avgEvents / 5));
   }
-  
+
   return baseDemand;
 }
 
@@ -8507,30 +9694,42 @@ export function evStationsToStops(stations: EVChargingStation[] = skyEVStations)
 export function getUtilisationStats() {
   const totalStations = skyEVStations.length;
   const totalRecords = skyEVUtilisation.length;
-  
-  const avgUtilisation = skyEVUtilisation.reduce((sum, u) => sum + u.utilisationRate, 0) / totalRecords;
-  const avgDailyEvents = skyEVUtilisation.reduce((sum, u) => sum + u.startEventsCount / Math.max(1, u.activeDays), 0) / totalRecords;
-  
+
+  const avgUtilisation =
+    skyEVUtilisation.reduce((sum, u) => sum + u.utilisationRate, 0) / totalRecords;
+  const avgDailyEvents =
+    skyEVUtilisation.reduce((sum, u) => sum + u.startEventsCount / Math.max(1, u.activeDays), 0) /
+    totalRecords;
+
   // Count by power group
-  const byPowerGroup = skyEVStations.reduce((acc, s) => {
-    acc[s.powerGroup] = (acc[s.powerGroup] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
-  
+  const byPowerGroup = skyEVStations.reduce(
+    (acc, s) => {
+      acc[s.powerGroup] = (acc[s.powerGroup] || 0) + 1;
+
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
+
   // Count by region
-  const byRegion = skyEVStations.reduce((acc, s) => {
-    acc[s.region] = (acc[s.region] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
-  
+  const byRegion = skyEVStations.reduce(
+    (acc, s) => {
+      acc[s.region] = (acc[s.region] || 0) + 1;
+
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
+
   // Peak hours across all stations
   const hourCounts: Record<number, number> = {};
+
   skyEVUtilisation.forEach((u) => {
     u.peakHours.forEach((ph) => {
       hourCounts[ph.hour] = (hourCounts[ph.hour] || 0) + ph.count;
     });
   });
-  
+
   return {
     totalStations,
     totalUtilisationRecords: totalRecords,
@@ -8541,4 +9740,3 @@ export function getUtilisationStats() {
     peakHourDistribution: hourCounts,
   };
 }
-

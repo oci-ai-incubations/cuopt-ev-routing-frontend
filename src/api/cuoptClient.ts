@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import { authClient } from '@/api/authClient';
-
+import { authClient } from '@/api';
+import { CUOPT_TIMEOUT_MS } from '@/constants';
 import type {
   CuOptRequest,
   CuOptResponse,
@@ -13,8 +13,6 @@ import type {
   Vehicle,
 } from '@/types';
 
-const CUOPT_TIMEOUT_MS = 300000;
-
 class CuOptClient {
   private pollInterval = 3000; // 3 seconds between polls
   private maxPollAttempts = 120; // 120 attempts = 6 minutes max wait per job
@@ -24,6 +22,7 @@ class CuOptClient {
       const response = await authClient.get('/api/cuopt/health', {
         timeout: CUOPT_TIMEOUT_MS,
       });
+
       return response.status === 200;
     } catch {
       return false;
@@ -48,6 +47,7 @@ class CuOptClient {
       if (axios.isAxiosError(error)) {
         throw new Error(`cuOPT API Error: ${error.response?.data?.error || error.message}`);
       }
+
       throw error;
     }
   }
@@ -71,17 +71,22 @@ class CuOptClient {
       if (data.response) {
         // cuOPT returns solver_response for feasible solutions and
         // solver_infeasible_response for partial/constrained solutions
-        const solverResponse = data.response.solver_response || data.response.solver_infeasible_response;
+        const solverResponse =
+          data.response.solver_response || data.response.solver_infeasible_response;
         const isPartialSolution = !!data.response.solver_infeasible_response;
 
         // Only throw error for infeasible notes if we don't have a partial solution with vehicle data
         // When solver_infeasible_response is returned, it contains a valid partial solution
         if (data.notes && data.notes.length > 0 && !isPartialSolution) {
           const note = data.notes[0];
+
           if (note.includes('Feasible solutions could not be found')) {
             if (note.includes('Capacity dimension')) {
-              throw new Error('Capacity constraint violated: Vehicle capacity is too low for stop demands. Try increasing vehicle capacity.');
+              throw new Error(
+                'Capacity constraint violated: Vehicle capacity is too low for stop demands. Try increasing vehicle capacity.',
+              );
             }
+
             throw new Error(`Optimization infeasible: ${note}`);
           }
         }
@@ -101,30 +106,40 @@ class CuOptClient {
           route_duration: number;
           load_at_stops: number[];
         }> = [];
+
         if (solverResponse?.vehicle_data && typeof solverResponse.vehicle_data === 'object') {
-          vehicleDataArray = Object.entries(solverResponse.vehicle_data as Record<string, VehicleInfo>).map(([vehicleId, vehicleInfo]) => ({
+          vehicleDataArray = Object.entries(
+            solverResponse.vehicle_data as Record<string, VehicleInfo>,
+          ).map(([vehicleId, vehicleInfo]) => ({
             vehicle_id: parseInt(vehicleId),
             route: vehicleInfo.route || [],
             arrival_times: vehicleInfo.arrival_stamp || [],
             route_distance: 0, // Not provided by cuOPT, would need to calculate
-            route_duration: vehicleInfo.arrival_stamp ?
-              vehicleInfo.arrival_stamp[vehicleInfo.arrival_stamp.length - 1] - vehicleInfo.arrival_stamp[0] : 0,
+            route_duration: vehicleInfo.arrival_stamp
+              ? vehicleInfo.arrival_stamp[vehicleInfo.arrival_stamp.length - 1] -
+                vehicleInfo.arrival_stamp[0]
+              : 0,
             load_at_stops: [],
           }));
         }
 
         // Calculate per-route distance estimate (distribute total proportionally by route length)
         const totalCost = solverResponse?.solution_cost || 0;
-        const totalStopsInRoutes = vehicleDataArray.reduce((sum, v) => sum + (v.route?.length || 0), 0);
+        const totalStopsInRoutes = vehicleDataArray.reduce(
+          (sum, v) => sum + (v.route?.length || 0),
+          0,
+        );
+
         if (totalStopsInRoutes > 0 && totalCost > 0) {
-          vehicleDataArray = vehicleDataArray.map(v => ({
+          vehicleDataArray = vehicleDataArray.map((v) => ({
             ...v,
-            route_distance: (v.route?.length || 0) / totalStopsInRoutes * totalCost
+            route_distance: ((v.route?.length || 0) / totalStopsInRoutes) * totalCost,
           }));
         }
 
         // Determine status: solver_response = SUCCESS, solver_infeasible_response = PARTIAL
         let solveStatus: string;
+
         if (!vehicleDataArray.length) {
           solveStatus = 'FAILED';
         } else if (isPartialSolution) {
@@ -132,6 +147,7 @@ class CuOptClient {
         } else {
           solveStatus = 'SUCCESS';
         }
+
         return {
           ...solverResponse,
           vehicle_data: vehicleDataArray,
@@ -150,7 +166,7 @@ class CuOptClient {
     concurrency: number = 4,
     onProgress?: (completed: number, total: number, results: Array<CuOptResponse | null>) => void,
     onJobStart?: (index: number) => void,
-    onJobError?: (index: number, error: Error) => void
+    onJobError?: (index: number, error: Error) => void,
   ): Promise<Array<CuOptResponse | null>> {
     // Initialize results array with nulls to avoid sparse array issues
     const results: Array<CuOptResponse | null> = new Array(payloads.length).fill(null);
@@ -158,18 +174,22 @@ class CuOptClient {
 
     const tasks = payloads.map(async (payload, index) => {
       await semaphore.acquire();
+
       try {
         // Notify that this job is now running
         onJobStart?.(index);
         const result = await this.solveVRP(payload);
+
         results[index] = result;
         onProgress?.(results.filter(Boolean).length, payloads.length, results);
+
         return result;
       } catch (error) {
         // Mark this job as failed in results (null indicates failure)
         results[index] = null;
         onJobError?.(index, error instanceof Error ? error : new Error(String(error)));
         onProgress?.(results.filter(Boolean).length, payloads.length, results);
+
         return null;
       } finally {
         semaphore.release();
@@ -177,20 +197,21 @@ class CuOptClient {
     });
 
     await Promise.allSettled(tasks);
+
     return results;
   }
 
-  buildPayload(
-    stops: Stop[],
-    vehicles: Vehicle[],
-    config: OptimizationConfig
-  ): CuOptRequest {
+  buildPayload(stops: Stop[], vehicles: Vehicle[], config: OptimizationConfig): CuOptRequest {
     // For home-start routing, include vehicle home locations in the matrix
     // Only use home-start if explicitly enabled AND vehicles have non-zero home locations
-    const useHomeStart = config.enableHomeStart === true && vehicles.some(v =>
-      v.startLat !== undefined && v.startLng !== undefined &&
-      (v.startLat !== 0 || v.startLng !== 0)
-    );
+    const useHomeStart =
+      config.enableHomeStart === true &&
+      vehicles.some(
+        (v) =>
+          v.startLat !== undefined &&
+          v.startLng !== undefined &&
+          (v.startLat !== 0 || v.startLng !== 0),
+      );
     const returnToDepot = config.returnToDepot ?? true;
 
     // Build location list: [depot, ...stops, ...vehicleHomes (if home-start)]
@@ -211,13 +232,17 @@ class CuOptClient {
     // Add service times (dwell/job duration) - use per-stop or default
     const defaultServiceTime = config.defaultServiceTime || 0;
     const serviceTimes = stops.map((s) => s.serviceDuration ?? defaultServiceTime);
+
     if (serviceTimes.some((t) => t > 0)) {
       taskData.service_times = serviceTimes;
     }
 
     // Add time windows if enabled and stops have them
     if (config.enableTimeWindows) {
-      const hasTimeWindows = stops.some((s) => s.timeWindowStart !== undefined || s.timeWindowEnd !== undefined);
+      const hasTimeWindows = stops.some(
+        (s) => s.timeWindowStart !== undefined || s.timeWindowEnd !== undefined,
+      );
+
       if (hasTimeWindows) {
         taskData.task_time_windows = stops.map((s) => [
           s.timeWindowStart ?? 0,
@@ -233,13 +258,16 @@ class CuOptClient {
 
     // Build fleet data with vehicle locations
     let vehicleLocations: number[][];
+
     if (useHomeStart) {
       // Home-start: each vehicle starts from its home location index
       // Home indices start at stops.length + 1 (after depot + all stops)
       const homeStartIndex = stops.length + 1;
+
       vehicleLocations = vehicles.map((_, idx) => {
         const startIdx = homeStartIndex + idx;
         const endIdx = returnToDepot ? 0 : startIdx; // Return to depot or home
+
         return [startIdx, endIdx];
       });
     } else {
@@ -256,7 +284,7 @@ class CuOptClient {
     if (config.enableTimeWindows) {
       fleetData.vehicle_time_windows = vehicles.map((v) => [
         v.timeWindowStart ?? 0,
-        v.timeWindowEnd ?? 480 // Default 8 hour shift
+        v.timeWindowEnd ?? 480, // Default 8 hour shift
       ]);
     }
 
@@ -302,14 +330,14 @@ class CuOptClient {
     switch (config.objective) {
       case 'minimize_distance':
         solverConfig.objectives = {
-          cost: 1,           // Primary: minimize distance/cost
-          travel_time: 0,    // Secondary: time not prioritized
+          cost: 1, // Primary: minimize distance/cost
+          travel_time: 0, // Secondary: time not prioritized
         };
         break;
       case 'minimize_time':
         solverConfig.objectives = {
-          cost: 0,           // Distance not prioritized
-          travel_time: 1,    // Primary: minimize travel time
+          cost: 0, // Distance not prioritized
+          travel_time: 1, // Primary: minimize travel time
         };
         break;
       case 'minimize_vehicles':
@@ -325,24 +353,29 @@ class CuOptClient {
   }
 
   // Build distance matrix including vehicle home locations for home-start routing
-  private buildDistanceMatrixWithHomes(stops: Stop[], vehicles: Vehicle[], includeHomes: boolean): number[][] {
+  private buildDistanceMatrixWithHomes(
+    stops: Stop[],
+    vehicles: Vehicle[],
+    includeHomes: boolean,
+  ): number[][] {
     // Build location list: [depot, ...stops, ...vehicleHomes]
     const allPoints: Array<{ lat: number; lng: number }> = [
       // Index 0: Depot (use center of stops or first stop)
       {
         lat: stops.length > 0 ? stops[0].lat : 0,
-        lng: stops.length > 0 ? stops[0].lng : 0
+        lng: stops.length > 0 ? stops[0].lng : 0,
       },
       // Indices 1..N: Stops
-      ...stops.map(s => ({ lat: s.lat, lng: s.lng })),
+      ...stops.map((s) => ({ lat: s.lat, lng: s.lng })),
     ];
 
     // Add vehicle home locations if home-start is enabled
     if (includeHomes) {
-      vehicles.forEach(v => {
+      vehicles.forEach((v) => {
         // Use vehicle's start location, or generate random location near depot
         const homeLat = v.startLat || allPoints[0].lat + (Math.random() - 0.5) * 0.1;
         const homeLng = v.startLng || allPoints[0].lng + (Math.random() - 0.5) * 0.1;
+
         allPoints.push({ lat: homeLat, lng: homeLng });
       });
     }
@@ -352,18 +385,22 @@ class CuOptClient {
 
     for (let i = 0; i < n; i++) {
       const row: number[] = [];
+
       for (let j = 0; j < n; j++) {
         if (i === j) {
           row.push(0);
         } else {
-          row.push(this.haversineDistance(
-            allPoints[i].lat,
-            allPoints[i].lng,
-            allPoints[j].lat,
-            allPoints[j].lng
-          ));
+          row.push(
+            this.haversineDistance(
+              allPoints[i].lat,
+              allPoints[i].lng,
+              allPoints[j].lat,
+              allPoints[j].lng,
+            ),
+          );
         }
       }
+
       matrix.push(row);
     }
 
@@ -373,9 +410,8 @@ class CuOptClient {
   private buildTimeMatrix(distanceMatrix: number[][]): number[][] {
     // Assume average speed of 50 km/h = 0.833 km/min
     const avgSpeed = 0.833;
-    return distanceMatrix.map((row) =>
-      row.map((dist) => Math.round(dist / avgSpeed))
-    );
+
+    return distanceMatrix.map((row) => row.map((dist) => Math.round(dist / avgSpeed)));
   }
 
   private haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -389,6 +425,7 @@ class CuOptClient {
         Math.sin(dLon / 2) *
         Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
     return R * c;
   }
 
@@ -411,8 +448,10 @@ class CuOptClient {
 
     // Initialize centroids
     const centroids: Array<{ lat: number; lng: number }> = [];
+
     for (let i = 0; i < numClusters; i++) {
       const idx = Math.floor((i * stops.length) / numClusters);
+
       centroids.push({ lat: stops[idx].lat, lng: stops[idx].lng });
     }
 
@@ -425,8 +464,10 @@ class CuOptClient {
       stops.forEach((stop) => {
         let minDist = Infinity;
         let nearest = 0;
+
         centroids.forEach((centroid, i) => {
           const dist = this.haversineDistance(stop.lat, stop.lng, centroid.lat, centroid.lng);
+
           if (dist < minDist) {
             minDist = dist;
             nearest = i;
@@ -453,6 +494,7 @@ class CuOptClient {
   estimatePayloadSize(numStops: number): number {
     // Formula: ~43.2 * N^2 bytes (from benchmark data)
     const n = numStops + 1; // +1 for depot
+
     return (43.2 * n * n) / (1024 * 1024); // MB
   }
 }
@@ -469,8 +511,10 @@ class Semaphore {
   async acquire(): Promise<void> {
     if (this.permits > 0) {
       this.permits--;
+
       return;
     }
+
     return new Promise((resolve) => {
       this.waiting.push(resolve);
     });
@@ -479,6 +523,7 @@ class Semaphore {
   release(): void {
     if (this.waiting.length > 0) {
       const next = this.waiting.shift();
+
       next?.();
     } else {
       this.permits++;

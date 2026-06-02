@@ -2,8 +2,8 @@ import { clsx } from 'clsx';
 import { Settings, RotateCcw, Save, Check, Info } from 'lucide-react';
 import { useState } from 'react';
 
-import { SCENARIO_PRESETS, getCountryByCode } from '@/data/locationData';
-import { useConfigStore } from '@/store/configStore';
+import { SCENARIO_PRESETS, getCountryByCode } from '@/data';
+import { useConfigStore } from '@/store';
 
 import { BusinessDefaults } from './BusinessDefaults';
 import { MapDefaults } from './MapDefaults';
@@ -13,11 +13,22 @@ import { ScenarioPresets } from './ScenarioPresets';
 export function AdminPage() {
   const {
     config,
-    setCountry, setCity, setDistanceUnit, setTimeFormat,
-    setVehicleLabelType, setDefaultVehicles, setDefaultShiftHours,
-    setWorkingHours, setDefaultCenter, setDefaultZoom, setServiceRadius,
-    setActiveScenario, setUseScenarioJobTypes, setUseScenarioRevenue,
-    setUseScenarioMetrics, resetToDefaults,
+    setCountry,
+    setCity,
+    setDistanceUnit,
+    setTimeFormat,
+    setVehicleLabelType,
+    setDefaultVehicles,
+    setDefaultShiftHours,
+    setWorkingHours,
+    setDefaultCenter,
+    setDefaultZoom,
+    setServiceRadius,
+    setActiveScenario,
+    setUseScenarioJobTypes,
+    setUseScenarioRevenue,
+    setUseScenarioMetrics,
+    resetToDefaults,
   } = useConfigStore();
 
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saved'>('idle');
@@ -41,7 +52,6 @@ export function AdminPage() {
   return (
     <div className="h-full overflow-auto bg-dark-bg p-6">
       <div className="max-w-4xl mx-auto space-y-6">
-
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -50,18 +60,36 @@ export function AdminPage() {
             </div>
             <div>
               <h1 className="text-xl font-bold text-white">Configuration Settings</h1>
-              <p className="text-sm text-gray-400">Customize regional settings, defaults, and scenario options</p>
+              <p className="text-sm text-gray-400">
+                Customize regional settings, defaults, and scenario options
+              </p>
             </div>
           </div>
           <div className="flex gap-2">
-            <button onClick={handleReset} className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-white hover:bg-dark-hover rounded-lg transition-colors">
+            <button
+              onClick={handleReset}
+              className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-white hover:bg-dark-hover rounded-lg transition-colors"
+            >
               <RotateCcw className="w-4 h-4" /> Reset
             </button>
             <button
               onClick={handleSave}
-              className={clsx('flex items-center gap-2 px-4 py-2 rounded-lg transition-colors', saveStatus === 'saved' ? 'bg-green-600 text-white' : 'bg-oracle-red text-white hover:bg-oracle-red/90')}
+              className={clsx(
+                'flex items-center gap-2 px-4 py-2 rounded-lg transition-colors',
+                saveStatus === 'saved'
+                  ? 'bg-green-600 text-white'
+                  : 'bg-oracle-red text-white hover:bg-oracle-red/90',
+              )}
             >
-              {saveStatus === 'saved' ? <><Check className="w-4 h-4" /> Saved</> : <><Save className="w-4 h-4" /> Save</>}
+              {saveStatus === 'saved' ? (
+                <>
+                  <Check className="w-4 h-4" /> Saved
+                </>
+              ) : (
+                <>
+                  <Save className="w-4 h-4" /> Save
+                </>
+              )}
             </button>
           </div>
         </div>
@@ -110,12 +138,17 @@ export function AdminPage() {
 
         {/* Summary */}
         <div className="p-4 bg-dark-card rounded-xl border border-dark-border">
-          <div className="text-sm font-medium text-gray-400 mb-3">Current Configuration Summary</div>
+          <div className="text-sm font-medium text-gray-400 mb-3">
+            Current Configuration Summary
+          </div>
           <div className="grid grid-cols-4 gap-4 text-sm">
             {[
               { label: 'Region', value: `${selectedCountry?.flag} ${selectedCountry?.name}` },
               { label: 'City', value: cities.find((c) => c.id === config.cityId)?.name || '' },
-              { label: 'Scenario', value: SCENARIO_PRESETS.find((s) => s.id === config.activeScenario)?.name || '' },
+              {
+                label: 'Scenario',
+                value: SCENARIO_PRESETS.find((s) => s.id === config.activeScenario)?.name || '',
+              },
               { label: 'Fleet Size', value: `${config.defaultVehicles} vehicles` },
             ].map(({ label, value }) => (
               <div key={label}>

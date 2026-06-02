@@ -1,10 +1,6 @@
-import axios, {
-  type AxiosError,
-  type AxiosInstance,
-  type InternalAxiosRequestConfig,
-} from 'axios';
+import axios, { type AxiosError, type AxiosInstance, type InternalAxiosRequestConfig } from 'axios';
 
-import { useAuthStore } from '@/store/authStore';
+import { useAuthStore } from '@/store';
 
 interface RetryConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
@@ -18,9 +14,11 @@ export const authClient: AxiosInstance = axios.create({ baseURL: '/' });
 
 authClient.interceptors.request.use((cfg) => {
   const token = useAuthStore.getState().token;
+
   if (token) {
     cfg.headers.set('Authorization', `Bearer ${token}`);
   }
+
   return cfg;
 });
 
@@ -32,10 +30,9 @@ authClient.interceptors.request.use((cfg) => {
 //   /auth/login   — same reason.
 function isAuthFlowEndpoint(url: string | undefined): boolean {
   if (!url) return false;
+
   return (
-    url.endsWith('/auth/logout') ||
-    url.endsWith('/auth/refresh') ||
-    url.endsWith('/auth/login')
+    url.endsWith('/auth/logout') || url.endsWith('/auth/refresh') || url.endsWith('/auth/login')
   );
 }
 
@@ -43,19 +40,18 @@ authClient.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     const cfg = error.config as RetryConfig | undefined;
-    if (
-      error.response?.status === 401 &&
-      cfg &&
-      !cfg._retry &&
-      !isAuthFlowEndpoint(cfg.url)
-    ) {
+
+    if (error.response?.status === 401 && cfg && !cfg._retry && !isAuthFlowEndpoint(cfg.url)) {
       cfg._retry = true;
       const refreshed = await useAuthStore.getState().refreshAccessToken();
+
       if (refreshed) {
         return authClient.request(cfg);
       }
+
       useAuthStore.getState().logout();
     }
+
     return Promise.reject(error);
   },
 );

@@ -2,14 +2,8 @@ import { jwtDecode } from 'jwt-decode';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import * as authApi from '@/api/auth';
-
-import type {
-  AccessTokenClaims,
-  LoginResult,
-  RegisterPayload,
-  User,
-} from '@/types/auth';
+import * as authApi from '@/api';
+import type { AccessTokenClaims, LoginResult, RegisterPayload, User } from '@/types/auth';
 
 interface AuthState {
   user: User | null;
@@ -22,7 +16,12 @@ interface AuthState {
   logout: () => void;
   refreshAccessToken: () => Promise<boolean>;
   loadCurrentUser: () => Promise<boolean>;
-  ssoLogin: (slug: string, code: string, redirectUri: string, state: string) => Promise<LoginResult>;
+  ssoLogin: (
+    slug: string,
+    code: string,
+    redirectUri: string,
+    state: string,
+  ) => Promise<LoginResult>;
   setUserFromToken: (token: string) => void;
 }
 
@@ -32,6 +31,7 @@ function extractError(err: unknown, fallback: string): string {
       response?: { data?: { detail?: string; error?: string } };
       message?: string;
     };
+
     return (
       maybeAxios.response?.data?.detail ||
       maybeAxios.response?.data?.error ||
@@ -39,6 +39,7 @@ function extractError(err: unknown, fallback: string): string {
       fallback
     );
   }
+
   return fallback;
 }
 
@@ -53,15 +54,18 @@ export const useAuthStore = create<AuthState>()(
       login: async (email, password) => {
         try {
           const data = await authApi.login(email, password);
+
           set({
             user: data.user,
             token: data.access_token,
             refreshToken: data.refresh_token ?? null,
             isAuthenticated: true,
           });
+
           return { success: true };
         } catch (err) {
           set({ user: null, token: null, refreshToken: null, isAuthenticated: false });
+
           return { success: false, error: extractError(err, 'Invalid email or password') };
         }
       },
@@ -69,15 +73,18 @@ export const useAuthStore = create<AuthState>()(
       register: async (payload) => {
         try {
           const data = await authApi.register(payload);
+
           set({
             user: data.user,
             token: data.access_token,
             refreshToken: data.refresh_token ?? null,
             isAuthenticated: true,
           });
+
           return { success: true };
         } catch (err) {
           set({ user: null, token: null, refreshToken: null, isAuthenticated: false });
+
           return { success: false, error: extractError(err, 'Registration failed') };
         }
       },
@@ -90,19 +97,25 @@ export const useAuthStore = create<AuthState>()(
 
       refreshAccessToken: async () => {
         const { refreshToken } = get();
+
         if (!refreshToken) {
           set({ user: null, token: null, refreshToken: null, isAuthenticated: false });
+
           return false;
         }
+
         try {
           const data = await authApi.refresh(refreshToken);
+
           set({
             token: data.access_token,
             refreshToken: data.refresh_token ?? get().refreshToken,
           });
+
           return true;
         } catch {
           set({ user: null, token: null, refreshToken: null, isAuthenticated: false });
+
           return false;
         }
       },
@@ -110,10 +123,13 @@ export const useAuthStore = create<AuthState>()(
       loadCurrentUser: async () => {
         try {
           const user = await authApi.me();
+
           set({ user, isAuthenticated: true });
+
           return true;
         } catch {
           set({ user: null, token: null, refreshToken: null, isAuthenticated: false });
+
           return false;
         }
       },
@@ -121,15 +137,18 @@ export const useAuthStore = create<AuthState>()(
       ssoLogin: async (slug, code, redirectUri, state) => {
         try {
           const data = await authApi.exchangeSSOCode(slug, code, redirectUri, state);
+
           set({
             user: data.user,
             token: data.access_token,
             refreshToken: data.refresh_token ?? null,
             isAuthenticated: true,
           });
+
           return { success: true };
         } catch (err) {
           set({ user: null, token: null, refreshToken: null, isAuthenticated: false });
+
           return { success: false, error: extractError(err, 'SSO authentication failed') };
         }
       },
@@ -137,6 +156,7 @@ export const useAuthStore = create<AuthState>()(
       setUserFromToken: (token) => {
         try {
           const claims = jwtDecode<AccessTokenClaims>(token);
+
           set({
             user: {
               id: parseInt(claims.sub, 10),

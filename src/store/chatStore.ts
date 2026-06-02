@@ -95,16 +95,19 @@ export const useChatStore = create<ChatState>((set, get) => ({
       createdAt: new Date(),
       updatedAt: new Date(),
     };
+
     set((state) => ({
       conversations: [...state.conversations, conversation],
       currentConversationId: id,
       messages: [],
     }));
+
     return id;
   },
 
   setCurrentConversation: (id) => {
     const conversation = get().conversations.find((c) => c.id === id);
+
     set({
       currentConversationId: id,
       messages: conversation?.messages || [],
@@ -126,14 +129,16 @@ export const useChatStore = create<ChatState>((set, get) => ({
       id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       timestamp: new Date(),
     };
+
     set((state) => {
       const updatedMessages = [...state.messages, newMessage];
       // Update conversation
       const conversations = state.conversations.map((c) =>
         c.id === state.currentConversationId
           ? { ...c, messages: updatedMessages, updatedAt: new Date() }
-          : c
+          : c,
       );
+
       return { messages: updatedMessages, conversations };
     });
   },
@@ -146,13 +151,15 @@ export const useChatStore = create<ChatState>((set, get) => ({
       content: '',
       timestamp: new Date(),
     };
+
     set((state) => {
       const updatedMessages = [...state.messages, newMessage];
       const conversations = state.conversations.map((c) =>
         c.id === state.currentConversationId
           ? { ...c, messages: updatedMessages, updatedAt: new Date() }
-          : c
+          : c,
       );
+
       return {
         messages: updatedMessages,
         conversations,
@@ -160,24 +167,23 @@ export const useChatStore = create<ChatState>((set, get) => ({
         isStreaming: true,
       };
     });
+
     return id;
   },
 
   appendToStreamingMessage: (chunk) => {
     set((state) => {
       const streamingId = state.streamingMessageId;
+
       if (!streamingId) return state;
 
       const messages = state.messages.map((m) =>
-        m.id === streamingId
-          ? { ...m, content: m.content + chunk }
-          : m
+        m.id === streamingId ? { ...m, content: m.content + chunk } : m,
       );
       const conversations = state.conversations.map((c) =>
-        c.id === state.currentConversationId
-          ? { ...c, messages, updatedAt: new Date() }
-          : c
+        c.id === state.currentConversationId ? { ...c, messages, updatedAt: new Date() } : c,
       );
+
       return { messages, conversations };
     });
   },
@@ -185,18 +191,14 @@ export const useChatStore = create<ChatState>((set, get) => ({
   finalizeStreamingMessage: (metadata) => {
     set((state) => {
       const streamingId = state.streamingMessageId;
+
       if (!streamingId) return state;
 
-      const messages = state.messages.map((m) =>
-        m.id === streamingId
-          ? { ...m, metadata }
-          : m
-      );
+      const messages = state.messages.map((m) => (m.id === streamingId ? { ...m, metadata } : m));
       const conversations = state.conversations.map((c) =>
-        c.id === state.currentConversationId
-          ? { ...c, messages, updatedAt: new Date() }
-          : c
+        c.id === state.currentConversationId ? { ...c, messages, updatedAt: new Date() } : c,
       );
+
       return {
         messages,
         conversations,
@@ -209,12 +211,14 @@ export const useChatStore = create<ChatState>((set, get) => ({
   updateLastMessage: (content) =>
     set((state) => {
       const messages = [...state.messages];
+
       if (messages.length > 0) {
         messages[messages.length - 1] = {
           ...messages[messages.length - 1],
           content,
         };
       }
+
       return { messages };
     }),
 
@@ -227,12 +231,9 @@ export const useChatStore = create<ChatState>((set, get) => ({
   setIsStreaming: (streaming) => set({ isStreaming: streaming }),
 
   // Config actions
-  setConfig: (config) =>
-    set((state) => ({ config: { ...state.config, ...config } })),
-  setModel: (model) =>
-    set((state) => ({ config: { ...state.config, model } })),
-  setTemperature: (temperature) =>
-    set((state) => ({ config: { ...state.config, temperature } })),
+  setConfig: (config) => set((state) => ({ config: { ...state.config, ...config } })),
+  setModel: (model) => set((state) => ({ config: { ...state.config, model } })),
+  setTemperature: (temperature) => set((state) => ({ config: { ...state.config, temperature } })),
 
   // Debug actions
   toggleDebugMode: () => set((state) => ({ debugMode: !state.debugMode })),

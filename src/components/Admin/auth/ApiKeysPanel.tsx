@@ -10,15 +10,9 @@
 import { KeyRound, Save } from 'lucide-react';
 import { type FormEvent, useEffect, useState } from 'react';
 
-import { fetchInstanceConfig, updateApiKeys } from '@/api/admin';
-import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  PanelLoading,
-  TextInput,
-} from '@/components/Admin/auth/_primitives';
+import { fetchInstanceConfig, updateApiKeys } from '@/api';
+
+import { Button, Card, CardContent, CardHeader, PanelLoading, TextInput } from './_primitives';
 
 interface FormState {
   google_maps_api_key: string;
@@ -39,6 +33,7 @@ export function ApiKeysPanel() {
 
   useEffect(() => {
     let cancelled = false;
+
     fetchInstanceConfig()
       .then((cfg) => {
         if (cancelled) return;
@@ -47,6 +42,7 @@ export function ApiKeysPanel() {
       })
       .catch((e: Error) => !cancelled && setError(e.message || 'Failed to load config'))
       .finally(() => !cancelled && setLoading(false));
+
     return () => {
       cancelled = true;
     };
@@ -62,9 +58,11 @@ export function ApiKeysPanel() {
 
     // Build payload: only include fields the user actually typed.
     const payload: { google_maps_api_key?: string; openweathermap_api_key?: string } = {};
+
     if (form.google_maps_api_key !== '') {
       payload.google_maps_api_key = form.google_maps_api_key;
     }
+
     if (form.openweathermap_api_key !== '') {
       payload.openweathermap_api_key = form.openweathermap_api_key;
     }
@@ -118,9 +116,7 @@ export function ApiKeysPanel() {
             </span>
             <TextInput
               type="password"
-              placeholder={
-                hasOpenWeather ? '*** (set — leave blank to keep)' : '(not configured)'
-              }
+              placeholder={hasOpenWeather ? '*** (set — leave blank to keep)' : '(not configured)'}
               value={form.openweathermap_api_key}
               onChange={(v) => setForm((f) => ({ ...f, openweathermap_api_key: v }))}
             />
@@ -137,8 +133,7 @@ export function ApiKeysPanel() {
               icon={<Save className="w-4 h-4" />}
               loading={saving}
               disabled={
-                saving ||
-                (form.google_maps_api_key === '' && form.openweathermap_api_key === '')
+                saving || (form.google_maps_api_key === '' && form.openweathermap_api_key === '')
               }
             >
               Save

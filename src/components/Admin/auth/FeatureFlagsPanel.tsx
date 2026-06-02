@@ -10,7 +10,7 @@
 import { ToggleLeft } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { fetchInstanceConfig, updateFeatures } from '@/api/admin';
+import { fetchInstanceConfig, updateFeatures } from '@/api';
 import {
   Card,
   CardContent,
@@ -18,7 +18,7 @@ import {
   PanelLoading,
   Toggle,
 } from '@/components/Admin/auth/_primitives';
-import type { FeatureFlagsUpdate, InstanceConfig } from '@/types/admin';
+import type { FeatureFlagsUpdate, InstanceConfig } from '@/types';
 
 type FlagKey = keyof FeatureFlagsUpdate;
 
@@ -48,16 +48,19 @@ export function FeatureFlagsPanel() {
 
   useEffect(() => {
     let cancelled = false;
+
     fetchInstanceConfig()
       .then((cfg) => !cancelled && setConfig(cfg))
       .catch((e: Error) => !cancelled && setError(e.message || 'Failed to load config'))
       .finally(() => !cancelled && setLoading(false));
+
     return () => {
       cancelled = true;
     };
   }, []);
 
   if (loading) return <PanelLoading />;
+
   if (!config) {
     return (
       <div className="px-3 py-2 text-sm rounded-md bg-red-900/30 border border-red-700/50 text-red-200">
@@ -92,7 +95,7 @@ export function FeatureFlagsPanel() {
         <div className="space-y-4">
           {FLAGS.map((f) => (
             <div
-              key={f.key}
+              key={f.key as string}
               className="pb-4 border-b border-dark-border last:border-b-0 last:pb-0"
             >
               <Toggle

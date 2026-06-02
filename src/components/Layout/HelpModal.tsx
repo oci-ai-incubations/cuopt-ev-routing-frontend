@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import React, { useState } from 'react';
 
-import { Modal } from '@/components/shared/Modal';
+import { Modal } from '@/components';
 
 type HelpTab = 'about' | 'quickstart' | 'docs';
 
@@ -33,9 +33,9 @@ function AboutTab() {
       <div className="p-4 bg-gradient-to-r from-oracle-red/10 to-nvidia-green/10 rounded-xl border border-dark-border">
         <h3 className="text-lg font-semibold text-white mb-2">Route Optimizer Dashboard</h3>
         <p className="text-sm text-gray-300">
-          Enterprise-grade Vehicle Routing Problem (VRP) solver powered by NVIDIA cuOPT running on Oracle Cloud
-          Infrastructure (OCI). This dashboard provides real-time route optimization with traffic-aware routing,
-          weather integration, and AI-powered insights.
+          Enterprise-grade Vehicle Routing Problem (VRP) solver powered by NVIDIA cuOPT running on
+          Oracle Cloud Infrastructure (OCI). This dashboard provides real-time route optimization
+          with traffic-aware routing, weather integration, and AI-powered insights.
         </p>
       </div>
 
@@ -66,15 +66,42 @@ function AboutTab() {
         <div className="bg-dark-bg rounded-xl p-4">
           <div className="flex items-center justify-between text-sm">
             {[
-              { icon: <Database className="w-6 h-6 text-oci-blue" />, bg: 'bg-oci-blue/20', label: 'Input Data', sub: 'CSV/JSON' },
-              { icon: <Layers className="w-6 h-6 text-oracle-red" />, bg: 'bg-oracle-red/20', label: 'InputPanel', sub: 'Config' },
-              { icon: <Cpu className="w-6 h-6 text-nvidia-green" />, bg: 'bg-nvidia-green/20', label: 'cuOPT NIM', sub: 'GPU Solver' },
-              { icon: <MapPin className="w-6 h-6 text-green-400" />, bg: 'bg-green-500/20', label: 'RouteMap', sub: 'Visualization' },
-              { icon: <Truck className="w-6 h-6 text-purple-400" />, bg: 'bg-purple-500/20', label: 'ResultsPanel', sub: 'Routes' },
+              {
+                icon: <Database className="w-6 h-6 text-oci-blue" />,
+                bg: 'bg-oci-blue/20',
+                label: 'Input Data',
+                sub: 'CSV/JSON',
+              },
+              {
+                icon: <Layers className="w-6 h-6 text-oracle-red" />,
+                bg: 'bg-oracle-red/20',
+                label: 'InputPanel',
+                sub: 'Config',
+              },
+              {
+                icon: <Cpu className="w-6 h-6 text-nvidia-green" />,
+                bg: 'bg-nvidia-green/20',
+                label: 'cuOPT NIM',
+                sub: 'GPU Solver',
+              },
+              {
+                icon: <MapPin className="w-6 h-6 text-green-400" />,
+                bg: 'bg-green-500/20',
+                label: 'RouteMap',
+                sub: 'Visualization',
+              },
+              {
+                icon: <Truck className="w-6 h-6 text-purple-400" />,
+                bg: 'bg-purple-500/20',
+                label: 'ResultsPanel',
+                sub: 'Routes',
+              },
             ].map((step, i, arr) => (
               <React.Fragment key={step.label}>
                 <div className="flex flex-col items-center gap-2">
-                  <div className={`w-12 h-12 rounded-lg ${step.bg} flex items-center justify-center`}>
+                  <div
+                    className={`w-12 h-12 rounded-lg ${step.bg} flex items-center justify-center`}
+                  >
                     {step.icon}
                   </div>
                   <span className="text-gray-400">{step.label}</span>
@@ -96,7 +123,11 @@ function AboutTab() {
               <span className="font-medium text-white">Dashboard Components</span>
             </div>
             <ul className="space-y-1 text-gray-400 text-xs">
-              {['Dashboard.tsx - Main container', 'InputPanel.tsx - Stops & fleet config', 'ResultsPanel.tsx - Route details'].map((item) => (
+              {[
+                'Dashboard.tsx - Main container',
+                'InputPanel.tsx - Stops & fleet config',
+                'ResultsPanel.tsx - Route details',
+              ].map((item) => (
                 <li key={item} className="flex items-center gap-2">
                   <CheckCircle2 className="w-3 h-3 text-green-400" />
                   <span>{item}</span>
@@ -111,7 +142,11 @@ function AboutTab() {
               <span className="font-medium text-white">Map Components</span>
             </div>
             <ul className="space-y-1 text-gray-400 text-xs">
-              {['GoogleRouteMap.tsx - Traffic & Directions', 'RouteMap.tsx - Leaflet/OSM fallback', 'Weather integration overlay'].map((item) => (
+              {[
+                'GoogleRouteMap.tsx - Traffic & Directions',
+                'RouteMap.tsx - Leaflet/OSM fallback',
+                'Weather integration overlay',
+              ].map((item) => (
                 <li key={item} className="flex items-center gap-2">
                   <CheckCircle2 className="w-3 h-3 text-green-400" />
                   <span>{item}</span>
@@ -126,7 +161,11 @@ function AboutTab() {
               <span className="font-medium text-white">AI Chat Components</span>
             </div>
             <ul className="space-y-1 text-gray-400 text-xs">
-              {['ChatInterface.tsx - NLP interface', 'ChatMessage.tsx - Message rendering', 'ChatInput.tsx - User input'].map((item) => (
+              {[
+                'ChatInterface.tsx - NLP interface',
+                'ChatMessage.tsx - Message rendering',
+                'ChatInput.tsx - User input',
+              ].map((item) => (
                 <li key={item} className="flex items-center gap-2">
                   <CheckCircle2 className="w-3 h-3 text-green-400" />
                   <span>{item}</span>
@@ -141,7 +180,11 @@ function AboutTab() {
               <span className="font-medium text-white">Shared UI Components</span>
             </div>
             <ul className="space-y-1 text-gray-400 text-xs">
-              {['Card, Button, Modal, Toast', 'Input, Select, Slider, Toggle', 'Badge, Skeleton, MetricCard'].map((item) => (
+              {[
+                'Card, Button, Modal, Toast',
+                'Input, Select, Slider, Toggle',
+                'Badge, Skeleton, MetricCard',
+              ].map((item) => (
                 <li key={item} className="flex items-center gap-2">
                   <CheckCircle2 className="w-3 h-3 text-green-400" />
                   <span>{item}</span>
@@ -361,7 +404,7 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
                 'px-4 py-2 text-sm font-medium transition-colors flex items-center gap-2',
                 activeTab === id
                   ? 'text-oracle-red border-b-2 border-oracle-red'
-                  : 'text-gray-400 hover:text-white'
+                  : 'text-gray-400 hover:text-white',
               )}
             >
               {icon}

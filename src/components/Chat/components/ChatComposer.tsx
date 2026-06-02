@@ -1,9 +1,8 @@
 import { clsx } from 'clsx';
 import { Send, Paperclip, Mic, Settings } from 'lucide-react';
-
-import { Button } from '@/components/shared/Button';
-
 import type { ChangeEvent, KeyboardEvent, RefObject } from 'react';
+
+import { Button } from '@/components';
 
 interface ChatComposerProps {
   textareaRef: RefObject<HTMLTextAreaElement>;
@@ -44,7 +43,7 @@ export function ChatComposer({
           onClick={onOpenFileDialog}
           className={clsx(
             'shrink-0 p-2 text-gray-400 rounded-lg transition-colors',
-            'hover:text-white hover:bg-dark-hover'
+            'hover:text-white hover:bg-dark-hover',
           )}
           title="Attach CSV file with stops"
         >
@@ -62,7 +61,7 @@ export function ChatComposer({
             className={clsx(
               'w-full bg-dark-bg border border-dark-border rounded-xl',
               'px-4 py-3 pr-12 text-white placeholder-gray-500 resize-none overflow-y-hidden',
-              'focus:outline-none focus:ring-2 focus:ring-[#C74634] focus:border-transparent'
+              'focus:outline-none focus:ring-2 focus:ring-[#C74634] focus:border-transparent',
             )}
             disabled={isProcessing}
           />
@@ -70,7 +69,7 @@ export function ChatComposer({
             onClick={onToggleSettings}
             className={clsx(
               'absolute right-3 top-1/2 -translate-y-1/2 p-1.5',
-              'text-gray-400 hover:text-white rounded transition-colors'
+              'text-gray-400 hover:text-white rounded transition-colors',
             )}
           >
             <Settings className="w-4 h-4" />
@@ -80,7 +79,7 @@ export function ChatComposer({
         <button
           className={clsx(
             'shrink-0 p-2 text-gray-400 rounded-lg transition-colors',
-            'hover:text-white hover:bg-dark-hover'
+            'hover:text-white hover:bg-dark-hover',
           )}
         >
           <Mic className="w-5 h-5" />
@@ -97,7 +96,6 @@ export function ChatComposer({
           <Send className="w-4 h-4" />
         </Button>
       </div>
-
     </div>
   );
 }

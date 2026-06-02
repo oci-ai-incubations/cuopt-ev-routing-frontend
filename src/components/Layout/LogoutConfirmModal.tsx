@@ -1,6 +1,6 @@
 import { LogOut } from 'lucide-react';
 
-import { Modal } from '@/components/shared/Modal';
+import { Modal } from '@/components';
 
 interface LogoutConfirmModalProps {
   isOpen: boolean;

@@ -13,7 +13,6 @@ import { Navigate, useNavigate } from 'react-router-dom';
 
 import { fetchPublicProviders, getAuthorizeUrl } from '@/api/auth';
 import { useAuthStore } from '@/store/authStore';
-
 import type { SSOProvider } from '@/types/auth';
 
 type Mode = 'login' | 'register';
@@ -46,18 +45,20 @@ export default function Login() {
 
     if (!email.trim() || !password.trim()) {
       setError('Please enter both email and password');
+
       return;
     }
+
     if (mode === 'register' && !name.trim()) {
       setError('Please enter your name');
+
       return;
     }
 
     setLoading(true);
     const result =
-      mode === 'login'
-        ? await login(email, password)
-        : await register({ email, password, name });
+      mode === 'login' ? await login(email, password) : await register({ email, password, name });
+
     setLoading(false);
 
     if (result.success) {
@@ -70,9 +71,11 @@ export default function Login() {
   const handleSSOClick = async (provider: SSOProvider) => {
     setSsoLoading(provider.slug);
     setError('');
+
     try {
       const redirectUri = `${window.location.origin}/sso/callback/${provider.slug}`;
       const data = await getAuthorizeUrl(provider.slug, redirectUri);
+
       sessionStorage.setItem('sso_state', data.state);
       window.location.href = data.authorize_url;
     } catch {
@@ -130,7 +133,7 @@ export default function Login() {
               </label>
               <input
                 id="email"
-                type="email"
+                type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
@@ -172,17 +175,19 @@ export default function Login() {
               disabled={loading}
               className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-oracle-red hover:bg-oracle-red-hover disabled:bg-oracle-red/50 disabled:cursor-not-allowed text-white font-semibold transition-all shadow-lg shadow-oracle-red/20"
             >
-              {loading ? (
+              {loading && (
                 <>
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   {mode === 'login' ? 'Signing in...' : 'Creating account...'}
                 </>
-              ) : mode === 'login' ? (
+              )}
+              {!loading && mode === 'login' && (
                 <>
                   <LogIn className="w-4 h-4" />
                   Sign in
                 </>
-              ) : (
+              )}
+              {!loading && mode !== 'login' && (
                 <>
                   <UserPlus className="w-4 h-4" />
                   Create account
@@ -207,11 +212,13 @@ export default function Login() {
                       onClick={() => handleSSOClick(provider)}
                       className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-dark-bg border border-dark-border text-white font-medium hover:bg-dark-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
-                      {ssoLoading === provider.slug ? (
+                      {ssoLoading === provider.slug && (
                         <div className="w-5 h-5 border-2 border-gray-500/30 border-t-gray-300 rounded-full animate-spin" />
-                      ) : provider.type === 'oidc' ? (
+                      )}
+                      {ssoLoading !== provider.slug && provider.type === 'oidc' && (
                         <KeyRound className="w-4 h-4" />
-                      ) : (
+                      )}
+                      {ssoLoading !== provider.slug && provider.type !== 'oidc' && (
                         <ShieldCheck className="w-4 h-4" />
                       )}
                       Sign in with {provider.name}

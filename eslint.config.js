@@ -3,6 +3,8 @@ import tseslint from "typescript-eslint";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import importPlugin from "eslint-plugin-import";
+import prettierConfig from "eslint-config-prettier";
+import stylistic from "@stylistic/eslint-plugin";
 import globals from "globals";
 
 export default [
@@ -27,6 +29,7 @@ export default [
       react: reactPlugin,
       "react-hooks": reactHooksPlugin,
       import: importPlugin,
+      "@stylistic": stylistic,
     },
     settings: {
       react: { version: "detect" },
@@ -129,17 +132,35 @@ export default [
         "warn",
         {
           groups: [
-            "builtin",
-            "external",
-            "internal",  // @/ aliases
-            "parent",
-            "sibling",
-            "index",
-            "type",
+            ["builtin", "external"],
+            ["internal"],
+            ["parent", "sibling", "index"],
           ],
           "newlines-between": "always",
           alphabetize: { order: "asc", caseInsensitive: true },
         },
+      ],
+
+      // ── Padding / blank lines ────────────────────────────────────────────
+      "@stylistic/padding-line-between-statements": [
+        "warn",
+        // blank line before return
+        { blankLine: "always", prev: "*", next: "return" },
+        // blank line after variable blocks (but not between variables)
+        { blankLine: "always", prev: ["const", "let", "var"], next: "*" },
+        { blankLine: "any", prev: ["const", "let", "var"], next: ["const", "let", "var"] },
+        // blank lines around function declarations
+        { blankLine: "always", prev: "*", next: "function" },
+        { blankLine: "always", prev: "function", next: "*" },
+        // blank line before export blocks (but not between exports)
+        { blankLine: "always", prev: "*", next: "export" },
+        { blankLine: "any", prev: "export", next: "export" },
+        // blank line after imports (but not between imports)
+        { blankLine: "always", prev: "import", next: "*" },
+        { blankLine: "any", prev: "import", next: "import" },
+        // blank lines around block-like statements (if-else blocks, for, while, etc.)
+        { blankLine: "always", prev: "block-like", next: "*" },
+        { blankLine: "always", prev: "*", next: "block-like" },
       ],
     },
   },
@@ -187,4 +208,7 @@ export default [
       "no-var": "error",
     },
   },
+
+  // ── Prettier compat (must be last) ──────────────────────────────────────
+  prettierConfig,
 ];

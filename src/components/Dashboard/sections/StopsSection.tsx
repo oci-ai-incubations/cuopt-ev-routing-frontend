@@ -1,13 +1,10 @@
 import { Battery, FileText, MapPin, Upload } from 'lucide-react';
-
-import { Button } from '@/components/shared/Button';
-import { Toggle } from '@/components/shared/Toggle';
-import { Tooltip, HelpText } from '@/components/shared/Tooltip';
-import { generateDynamicScenarios, type DynamicBenchmarkScenario } from '@/data/locationData';
-
-import type { AppConfig } from '@/store/configStore';
-import type { OptimizationConfig, Stop } from '@/types';
 import type { ChangeEvent, RefObject } from 'react';
+
+import { Button, Toggle, Tooltip, HelpText } from '@/components';
+import { generateDynamicScenarios, type DynamicBenchmarkScenario } from '@/data';
+import type { AppConfig } from '@/store';
+import type { OptimizationConfig, Stop } from '@/types';
 
 interface StopsSectionProps {
   config: OptimizationConfig;
@@ -48,7 +45,9 @@ export function StopsSection({
           {payloadSize > 2000 && <span className="text-red-400 ml-2">(Exceeds 2GB limit)</span>}
         </div>
         {recommendedClusters > 1 && (
-          <div className="text-xs text-yellow-400 mt-1">Recommended: {recommendedClusters} clusters</div>
+          <div className="text-xs text-yellow-400 mt-1">
+            Recommended: {recommendedClusters} clusters
+          </div>
         )}
       </div>
 
@@ -103,7 +102,11 @@ export function StopsSection({
             ({appConfig.countryCode} - {appConfig.cityId})
           </span>
         </label>
-        {generateDynamicScenarios(appConfig.countryCode, appConfig.cityId, appConfig.activeScenario).map((scenario) => (
+        {generateDynamicScenarios(
+          appConfig.countryCode,
+          appConfig.cityId,
+          appConfig.activeScenario,
+        ).map((scenario) => (
           <button
             key={scenario.id}
             onClick={() => onLoadDynamicScenario(scenario)}
@@ -130,7 +133,9 @@ export function StopsSection({
               <div className="space-y-1">
                 <p className="font-medium">Time Window Constraints</p>
                 <p>When enabled, stops must be visited within their specified time windows.</p>
-                <p className="text-yellow-400">Stops that cannot be reached in time will be DROPPED from the solution.</p>
+                <p className="text-yellow-400">
+                  Stops that cannot be reached in time will be DROPPED from the solution.
+                </p>
                 <p className="text-gray-400 mt-1">Default vehicle shift: 8 hours (480 min)</p>
               </div>
             }
@@ -138,7 +143,9 @@ export function StopsSection({
           />
         </div>
         {config.enableTimeWindows && (
-          <HelpText>Stops outside time windows will be dropped. Check results for unserved stops.</HelpText>
+          <HelpText>
+            Stops outside time windows will be dropped. Check results for unserved stops.
+          </HelpText>
         )}
       </div>
 
@@ -154,8 +161,12 @@ export function StopsSection({
             content={
               <div className="space-y-1">
                 <p className="font-medium">Vehicle Capacity Limits</p>
-                <p>Each vehicle has a maximum capacity. Stops have demand that consumes capacity.</p>
-                <p className="text-yellow-400">If total demand exceeds fleet capacity, some stops will be DROPPED.</p>
+                <p>
+                  Each vehicle has a maximum capacity. Stops have demand that consumes capacity.
+                </p>
+                <p className="text-yellow-400">
+                  If total demand exceeds fleet capacity, some stops will be DROPPED.
+                </p>
                 <p className="text-gray-400 mt-1">Set capacity in Fleet tab.</p>
               </div>
             }

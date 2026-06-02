@@ -8,11 +8,9 @@ import {
   XCircle,
   HelpCircle,
 } from 'lucide-react';
-import { useEffect , useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Button } from '@/components/shared/Button';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/shared/Card';
-import { Toggle } from '@/components/shared/Toggle';
+import { Button, Card, CardHeader, CardTitle, CardContent, Toggle } from '@/components';
 import { useWeatherStore, useOptimizationStore } from '@/store';
 
 import { ImpactRow } from './ImpactRow';
@@ -43,6 +41,7 @@ export function WeatherPanel() {
   // Sort impacts by severity
   const sortedImpacts = [...routingImpacts].sort((a, b) => {
     const order = ['severe', 'high', 'moderate', 'low', 'none'];
+
     return order.indexOf(a.assessment.level) - order.indexOf(b.assessment.level);
   });
 
@@ -52,6 +51,7 @@ export function WeatherPanel() {
   const getSafetyColor = (score: number) => {
     if (score >= 70) return 'text-green-400';
     if (score >= 40) return 'text-yellow-400';
+
     return 'text-red-400';
   };
 
@@ -65,6 +65,7 @@ export function WeatherPanel() {
         </div>
       );
     }
+
     if (stops.length === 0) {
       return (
         <div className="text-center py-12 text-gray-400 flex-1 flex flex-col items-center justify-center">
@@ -74,6 +75,7 @@ export function WeatherPanel() {
         </div>
       );
     }
+
     if (isLoading) {
       return (
         <div className="text-center text-gray-400 py-8">
@@ -82,17 +84,24 @@ export function WeatherPanel() {
         </div>
       );
     }
+
     if (error) {
       return (
         <div className="text-center text-red-400 py-8">
           <AlertTriangle className="w-8 h-8 mx-auto mb-3" />
           <p className="text-sm">{error}</p>
-          <Button variant="ghost" size="sm" className="mt-2" onClick={() => fetchRoutingImpacts(stops)}>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="mt-2"
+            onClick={() => fetchRoutingImpacts(stops)}
+          >
             Retry
           </Button>
         </div>
       );
     }
+
     return (
       <div className="space-y-4">
         {overallAssessment && (
@@ -105,14 +114,18 @@ export function WeatherPanel() {
               <div className="flex items-center gap-2">
                 <Shield className={`w-5 h-5 ${getSafetyColor(overallAssessment.safetyScore)}`} />
                 <div>
-                  <div className="text-lg font-bold text-white">{overallAssessment.safetyScore}%</div>
+                  <div className="text-lg font-bold text-white">
+                    {overallAssessment.safetyScore}%
+                  </div>
                   <div className="text-xs text-gray-400">Safety Score</div>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="w-5 h-5 text-blue-400" />
                 <div>
-                  <div className="text-lg font-bold text-white">{overallAssessment.travelTimeMultiplier}x</div>
+                  <div className="text-lg font-bold text-white">
+                    {overallAssessment.travelTimeMultiplier}x
+                  </div>
                   <div className="text-xs text-gray-400 flex items-center gap-1">
                     Time Factor
                     <button
@@ -203,11 +216,7 @@ export function WeatherPanel() {
             <Cloud className="w-5 h-5 text-blue-400" />
             Weather Conditions
           </CardTitle>
-          <Toggle
-            checked={enabled}
-            onChange={(e) => setEnabled(e.target.checked)}
-            label=""
-          />
+          <Toggle checked={enabled} onChange={(e) => setEnabled(e.target.checked)} label="" />
         </div>
       </CardHeader>
 
@@ -216,9 +225,7 @@ export function WeatherPanel() {
       </CardContent>
 
       {/* Time Factor Info Popup */}
-      {showTimeFactorInfo && (
-        <TimeFactorInfo onClose={() => setShowTimeFactorInfo(false)} />
-      )}
+      {showTimeFactorInfo && <TimeFactorInfo onClose={() => setShowTimeFactorInfo(false)} />}
     </Card>
   );
 }

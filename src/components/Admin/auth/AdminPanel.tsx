@@ -15,19 +15,20 @@ import {
 } from 'lucide-react';
 import { type ReactElement, useEffect, useState } from 'react';
 
-import { fetchPackModel } from '@/api/admin';
-import { AdminPage } from '@/components/Admin/AdminPage';
-import { ApiKeysPanel } from '@/components/Admin/auth/ApiKeysPanel';
-import { AuditLog } from '@/components/Admin/auth/AuditLog';
-import { CollectionPermissions } from '@/components/Admin/auth/CollectionPermissions';
-import { FeatureFlagsPanel } from '@/components/Admin/auth/FeatureFlagsPanel';
-import { Groups } from '@/components/Admin/auth/Groups';
-import { IdentityProviders } from '@/components/Admin/auth/IdentityProviders';
-import { PanelLoading } from '@/components/Admin/auth/_primitives';
-import { RolesPermissions } from '@/components/Admin/auth/RolesPermissions';
-import { UserManagement } from '@/components/Admin/auth/UserManagement';
-import { useAuthStore } from '@/store/authStore';
-import type { PackAuthModel } from '@/types/admin';
+import { fetchPackModel } from '@/api';
+import { useAuthStore } from '@/store';
+import type { PackAuthModel } from '@/types';
+
+import { AdminPage } from '../AdminPage';
+import { PanelLoading } from './_primitives';
+import { ApiKeysPanel } from './ApiKeysPanel';
+import { AuditLog } from './AuditLog';
+import { CollectionPermissions } from './CollectionPermissions';
+import { FeatureFlagsPanel } from './FeatureFlagsPanel';
+import { Groups } from './Groups';
+import { IdentityProviders } from './IdentityProviders';
+import { RolesPermissions } from './RolesPermissions';
+import { UserManagement } from './UserManagement';
 
 interface Tab {
   id: string;
@@ -109,6 +110,7 @@ function filterTabs(role: string | undefined, model: PackAuthModel | null): Tab[
     if (t.permission === null) return true; // Configuration tab — always on
     if (role !== 'admin') return false; // non-admins see only Configuration
     if (model === null) return false; // before model loads, auth tabs hidden
+
     return model.permissions.includes(t.permission);
   });
 }
@@ -122,10 +124,12 @@ export function AdminPanel() {
 
   useEffect(() => {
     let cancelled = false;
+
     fetchPackModel()
       .then((m) => !cancelled && setModel(m))
       .catch((e: Error) => !cancelled && setModelError(e.message || 'Failed to load pack model'))
       .finally(() => !cancelled && setModelLoading(false));
+
     return () => {
       cancelled = true;
     };
@@ -143,6 +147,7 @@ export function AdminPanel() {
       >
         {visibleTabs.map((tab) => {
           const isActive = active?.id === tab.id;
+
           return (
             <button
               key={tab.id}
@@ -177,14 +182,10 @@ export function AdminPanel() {
         id={`admin-panel-${active?.id ?? 'none'}`}
         className="flex-1 overflow-auto"
       >
-        {active ? (
-          active.id === 'config' ? (
-            active.element
-          ) : (
-            <div className="max-w-4xl mx-auto p-6">{active.element}</div>
-          )
-        ) : (
-          <PanelLoading />
+        {!active && <PanelLoading />}
+        {active?.id === 'config' && active.element}
+        {active && active.id !== 'config' && (
+          <div className="max-w-4xl mx-auto p-6">{active.element}</div>
         )}
       </div>
     </div>

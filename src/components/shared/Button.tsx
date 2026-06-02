@@ -13,11 +13,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variants: Record<ButtonVariant, string> = {
-  primary:
-    'bg-oracle-red hover:bg-oracle-red-dark text-white shadow-lg shadow-oracle-red/20',
+  primary: 'bg-oracle-red hover:bg-oracle-red-dark text-white shadow-lg shadow-oracle-red/20',
   secondary: 'bg-dark-card hover:bg-dark-hover text-white border border-dark-border',
-  outline:
-    'bg-transparent hover:bg-dark-hover text-oracle-red border border-oracle-red',
+  outline: 'bg-transparent hover:bg-dark-hover text-oracle-red border border-oracle-red',
   ghost: 'bg-transparent hover:bg-dark-hover text-gray-300',
   danger: 'bg-red-600 hover:bg-red-700 text-white',
 };
@@ -41,7 +39,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       children,
       ...props
     },
-    ref
+    ref,
   ) => {
     return (
       <button
@@ -53,7 +51,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           'disabled:opacity-50 disabled:cursor-not-allowed',
           variants[variant],
           sizes[size],
-          className
+          className,
         )}
         disabled={disabled || isLoading}
         {...props}
@@ -86,7 +84,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {rightIcon}
       </button>
     );
-  }
+  },
 );
 
 Button.displayName = 'Button';

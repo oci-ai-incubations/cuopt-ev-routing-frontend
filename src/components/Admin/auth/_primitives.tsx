@@ -9,11 +9,7 @@
 
 import { clsx } from 'clsx';
 import { X } from 'lucide-react';
-import {
-  type ButtonHTMLAttributes,
-  type ReactNode,
-  useEffect,
-} from 'react';
+import { type ButtonHTMLAttributes, type ReactNode, useEffect } from 'react';
 
 // ─── Card ─────────────────────────────────────────────────────────────────
 export function Card({ children, className }: { children: ReactNode; className?: string }) {
@@ -44,13 +40,7 @@ export function CardHeader({
   );
 }
 
-export function CardContent({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
+export function CardContent({ children, className }: { children: ReactNode; className?: string }) {
   return <div className={clsx('p-4', className)}>{children}</div>;
 }
 
@@ -88,17 +78,15 @@ export function Button({
     secondary: 'bg-dark-hover text-white border border-dark-border hover:bg-dark-card',
     ghost: 'text-gray-300 hover:text-white hover:bg-dark-hover',
   };
+
   return (
     <button
       className={clsx(base, sizes[size], variants[variant], className)}
       disabled={disabled || loading}
       {...rest}
     >
-      {loading ? (
-        <Spinner size="sm" />
-      ) : iconPosition === 'left' ? (
-        icon
-      ) : null}
+      {loading && <Spinner size="sm" />}
+      {!loading && iconPosition === 'left' && icon}
       {children}
       {!loading && iconPosition === 'right' ? icon : null}
     </button>
@@ -139,12 +127,10 @@ export function Badge({
 // ─── Spinner ──────────────────────────────────────────────────────────────
 export function Spinner({ size = 'md' }: { size?: 'sm' | 'md' }) {
   const dims = size === 'sm' ? 'w-3.5 h-3.5 border' : 'w-6 h-6 border-2';
+
   return (
     <div
-      className={clsx(
-        dims,
-        'border-oracle-red/30 border-t-oracle-red rounded-full animate-spin',
-      )}
+      className={clsx(dims, 'border-oracle-red/30 border-t-oracle-red rounded-full animate-spin')}
     />
   );
 }
@@ -170,15 +156,19 @@ interface ModalProps {
 export function Modal({ isOpen, onClose, title, description, size = 'md', children }: ModalProps) {
   useEffect(() => {
     if (!isOpen) return;
+
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
+
     window.addEventListener('keydown', onKey);
+
     return () => window.removeEventListener('keydown', onKey);
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
   const w = size === 'sm' ? 'max-w-md' : 'max-w-xl';
+
   return (
     <div
       role="dialog"
@@ -245,7 +235,9 @@ export function Toggle({
       />
     </button>
   );
+
   if (!label && !description) return switchEl;
+
   return (
     <label className="flex items-center gap-3 cursor-pointer select-none">
       {switchEl}

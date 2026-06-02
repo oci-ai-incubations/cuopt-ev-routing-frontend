@@ -1,7 +1,6 @@
 import { Code } from 'lucide-react';
 
-import { Badge } from '@/components/shared/Badge';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/shared/Card';
+import { Badge, Card, CardHeader, CardTitle, CardContent } from '@/components';
 
 interface ChatDebugPanelProps {
   lastGenAIPrompt: string | null;
@@ -9,7 +8,15 @@ interface ChatDebugPanelProps {
   lastCuOptResponse: object | null;
 }
 
-function JsonCard({ title, badge, data }: { title: string; badge: React.ReactNode; data: object | null }) {
+function JsonCard({
+  title,
+  badge,
+  data,
+}: {
+  title: string;
+  badge: React.ReactNode;
+  data: object | null;
+}) {
   return (
     <Card variant="bordered" padding="sm">
       <CardHeader>
@@ -33,7 +40,11 @@ function JsonCard({ title, badge, data }: { title: string; badge: React.ReactNod
   );
 }
 
-export function ChatDebugPanel({ lastGenAIPrompt, lastCuOptRequest, lastCuOptResponse }: ChatDebugPanelProps) {
+export function ChatDebugPanel({
+  lastGenAIPrompt,
+  lastCuOptRequest,
+  lastCuOptResponse,
+}: ChatDebugPanelProps) {
   return (
     <div className="w-96 border-l border-dark-border bg-dark-bg overflow-y-auto">
       <div className="p-4 border-b border-dark-border">
@@ -45,15 +56,27 @@ export function ChatDebugPanel({ lastGenAIPrompt, lastCuOptRequest, lastCuOptRes
       <div className="p-4 space-y-4">
         {lastGenAIPrompt && (
           <Card variant="bordered" padding="sm">
-            <CardHeader><CardTitle className="text-sm">Interpretation</CardTitle></CardHeader>
-            <CardContent><p className="text-xs text-gray-400">{lastGenAIPrompt}</p></CardContent>
+            <CardHeader>
+              <CardTitle className="text-sm">Interpretation</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs text-gray-400">{lastGenAIPrompt}</p>
+            </CardContent>
           </Card>
         )}
         {lastCuOptRequest && (
-          <JsonCard title="cuOPT Request" badge={<Badge variant="info">JSON</Badge>} data={lastCuOptRequest} />
+          <JsonCard
+            title="cuOPT Request"
+            badge={<Badge variant="info">JSON</Badge>}
+            data={lastCuOptRequest}
+          />
         )}
         {lastCuOptResponse && (
-          <JsonCard title="cuOPT Response" badge={<Badge variant="success">Result</Badge>} data={lastCuOptResponse} />
+          <JsonCard
+            title="cuOPT Response"
+            badge={<Badge variant="success">Result</Badge>}
+            data={lastCuOptResponse}
+          />
         )}
       </div>
     </div>

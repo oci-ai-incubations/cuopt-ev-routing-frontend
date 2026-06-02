@@ -11,10 +11,8 @@ import {
 } from 'lucide-react';
 import { useMemo } from 'react';
 
-import { Badge } from '@/components/shared/Badge';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/shared/Card';
-import { Tooltip } from '@/components/shared/Tooltip';
-import { formatCurrency } from '@/data/locationData';
+import { Badge, Card, CardHeader, CardTitle, CardContent, Tooltip } from '@/components';
+import { formatCurrency } from '@/data';
 import { useOptimizationStore, useConfigStore } from '@/store';
 import { formatDistance, formatDuration } from '@/utils';
 
@@ -31,16 +29,8 @@ const BUSINESS_IMPACT_BASELINES = {
 };
 
 export function OperationalImpactPanel() {
-  const {
-    result,
-    routes,
-    totalDistance,
-    totalDuration,
-    vehiclesUsed,
-    stopsServed,
-    stops,
-    config,
-  } = useOptimizationStore();
+  const { result, routes, totalDistance, totalDuration, vehiclesUsed, stopsServed, stops, config } =
+    useOptimizationStore();
 
   const { config: appConfig } = useConfigStore();
 
@@ -56,22 +46,27 @@ export function OperationalImpactPanel() {
     const jobsPerTechPerDay = stopsServed / vehiclesUsed;
 
     // Calculate efficiency vs baseline
-    const efficiencyImprovement = BUSINESS_IMPACT_BASELINES.avgJobsPerTechPerDay.before > 0
-      ? ((jobsPerTechPerDay - BUSINESS_IMPACT_BASELINES.avgJobsPerTechPerDay.before) /
-         BUSINESS_IMPACT_BASELINES.avgJobsPerTechPerDay.before) * 100
-      : 0;
+    const efficiencyImprovement =
+      BUSINESS_IMPACT_BASELINES.avgJobsPerTechPerDay.before > 0
+        ? ((jobsPerTechPerDay - BUSINESS_IMPACT_BASELINES.avgJobsPerTechPerDay.before) /
+            BUSINESS_IMPACT_BASELINES.avgJobsPerTechPerDay.before) *
+          100
+        : 0;
 
     // Calculate potential savings
     const distanceReduction = totalDistance * 0.15; // Assume 15% reduction from optimization
     const fuelSavingsDaily = distanceReduction * BUSINESS_IMPACT_BASELINES.fuelCostPerKm;
-    const additionalJobsPerDay = Math.max(0, jobsPerTechPerDay - BUSINESS_IMPACT_BASELINES.avgJobsPerTechPerDay.before) * vehiclesUsed;
-    const additionalRevenueDaily = additionalJobsPerDay * BUSINESS_IMPACT_BASELINES.avgRevenuePerJob;
+    const additionalJobsPerDay =
+      Math.max(0, jobsPerTechPerDay - BUSINESS_IMPACT_BASELINES.avgJobsPerTechPerDay.before) *
+      vehiclesUsed;
+    const additionalRevenueDaily =
+      additionalJobsPerDay * BUSINESS_IMPACT_BASELINES.avgRevenuePerJob;
 
     const totalDailySavings = fuelSavingsDaily + additionalRevenueDaily;
     const annualSavings = totalDailySavings * BUSINESS_IMPACT_BASELINES.workingDaysPerYear;
 
     // Return-to-depot estimates (when disabled)
-    const estimatedReturnDistance = routes.reduce((sum, r) => sum + (r.route_distance * 0.3), 0);
+    const estimatedReturnDistance = routes.reduce((sum, r) => sum + r.route_distance * 0.3, 0);
     const estimatedReturnTime = (estimatedReturnDistance / 30) * 60; // 30 km/h avg speed
 
     return {
@@ -97,9 +92,7 @@ export function OperationalImpactPanel() {
       <div className="h-full text-center py-12 text-gray-400 flex-1 flex flex-col items-center justify-center">
         <Target className="w-12 h-12 mx-auto mb-3 opacity-50" />
         <p>Run optimization to see operational impact</p>
-        <p className="text-sm mt-1">
-          Metrics include jobs/tech/day, productive time, and savings
-        </p>
+        <p className="text-sm mt-1">Metrics include jobs/tech/day, productive time, and savings</p>
       </div>
     );
   }
@@ -125,7 +118,9 @@ export function OperationalImpactPanel() {
                   content={
                     <div className="max-w-xs">
                       <p className="font-medium">Jobs per Technician per Day</p>
-                      <p className="text-gray-400 mt-1">Number of jobs assigned to each technician in this solution.</p>
+                      <p className="text-gray-400 mt-1">
+                        Number of jobs assigned to each technician in this solution.
+                      </p>
                       <p className="text-gray-400 mt-1">Industry baseline: 3.2 jobs/tech/day</p>
                       <p className="text-green-400 mt-1">Target: 4.0+ jobs/tech/day</p>
                     </div>
@@ -137,8 +132,11 @@ export function OperationalImpactPanel() {
                 {metrics.jobsPerTechPerDay.toFixed(1)}
               </div>
               <div className="text-xs text-gray-400">Jobs/Tech/Day</div>
-              <div className={`text-xs mt-1 font-medium ${metrics.efficiencyImprovement >= 0 ? 'text-green-400' : 'text-yellow-400'}`}>
-                {metrics.efficiencyImprovement >= 0 ? '+' : ''}{metrics.efficiencyImprovement.toFixed(0)}% vs baseline
+              <div
+                className={`text-xs mt-1 font-medium ${metrics.efficiencyImprovement >= 0 ? 'text-green-400' : 'text-yellow-400'}`}
+              >
+                {metrics.efficiencyImprovement >= 0 ? '+' : ''}
+                {metrics.efficiencyImprovement.toFixed(0)}% vs baseline
               </div>
             </div>
 
@@ -150,8 +148,12 @@ export function OperationalImpactPanel() {
                   content={
                     <div className="max-w-xs">
                       <p className="font-medium">Productive Time Ratio</p>
-                      <p className="text-gray-400 mt-1">Percentage of time spent on actual jobs vs driving between locations.</p>
-                      <p className="text-gray-400 mt-1">Higher = more efficient routes with less wasted drive time.</p>
+                      <p className="text-gray-400 mt-1">
+                        Percentage of time spent on actual jobs vs driving between locations.
+                      </p>
+                      <p className="text-gray-400 mt-1">
+                        Higher = more efficient routes with less wasted drive time.
+                      </p>
                     </div>
                   }
                   position="left"
@@ -180,8 +182,17 @@ export function OperationalImpactPanel() {
                         <li>Additional revenue from more jobs served</li>
                       </ul>
                       <div className="border-t border-dark-border pt-2 mt-2 text-xs">
-                        <p>Fuel: {formatCurrency(Math.round(metrics.fuelSavingsDaily), appConfig.currency)}</p>
-                        <p>Revenue: {formatCurrency(Math.round(metrics.additionalRevenueDaily), appConfig.currency)}</p>
+                        <p>
+                          Fuel:{' '}
+                          {formatCurrency(Math.round(metrics.fuelSavingsDaily), appConfig.currency)}
+                        </p>
+                        <p>
+                          Revenue:{' '}
+                          {formatCurrency(
+                            Math.round(metrics.additionalRevenueDaily),
+                            appConfig.currency,
+                          )}
+                        </p>
                       </div>
                     </div>
                   }
@@ -192,9 +203,7 @@ export function OperationalImpactPanel() {
                 {formatCurrency(Math.round(metrics.totalDailySavings), appConfig.currency)}
               </div>
               <div className="text-xs text-gray-400">Daily Savings</div>
-              <div className="text-xs text-gray-500 mt-1">
-                fuel + productivity
-              </div>
+              <div className="text-xs text-gray-500 mt-1">fuel + productivity</div>
             </div>
 
             {/* Annual Potential */}
@@ -205,10 +214,16 @@ export function OperationalImpactPanel() {
                   content={
                     <div className="max-w-xs">
                       <p className="font-medium">Annual Savings Potential</p>
-                      <p className="text-gray-400 mt-1">Daily savings scaled to 250 working days per year.</p>
-                      <p className="text-gray-400 mt-1">This represents the potential ROI from route optimization.</p>
+                      <p className="text-gray-400 mt-1">
+                        Daily savings scaled to 250 working days per year.
+                      </p>
+                      <p className="text-gray-400 mt-1">
+                        This represents the potential ROI from route optimization.
+                      </p>
                       <div className="border-t border-dark-border pt-2 mt-2 text-xs text-gray-500">
-                        Calculation: {formatCurrency(Math.round(metrics.totalDailySavings), appConfig.currency)}/day × 250 days
+                        Calculation:{' '}
+                        {formatCurrency(Math.round(metrics.totalDailySavings), appConfig.currency)}
+                        /day × 250 days
                       </div>
                     </div>
                   }
@@ -219,9 +234,7 @@ export function OperationalImpactPanel() {
                 {formatCurrency(Math.round(metrics.annualSavings), appConfig.currency)}
               </div>
               <div className="text-xs text-gray-400">Annual Potential</div>
-              <div className="text-xs text-gray-500 mt-1">
-                250 working days
-              </div>
+              <div className="text-xs text-gray-500 mt-1">250 working days</div>
             </div>
           </div>
         </CardContent>
@@ -268,12 +281,16 @@ export function OperationalImpactPanel() {
               <div className="flex items-center gap-2">
                 <Wrench className="w-4 h-4 text-[#C74634]" />
                 <span className="text-gray-400">Job Time:</span>
-                <span className="text-white font-medium">{formatDuration(metrics.totalJobTime)}</span>
+                <span className="text-white font-medium">
+                  {formatDuration(metrics.totalJobTime)}
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <Car className="w-4 h-4 text-blue-400" />
                 <span className="text-gray-400">Drive Time:</span>
-                <span className="text-white font-medium">{formatDuration(metrics.totalDriveTime)}</span>
+                <span className="text-white font-medium">
+                  {formatDuration(metrics.totalDriveTime)}
+                </span>
               </div>
             </div>
           </div>
@@ -311,7 +328,8 @@ export function OperationalImpactPanel() {
               </div>
             </div>
             <p className="text-xs text-gray-500 mt-3">
-              <span className="text-yellow-400">Tip:</span> Enable &quot;Return to Depot&quot; in Fleet settings to include return trips.
+              <span className="text-yellow-400">Tip:</span> Enable &quot;Return to Depot&quot; in
+              Fleet settings to include return trips.
             </p>
           </CardContent>
         </Card>
@@ -319,7 +337,8 @@ export function OperationalImpactPanel() {
 
       {/* Calibration Note */}
       <div className="text-xs text-gray-500 px-2">
-        <span className="text-gray-400">Calibration:</span> Based on Belron UK field service benchmarks (3.2 → 4.0 jobs/tech/day target, £7.7M p.a. potential across 2,500 technicians).
+        <span className="text-gray-400">Calibration:</span> Based on Belron UK field service
+        benchmarks (3.2 → 4.0 jobs/tech/day target, £7.7M p.a. potential across 2,500 technicians).
       </div>
     </div>
   );
