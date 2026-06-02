@@ -397,6 +397,14 @@ docker build -f appdeploy/Dockerfile -t cuopt-frontend:latest .
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on opening issues and submitting pull requests. All contributors must sign the [Oracle Contributor Agreement](https://oca.opensource.oracle.com).
 
+## Acknowledgments
+
+We gratefully acknowledge the contributing partners who have helped build and improve this project:
+
+- **[SoftServe](https://www.softserveinc.com/en-us)** — code quality, tooling, and frontend engineering contributions.
+
+Partner contributions are reviewed and integrated by the Oracle maintainers; the partners listed above contributed work that is reflected in this repository's history under the Oracle Contributor Agreement.
+
 ## Security
 
 Please report security vulnerabilities following the process in [SECURITY.md](./SECURITY.md). Do **not** open a public GitHub issue for security vulnerabilities.
