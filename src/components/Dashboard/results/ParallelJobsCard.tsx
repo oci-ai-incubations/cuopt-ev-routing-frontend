@@ -1,8 +1,6 @@
-import { Badge } from '@/components/shared/Badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/shared/Card';
-import { formatSolveTime } from '@/utils';
-
+import { Badge, Card, CardContent, CardHeader, CardTitle } from '@/components';
 import type { ParallelJobResult } from '@/types';
+import { formatSolveTime } from '@/utils';
 
 interface ParallelJobsCardProps {
   parallelJobs: ParallelJobResult[];
@@ -26,7 +24,14 @@ export function ParallelJobsCard({ parallelJobs }: ParallelJobsCardProps) {
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium text-white">Cluster {job.clusterId}</span>
                 <Badge
-                  variant={({ completed: 'success', running: 'info', failed: 'error' } as Record<string, 'success' | 'info' | 'error' | 'default'>)[job.status] ?? 'default'}
+                  variant={
+                    (
+                      { completed: 'success', running: 'info', failed: 'error' } as Record<
+                        string,
+                        'success' | 'info' | 'error' | 'default'
+                      >
+                    )[job.status] ?? 'default'
+                  }
                   pulse={job.status === 'running'}
                 >
                   {job.status}
@@ -35,7 +40,9 @@ export function ParallelJobsCard({ parallelJobs }: ParallelJobsCardProps) {
               <div className="text-xs text-gray-400">
                 {job.stops} stops
                 {job.solveTime && (
-                  <span className="ml-2 text-[#C74634]">{formatSolveTime(job.solveTime * 1000)}</span>
+                  <span className="ml-2 text-[#C74634]">
+                    {formatSolveTime(job.solveTime * 1000)}
+                  </span>
                 )}
               </div>
             </div>

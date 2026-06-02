@@ -1,4 +1,4 @@
-import { authClient } from '@/api/authClient';
+import { authClient } from '@/api';
 import {
   DEFAULT_WEATHER_CONFIG,
   WEATHER_CONDITION_SEVERITY,
@@ -59,7 +59,9 @@ class WeatherClient {
 
   private isCacheValid(key: string): boolean {
     const cached = this.cache.get(key);
+
     if (!cached) return false;
+
     return Date.now() - cached.timestamp < this.cacheTimeout;
   }
 
@@ -69,6 +71,7 @@ class WeatherClient {
     // Check cache first
     if (this.isCacheValid(cacheKey)) {
       const cached = this.cache.get(cacheKey);
+
       if (cached) return cached.data;
     }
 
@@ -91,6 +94,7 @@ class WeatherClient {
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Weather API error:', error);
+
       // Return mock data if API fails
       return this.getMockWeather(lat, lng, name);
     }
@@ -101,16 +105,18 @@ class WeatherClient {
 
     // Batch requests with concurrency limit
     const batchSize = 5;
+
     for (let i = 0; i < stops.length; i += batchSize) {
       const batch = stops.slice(i, i + batchSize);
       const promises = batch.map((stop) =>
         this.getWeatherForLocation(stop.lat, stop.lng, stop.label).then((weather) => ({
           stopId: stop.id,
           weather,
-        }))
+        })),
       );
 
       const results = await Promise.allSettled(promises);
+
       results.forEach((result) => {
         if (result.status === 'fulfilled') {
           weatherMap.set(result.value.stopId, result.value.weather);
@@ -219,9 +225,10 @@ class WeatherClient {
 
     // Check weather condition codes
     weather.conditions.forEach((condition) => {
-      const codePrefix = `${condition.id.toString().substring(0, 1)  }xx`;
-      const severity = WEATHER_CONDITION_SEVERITY[condition.id.toString()] ||
-                       WEATHER_CONDITION_SEVERITY[codePrefix];
+      const codePrefix = `${condition.id.toString().substring(0, 1)}xx`;
+      const severity =
+        WEATHER_CONDITION_SEVERITY[condition.id.toString()] ||
+        WEATHER_CONDITION_SEVERITY[codePrefix];
 
       if (severity === 'severe' && condition.id >= 200 && condition.id < 300) {
         factors.push({
@@ -235,6 +242,7 @@ class WeatherClient {
 
     // Calculate overall level
     let level: AdverseConditionLevel = 'none';
+
     if (factors.some((f) => f.severity === 'severe')) {
       level = 'severe';
     } else if (factors.some((f) => f.severity === 'high')) {
@@ -279,7 +287,7 @@ class WeatherClient {
 
   private generateRecommendations(
     level: AdverseConditionLevel,
-    factors: AdverseConditionFactor[]
+    factors: AdverseConditionFactor[],
   ): string[] {
     const recommendations: string[] = [];
 
@@ -326,8 +334,10 @@ class WeatherClient {
 
     stops.forEach((stop) => {
       const weather = weatherMap.get(stop.id);
+
       if (weather) {
         const assessment = this.assessAdverseConditions(weather.current);
+
         impacts.push({
           stopId: stop.id,
           stopName: stop.label || `Stop ${stop.id}`,
@@ -347,7 +357,7 @@ class WeatherClient {
     data: OpenWeatherApiResponse,
     lat: number,
     lng: number,
-    name?: string
+    name?: string,
   ): LocationWeather {
     const current: WeatherData = {
       lat,
@@ -390,9 +400,10 @@ class WeatherClient {
     if (absLat < 15) {
       baseTemp = 28 + Math.random() * 5;
       humidity = 70 + Math.floor(Math.random() * 20);
-      conditions = Math.random() > 0.6
-        ? [{ id: 500, main: 'Rain', description: 'light rain', icon: '10d' }]
-        : [{ id: 801, main: 'Clouds', description: 'few clouds', icon: '02d' }];
+      conditions =
+        Math.random() > 0.6
+          ? [{ id: 500, main: 'Rain', description: 'light rain', icon: '10d' }]
+          : [{ id: 801, main: 'Clouds', description: 'few clouds', icon: '02d' }];
     } else if (absLat < 30) {
       baseTemp = isLocalSummer ? 30 + Math.random() * 5 : 18 + Math.random() * 6;
       humidity = 50 + Math.floor(Math.random() * 25);
@@ -406,9 +417,10 @@ class WeatherClient {
     } else if (absLat < 60) {
       baseTemp = isLocalSummer ? 18 + Math.random() * 8 : 2 + Math.random() * 8;
       humidity = 60 + Math.floor(Math.random() * 25);
-      conditions = Math.random() > 0.5
-        ? [{ id: 802, main: 'Clouds', description: 'scattered clouds', icon: '03d' }]
-        : [{ id: 500, main: 'Rain', description: 'light rain', icon: '10d' }];
+      conditions =
+        Math.random() > 0.5
+          ? [{ id: 802, main: 'Clouds', description: 'scattered clouds', icon: '03d' }]
+          : [{ id: 500, main: 'Rain', description: 'light rain', icon: '10d' }];
     } else {
       baseTemp = isLocalSummer ? 10 + Math.random() * 8 : -10 + Math.random() * 10;
       humidity = 70 + Math.floor(Math.random() * 20);

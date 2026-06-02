@@ -20,9 +20,7 @@ const SUBTITLES: Record<AppMode, string | null> = {
 
 export function AppHeader({ mode, countryCode, activeScenario }: AppHeaderProps) {
   const subtitle =
-    mode === 'admin'
-      ? `Region: ${countryCode} | Scenario: ${activeScenario}`
-      : SUBTITLES[mode];
+    mode === 'admin' ? `Region: ${countryCode} | Scenario: ${activeScenario}` : SUBTITLES[mode];
 
   return (
     <header className="h-16 flex items-center justify-between px-6 border-b border-dark-border bg-dark-card">
@@ -38,7 +36,9 @@ export function AppHeader({ mode, countryCode, activeScenario }: AppHeaderProps)
         <div className="flex items-center gap-2 text-sm">
           <span className="text-nvidia-green font-semibold">NVIDIA cuOPT</span>
           <span className="text-gray-500">powered by</span>
-          <span style={{ color: '#C74634' }} className="font-semibold">OCI</span>
+          <span style={{ color: '#C74634' }} className="font-semibold">
+            OCI
+          </span>
         </div>
       </div>
     </header>

@@ -1,10 +1,9 @@
 import { MapPin } from 'lucide-react';
 
+import type { AppConfig } from '@/store';
+
 import { NumberField } from './NumberField';
 import { Section } from './Section';
-
-import type { AppConfig } from '@/store/configStore';
-
 
 interface MapDefaultsProps {
   config: AppConfig;
@@ -13,7 +12,12 @@ interface MapDefaultsProps {
   onRadiusChange: (v: number) => void;
 }
 
-export function MapDefaults({ config, onCenterChange, onZoomChange, onRadiusChange }: MapDefaultsProps) {
+export function MapDefaults({
+  config,
+  onCenterChange,
+  onZoomChange,
+  onRadiusChange,
+}: MapDefaultsProps) {
   return (
     <Section title="Map Defaults" icon={<MapPin className="w-4 h-4 text-oracle-red" />}>
       <div className="grid grid-cols-2 gap-4">

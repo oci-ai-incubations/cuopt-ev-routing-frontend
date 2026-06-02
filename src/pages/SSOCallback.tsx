@@ -20,16 +20,22 @@ export default function SSOCallback() {
 
     if (!slug) {
       setError('Missing provider in callback URL');
+
       return;
     }
+
     if (!code) {
       setError('Missing authorization code from identity provider');
+
       return;
     }
+
     if (!state) {
       setError('Missing state from identity provider');
+
       return;
     }
+
     // Require the sessionStorage CSRF token to be present and match. The
     // server-side single-use state check (auth-service consume_sso_state)
     // remains the load-bearing protection, but the FE check now fails
@@ -37,10 +43,12 @@ export default function SSOCallback() {
     // reject rather than silently fall through to the token exchange.
     if (!expectedState || state !== expectedState) {
       setError('SSO state mismatch — possible CSRF. Please try signing in again.');
+
       return;
     }
 
     const redirectUri = `${window.location.origin}/sso/callback/${slug}`;
+
     ssoLogin(slug, code, redirectUri, state).then((result) => {
       if (result.success) {
         navigate('/');

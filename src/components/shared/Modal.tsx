@@ -57,7 +57,7 @@ export function Modal({ isOpen, onClose, title, children, size = 'md' }: ModalPr
         ref={modalRef}
         className={clsx(
           'w-full bg-dark-card border border-dark-border rounded-xl shadow-2xl max-h-[90vh] flex flex-col my-auto',
-          sizeClasses[size]
+          sizeClasses[size],
         )}
       >
         {/* Header */}

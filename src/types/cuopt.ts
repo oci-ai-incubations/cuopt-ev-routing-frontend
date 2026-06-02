@@ -93,7 +93,13 @@ export interface CuOptJobStatus {
 }
 
 // Job types for Belron and similar field service scenarios
-export type JobType = 'delivery' | 'chip_repair' | 'replacement' | 'recalibration' | 'maintenance' | 'installation';
+export type JobType =
+  | 'delivery'
+  | 'chip_repair'
+  | 'replacement'
+  | 'recalibration'
+  | 'maintenance'
+  | 'installation';
 
 export interface JobTypeConfig {
   type: JobType;
@@ -102,17 +108,66 @@ export interface JobTypeConfig {
   maxDuration: number; // minutes
   defaultDuration: number; // minutes
   color: string;
-  revenue: number;         // Average revenue in GBP
+  revenue: number; // Average revenue in GBP
   requiresEquipment?: boolean;
 }
 
 export const JOB_TYPE_CONFIGS: Record<JobType, JobTypeConfig> = {
-  delivery: { type: 'delivery', label: 'Delivery', minDuration: 5, maxDuration: 30, defaultDuration: 15, color: '#3B82F6', revenue: 25 },
-  chip_repair: { type: 'chip_repair', label: 'Chip Repair', minDuration: 30, maxDuration: 60, defaultDuration: 45, color: '#10B981', revenue: 85 },
-  replacement: { type: 'replacement', label: 'Windshield Replacement', minDuration: 60, maxDuration: 120, defaultDuration: 90, color: '#F59E0B', revenue: 350 },
-  recalibration: { type: 'recalibration', label: 'ADAS Recalibration', minDuration: 60, maxDuration: 90, defaultDuration: 75, color: '#8B5CF6', revenue: 180, requiresEquipment: true },
-  maintenance: { type: 'maintenance', label: 'Maintenance', minDuration: 30, maxDuration: 120, defaultDuration: 60, color: '#EC4899', revenue: 150 },
-  installation: { type: 'installation', label: 'Installation', minDuration: 60, maxDuration: 180, defaultDuration: 120, color: '#06B6D4', revenue: 450 },
+  delivery: {
+    type: 'delivery',
+    label: 'Delivery',
+    minDuration: 5,
+    maxDuration: 30,
+    defaultDuration: 15,
+    color: '#3B82F6',
+    revenue: 25,
+  },
+  chip_repair: {
+    type: 'chip_repair',
+    label: 'Chip Repair',
+    minDuration: 30,
+    maxDuration: 60,
+    defaultDuration: 45,
+    color: '#10B981',
+    revenue: 85,
+  },
+  replacement: {
+    type: 'replacement',
+    label: 'Windshield Replacement',
+    minDuration: 60,
+    maxDuration: 120,
+    defaultDuration: 90,
+    color: '#F59E0B',
+    revenue: 350,
+  },
+  recalibration: {
+    type: 'recalibration',
+    label: 'ADAS Recalibration',
+    minDuration: 60,
+    maxDuration: 90,
+    defaultDuration: 75,
+    color: '#8B5CF6',
+    revenue: 180,
+    requiresEquipment: true,
+  },
+  maintenance: {
+    type: 'maintenance',
+    label: 'Maintenance',
+    minDuration: 30,
+    maxDuration: 120,
+    defaultDuration: 60,
+    color: '#EC4899',
+    revenue: 150,
+  },
+  installation: {
+    type: 'installation',
+    label: 'Installation',
+    minDuration: 60,
+    maxDuration: 180,
+    defaultDuration: 120,
+    color: '#06B6D4',
+    revenue: 450,
+  },
 };
 
 export interface Stop {
@@ -124,7 +179,7 @@ export interface Stop {
   timeWindowEnd?: number;
   serviceDuration?: number;
   priority?: number;
-  revenue?: number;           // Revenue/value for this job (used for prioritization)
+  revenue?: number; // Revenue/value for this job (used for prioritization)
   label?: string;
   postcode?: string;
   jobType?: JobType;
@@ -146,7 +201,7 @@ export interface Vehicle {
 
 // Job type mix configuration for stop generation
 export interface JobTypeMix {
-  delivery: number;       // Percentage 0-100
+  delivery: number; // Percentage 0-100
   chip_repair: number;
   replacement: number;
   recalibration: number;
@@ -175,10 +230,10 @@ export interface OptimizationConfig {
   parallelJobs: number;
   solverMode: 'quality' | 'speed' | 'balanced';
   defaultServiceTime?: number; // Default dwell/service time in minutes per stop
-  jobTypeMix?: JobTypeMix;     // Mix of job types for stop generation
-  useJobTypes?: boolean;       // Enable job type differentiation
-  enableHomeStart?: boolean;   // Enable home-start routing (vehicles start from home locations)
-  returnToDepot?: boolean;     // Should vehicles return to depot at end of day
+  jobTypeMix?: JobTypeMix; // Mix of job types for stop generation
+  useJobTypes?: boolean; // Enable job type differentiation
+  enableHomeStart?: boolean; // Enable home-start routing (vehicles start from home locations)
+  returnToDepot?: boolean; // Should vehicles return to depot at end of day
   prioritizeByRevenue?: boolean; // Prioritize higher-revenue jobs when capacity is limited
 }
 

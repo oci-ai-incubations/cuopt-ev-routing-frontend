@@ -101,8 +101,7 @@ export const useAppStore = create<AppState>((set) => ({
 
   // Sidebar state
   isSidebarCollapsed: false,
-  toggleSidebar: () =>
-    set((state) => ({ isSidebarCollapsed: !state.isSidebarCollapsed })),
+  toggleSidebar: () => set((state) => ({ isSidebarCollapsed: !state.isSidebarCollapsed })),
 
   // Settings modal
   showSettings: false,
@@ -122,6 +121,7 @@ export const useAppStore = create<AppState>((set) => ({
     try {
       const { authClient } = await import('@/api/authClient');
       const res = await authClient.get<{ googleMapsApiKey?: string }>('/api/config');
+
       if (res.data?.googleMapsApiKey) {
         set({ googleMapsApiKey: res.data.googleMapsApiKey });
       }

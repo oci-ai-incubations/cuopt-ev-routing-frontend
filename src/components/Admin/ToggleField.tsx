@@ -16,9 +16,17 @@ export function ToggleField({ label, description, checked, onChange }: ToggleFie
       </div>
       <button
         onClick={() => onChange(!checked)}
-        className={clsx('relative w-11 h-6 rounded-full transition-colors', checked ? 'bg-oracle-red' : 'bg-dark-border')}
+        className={clsx(
+          'relative w-11 h-6 rounded-full transition-colors',
+          checked ? 'bg-oracle-red' : 'bg-dark-border',
+        )}
       >
-        <div className={clsx('absolute top-1 w-4 h-4 rounded-full bg-white transition-transform', checked ? 'left-6' : 'left-1')} />
+        <div
+          className={clsx(
+            'absolute top-1 w-4 h-4 rounded-full bg-white transition-transform',
+            checked ? 'left-6' : 'left-1',
+          )}
+        />
       </button>
     </div>
   );

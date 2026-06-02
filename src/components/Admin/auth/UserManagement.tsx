@@ -8,7 +8,7 @@
 import { Shield, UserCheck, UserX } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 
-import { listUsers, updateUser } from '@/api/admin';
+import { listUsers, updateUser } from '@/api';
 import {
   Badge,
   Button,
@@ -18,23 +18,8 @@ import {
   PanelLoading,
   Select,
 } from '@/components/Admin/auth/_primitives';
-
-import type { AdminUser } from '@/types/admin';
-import type { UserRole } from '@/types/auth';
-
-const ROLE_OPTIONS: Array<{ value: UserRole; label: string }> = [
-  { value: 'admin', label: 'Admin' },
-  { value: 'user', label: 'User' },
-  { value: 'reader', label: 'Reader' },
-  { value: 'pending', label: 'Pending' },
-];
-
-const ROLE_VARIANT: Record<UserRole, 'oracle' | 'info' | 'success' | 'warning'> = {
-  admin: 'oracle',
-  user: 'info',
-  reader: 'success',
-  pending: 'warning',
-};
+import { ROLE_OPTIONS, ROLE_VARIANT } from '@/constants';
+import type { AdminUser, UserRole } from '@/types';
 
 export function UserManagement() {
   const [users, setUsers] = useState<AdminUser[]>([]);
@@ -43,6 +28,7 @@ export function UserManagement() {
 
   const refresh = useCallback(async () => {
     setLoading(true);
+
     try {
       setUsers(await listUsers());
     } finally {
@@ -56,8 +42,10 @@ export function UserManagement() {
 
   const applyPatch = async (userId: number, patch: { role?: UserRole; is_active?: boolean }) => {
     setUpdatingId(userId);
+
     try {
       const updated = await updateUser(userId, patch);
+
       setUsers((prev) => prev.map((u) => (u.id === userId ? updated : u)));
     } finally {
       setUpdatingId(null);

@@ -1,5 +1,4 @@
-import { Select } from '@/components/shared/Select';
-
+import { Select } from '@/components';
 import type { ModelId, ModelInfo } from '@/types';
 
 interface ChatSettingsPanelProps {

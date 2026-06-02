@@ -1,8 +1,6 @@
 import { MapPin } from 'lucide-react';
 
-import { GoogleRouteMap } from '@/components/Map/GoogleRouteMap';
-import { RouteMap } from '@/components/Map/RouteMap';
-import { Card } from '@/components/shared/Card';
+import { GoogleRouteMap, RouteMap, Card } from '@/components';
 import { useAppStore } from '@/store';
 
 export function MapPanel() {

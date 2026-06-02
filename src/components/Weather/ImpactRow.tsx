@@ -1,9 +1,9 @@
 import { AlertTriangle, Clock, Thermometer, Wind } from 'lucide-react';
 
+import type { WeatherRoutingImpact } from '@/types';
+
 import { SeverityBadge } from './SeverityBadge';
 import { WeatherIcon } from './WeatherIcon';
-
-import type { WeatherRoutingImpact } from '@/types';
 
 interface ImpactRowProps {
   impact: WeatherRoutingImpact;
@@ -17,9 +17,7 @@ export function ImpactRow({ impact }: ImpactRowProps) {
   return (
     <div
       className={`p-3 rounded-lg border ${
-        impact.skipRecommended
-          ? 'bg-red-500/10 border-red-500/30'
-          : 'bg-dark-bg border-dark-border'
+        impact.skipRecommended ? 'bg-red-500/10 border-red-500/30' : 'bg-dark-bg border-dark-border'
       }`}
     >
       <div className="flex items-start justify-between">

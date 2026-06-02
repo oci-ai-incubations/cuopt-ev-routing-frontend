@@ -24,18 +24,13 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     return (
       <div
         ref={ref}
-        className={clsx(
-          'rounded-xl',
-          variants[variant],
-          paddings[padding],
-          className
-        )}
+        className={clsx('rounded-xl', variants[variant], paddings[padding], className)}
         {...props}
       >
         {children}
       </div>
     );
-  }
+  },
 );
 
 Card.displayName = 'Card';
@@ -53,7 +48,7 @@ export const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
         {children}
       </div>
     );
-  }
+  },
 );
 
 CardHeader.displayName = 'CardHeader';
@@ -63,15 +58,11 @@ type CardTitleProps = HTMLAttributes<HTMLHeadingElement>;
 export const CardTitle = forwardRef<HTMLHeadingElement, CardTitleProps>(
   ({ className, children, ...props }, ref) => {
     return (
-      <h3
-        ref={ref}
-        className={clsx('text-lg font-semibold text-white', className)}
-        {...props}
-      >
+      <h3 ref={ref} className={clsx('text-lg font-semibold text-white', className)} {...props}>
         {children}
       </h3>
     );
-  }
+  },
 );
 
 CardTitle.displayName = 'CardTitle';
@@ -85,7 +76,7 @@ export const CardContent = forwardRef<HTMLDivElement, CardContentProps>(
         {children}
       </div>
     );
-  }
+  },
 );
 
 CardContent.displayName = 'CardContent';

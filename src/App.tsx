@@ -1,27 +1,21 @@
 import { useEffect, useState } from 'react';
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-  useNavigate,
-} from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
-import { AdminPanel } from '@/components/Admin/auth/AdminPanel';
-import { ChatInterface } from '@/components/Chat';
-import { Dashboard } from '@/components/Dashboard';
-import { AppHeader } from '@/components/Layout/AppHeader';
-import { AppSidebar } from '@/components/Layout/AppSidebar';
-import { HelpModal } from '@/components/Layout/HelpModal';
-import { LogoutConfirmModal } from '@/components/Layout/LogoutConfirmModal';
-import { SettingsModal } from '@/components/Layout/SettingsModal';
-import { LoginGuard } from '@/components/LoginGuard';
-import { ProtectedRoute } from '@/components/ProtectedRoute';
-import { Toast } from '@/components/shared/Toast';
-import Login from '@/pages/Login';
-import SSOCallback from '@/pages/SSOCallback';
-import { useAppStore, useConfigStore } from '@/store';
-import { useAuthStore } from '@/store/authStore';
+import {
+  AdminPanel,
+  ChatInterface,
+  Dashboard,
+  AppHeader,
+  AppSidebar,
+  HelpModal,
+  LogoutConfirmModal,
+  SettingsModal,
+  LoginGuard,
+  ProtectedRoute,
+  Toast,
+} from '@/components';
+import { Login, SSOCallback } from '@/pages';
+import { useAppStore, useConfigStore, useAuthStore } from '@/store';
 
 type AppMode = 'dashboard' | 'chat' | 'admin';
 

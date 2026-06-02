@@ -17,7 +17,7 @@ import {
   listRoles,
   removeGroupMember,
   setGroupRoles,
-} from '@/api/admin';
+} from '@/api';
 import {
   Badge,
   Button,
@@ -29,14 +29,8 @@ import {
   Spinner,
   TextInput,
 } from '@/components/Admin/auth/_primitives';
-
-import type { Group, GroupMember } from '@/types/admin';
-
-const SOURCE_VARIANT: Record<string, 'success' | 'info' | 'oracle' | 'default'> = {
-  local: 'success',
-  scim: 'info',
-  jit: 'oracle',
-};
+import { SOURCE_VARIANT } from '@/constants';
+import type { Group, GroupMember } from '@/types';
 
 export function Groups() {
   const [groups, setGroups] = useState<Group[]>([]);
@@ -59,6 +53,7 @@ export function Groups() {
 
   const refreshGroups = useCallback(async () => {
     setLoading(true);
+
     try {
       setGroups(await listGroups());
     } finally {
@@ -72,14 +67,17 @@ export function Groups() {
 
   const refreshAvailableRoles = useCallback(async () => {
     const roles = await listRoles();
+
     setAvailableRoles(roles.map((r) => r.name));
   }, []);
 
   const selectGroup = async (group: Group) => {
     setSelectedGroup(group);
     setLoadingMembers(true);
+
     try {
       const [m, r] = await Promise.all([listGroupMembers(group.id), listGroupRoles(group.id)]);
+
       setMembers(m);
       setSelectedRoles(new Set(r));
       if (availableRoles.length === 0) await refreshAvailableRoles();
@@ -91,6 +89,7 @@ export function Groups() {
   const handleCreate = async () => {
     if (!newName.trim()) return;
     setCreating(true);
+
     try {
       await createGroup(newName);
       setNewName('');
@@ -104,6 +103,7 @@ export function Groups() {
   const handleAddMember = async () => {
     if (!selectedGroup || !addMemberUserId.trim()) return;
     setAddingMember(true);
+
     try {
       await addGroupMember(selectedGroup.id, parseInt(addMemberUserId, 10));
       setAddMemberUserId('');
@@ -123,8 +123,10 @@ export function Groups() {
   const toggleRole = (role: string) => {
     setSelectedRoles((prev) => {
       const next = new Set(prev);
+
       if (next.has(role)) next.delete(role);
       else next.add(role);
+
       return next;
     });
   };
@@ -132,6 +134,7 @@ export function Groups() {
   const handleSaveRoles = async () => {
     if (!selectedGroup) return;
     setSavingRoles(true);
+
     try {
       await setGroupRoles(selectedGroup.id, Array.from(selectedRoles));
     } finally {
@@ -230,9 +233,7 @@ export function Groups() {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-sm text-gray-400 text-center py-2">
-                    No members in this group
-                  </p>
+                  <p className="text-sm text-gray-400 text-center py-2">No members in this group</p>
                 )}
 
                 <div className="pt-2 border-t border-dark-border">

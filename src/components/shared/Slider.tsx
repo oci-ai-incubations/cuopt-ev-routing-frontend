@@ -9,15 +9,8 @@ interface SliderProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'
 
 export const Slider = forwardRef<HTMLInputElement, SliderProps>(
   (
-    {
-      label,
-      showValue = true,
-      valueFormatter = (v) => String(v),
-      className,
-      value,
-      ...props
-    },
-    ref
+    { label, showValue = true, valueFormatter = (v) => String(v), className, value, ...props },
+    ref,
   ) => {
     const numValue = typeof value === 'string' ? parseFloat(value) : (value as number);
 
@@ -25,9 +18,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
       <div className="w-full">
         {(label || showValue) && (
           <div className="flex justify-between items-center mb-2">
-            {label && (
-              <label className="text-sm font-medium text-gray-300">{label}</label>
-            )}
+            {label && <label className="text-sm font-medium text-gray-300">{label}</label>}
             {showValue && (
               <span className="text-sm font-mono text-[#C74634]">
                 {valueFormatter(numValue || 0)}
@@ -43,13 +34,13 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
             'slider-input w-full h-3 appearance-none cursor-pointer rounded-full border border-[#C74634]/45 bg-[#101827]',
             'transition-colors hover:border-[#C74634]/70',
             'focus:outline-none focus:ring-2 focus:ring-[#C74634] focus:ring-offset-0 focus-visible:ring-offset-0',
-            className
+            className,
           )}
           {...props}
         />
       </div>
     );
-  }
+  },
 );
 
 Slider.displayName = 'Slider';

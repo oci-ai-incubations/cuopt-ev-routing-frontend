@@ -3,7 +3,6 @@ import { CheckCircle, XCircle, AlertTriangle, Info, X } from 'lucide-react';
 import { useEffect } from 'react';
 
 import { useAppStore } from '@/store';
-
 import type { Toast as ToastType } from '@/types';
 
 const icons = {
@@ -42,15 +41,13 @@ export function Toast({ toast, onClose }: ToastProps) {
       className={clsx(
         'flex items-start gap-3 p-4 rounded-lg border backdrop-blur-sm',
         'animate-slide-in shadow-lg min-w-80',
-        styles[toast.type]
+        styles[toast.type],
       )}
     >
       <Icon className="w-5 h-5 shrink-0 mt-0.5" />
       <div className="flex-1 min-w-0">
         <p className="font-medium">{toast.title}</p>
-        {toast.message && (
-          <p className="text-sm opacity-80 mt-0.5">{toast.message}</p>
-        )}
+        {toast.message && <p className="text-sm opacity-80 mt-0.5">{toast.message}</p>}
       </div>
       <button
         onClick={() => onClose(toast.id)}
@@ -80,15 +77,13 @@ function ToastItem({ toast }: { toast: ToastType }) {
       className={clsx(
         'flex items-start gap-3 p-4 rounded-lg border backdrop-blur-sm',
         'animate-slide-in shadow-lg',
-        styles[toast.type]
+        styles[toast.type],
       )}
     >
       <Icon className="w-5 h-5 shrink-0 mt-0.5" />
       <div className="flex-1 min-w-0">
         <p className="font-medium">{toast.title}</p>
-        {toast.message && (
-          <p className="text-sm opacity-80 mt-0.5">{toast.message}</p>
-        )}
+        {toast.message && <p className="text-sm opacity-80 mt-0.5">{toast.message}</p>}
       </div>
       <button
         onClick={() => removeToast(toast.id)}

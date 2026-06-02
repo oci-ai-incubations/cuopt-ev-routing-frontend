@@ -43,7 +43,7 @@ export function MetricCard({
       padding="sm"
       className={clsx(
         'transition-all duration-200 hover:border-dark-hover',
-        variant === 'highlight' && 'border-oracle-red/30 bg-oracle-red/5'
+        variant === 'highlight' && 'border-oracle-red/30 bg-oracle-red/5',
       )}
     >
       <div className="min-w-0">
@@ -57,7 +57,7 @@ export function MetricCard({
                 'p-1.5 rounded-lg shrink-0',
                 variant === 'highlight'
                   ? 'bg-oracle-red/20 text-oracle-red'
-                  : 'bg-dark-hover text-gray-400'
+                  : 'bg-dark-hover text-gray-400',
               )}
             >
               <Icon className="w-4 h-4" />
@@ -69,14 +69,12 @@ export function MetricCard({
             className={clsx(
               'text-base sm:text-lg lg:text-xl font-bold mt-1 animate-count-up font-mono',
               'leading-tight break-words whitespace-normal',
-              variant === 'highlight' ? 'text-oracle-red' : 'text-white'
+              variant === 'highlight' ? 'text-oracle-red' : 'text-white',
             )}
           >
             {value}
           </p>
-          {subtitle && (
-            <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
-          )}
+          {subtitle && <p className="text-xs text-gray-500 mt-1">{subtitle}</p>}
           {trend && (
             <div
               className="flex items-center gap-1 mt-2 text-[10px] sm:text-xs leading-tight"

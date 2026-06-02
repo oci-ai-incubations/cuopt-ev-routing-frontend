@@ -1,13 +1,11 @@
 import { Globe } from 'lucide-react';
 
-import { COUNTRIES } from '@/data/locationData';
+import { COUNTRIES } from '@/data';
+import type { AppConfig } from '@/store';
 
 import { RadioGroup } from './RadioGroup';
 import { Section } from './Section';
 import { SelectField } from './SelectField';
-
-import type { AppConfig } from '@/store/configStore';
-
 
 interface RegionSettingsProps {
   config: AppConfig;
@@ -18,7 +16,14 @@ interface RegionSettingsProps {
   onTimeFormatChange: (v: string) => void;
 }
 
-export function RegionSettings({ config, cities, onCountryChange, onCityChange, onDistanceUnitChange, onTimeFormatChange }: RegionSettingsProps) {
+export function RegionSettings({
+  config,
+  cities,
+  onCountryChange,
+  onCityChange,
+  onDistanceUnitChange,
+  onTimeFormatChange,
+}: RegionSettingsProps) {
   const currentTimezone = cities.find((c) => c.id === config.cityId)?.timezone || 'UTC';
 
   return (
@@ -58,13 +63,19 @@ export function RegionSettings({ config, cities, onCountryChange, onCityChange, 
           label="Distance Units"
           value={config.distanceUnit}
           onChange={onDistanceUnitChange}
-          options={[{ value: 'km', label: 'Kilometers' }, { value: 'miles', label: 'Miles' }]}
+          options={[
+            { value: 'km', label: 'Kilometers' },
+            { value: 'miles', label: 'Miles' },
+          ]}
         />
         <RadioGroup
           label="Time Format"
           value={config.timeFormat}
           onChange={onTimeFormatChange}
-          options={[{ value: '24h', label: '24-hour' }, { value: '12h', label: '12-hour' }]}
+          options={[
+            { value: '24h', label: '24-hour' },
+            { value: '12h', label: '12-hour' },
+          ]}
         />
       </div>
     </Section>

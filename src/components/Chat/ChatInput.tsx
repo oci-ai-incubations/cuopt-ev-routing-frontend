@@ -1,14 +1,13 @@
 import { useState, useRef, type KeyboardEvent, type ChangeEvent } from 'react';
 
+import { useAvailableModels } from '@/hooks';
 import { useChatStore } from '@/store';
+import type { Stop } from '@/types';
+import { parseCSVToStops } from '@/utils';
 
 import { ChatAttachmentStatus } from './components/ChatAttachmentStatus';
 import { ChatComposer } from './components/ChatComposer';
 import { ChatSettingsPanel } from './components/ChatSettingsPanel';
-import { parseCSVToStops } from './helpers/chatInputUtils';
-import { useAvailableModels } from './hooks/useAvailableModels';
-
-import type { Stop } from '@/types';
 
 interface ChatInputProps {
   onSend: (message: string, attachedStops?: Stop[]) => void;
@@ -31,14 +30,17 @@ export function ChatInput({ onSend, isProcessing }: ChatInputProps) {
 
   const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
     if (!file) return;
 
     if (!file.name.endsWith('.csv')) {
       setFileError('Please upload a CSV file');
+
       return;
     }
 
     const reader = new FileReader();
+
     reader.onload = (event) => {
       try {
         const content = event.target?.result as string;
@@ -46,6 +48,7 @@ export function ChatInput({ onSend, isProcessing }: ChatInputProps) {
 
         if (stops.length === 0) {
           setFileError('No valid stops found in CSV');
+
           return;
         }
 
@@ -55,6 +58,7 @@ export function ChatInput({ onSend, isProcessing }: ChatInputProps) {
         setFileError(err instanceof Error ? err.message : 'Failed to parse CSV');
       }
     };
+
     reader.readAsText(file);
 
     // Reset input so same file can be selected again
@@ -73,6 +77,7 @@ export function ChatInput({ onSend, isProcessing }: ChatInputProps) {
       onSend(inputMessage.trim(), attachedFile?.stops);
       setInputMessage('');
       setAttachedFile(null);
+
       if (textareaRef.current) {
         textareaRef.current.style.height = 'auto';
         textareaRef.current.style.overflowY = 'hidden';
@@ -90,6 +95,7 @@ export function ChatInput({ onSend, isProcessing }: ChatInputProps) {
   const resizeTextarea = (textarea: HTMLTextAreaElement) => {
     textarea.style.height = 'auto';
     const nextHeight = Math.min(textarea.scrollHeight, MAX_TEXTAREA_HEIGHT);
+
     textarea.style.height = `${nextHeight}px`;
     textarea.style.overflowY = textarea.scrollHeight > MAX_TEXTAREA_HEIGHT ? 'auto' : 'hidden';
   };

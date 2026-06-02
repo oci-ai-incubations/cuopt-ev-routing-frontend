@@ -1,10 +1,8 @@
 import { AlertTriangle, Clock, Lightbulb, Package, Plus, Timer } from 'lucide-react';
 
-import { Badge } from '@/components/shared/Badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/shared/Card';
+import { Badge, Card, CardContent, CardHeader, CardTitle } from '@/components';
+import type { RecoverySuggestion } from '@/types';
 import { formatDuration } from '@/utils';
-
-import type { RecoverySuggestion } from './types';
 
 interface WarningsSectionProps {
   routeWarningsSize: number;
@@ -34,6 +32,7 @@ export function buildRecoverySuggestions(params: {
   };
 }): RecoverySuggestion[] {
   const { hasDroppedStops, droppedStopsCount, stops, config } = params;
+
   if (!hasDroppedStops) return [];
 
   const suggestions: RecoverySuggestion[] = [];
@@ -43,7 +42,10 @@ export function buildRecoverySuggestions(params: {
   const capacityUtilization = (totalDemand / totalCapacity) * 100;
 
   if (capacityUtilization > 90) {
-    const additionalVehiclesNeeded = Math.ceil((droppedStopsCount * avgDemandPerStop) / config.vehicleCapacity);
+    const additionalVehiclesNeeded = Math.ceil(
+      (droppedStopsCount * avgDemandPerStop) / config.vehicleCapacity,
+    );
+
     suggestions.push({
       icon: <Plus className="w-4 h-4 text-green-400" />,
       title: 'Add More Vehicles',
@@ -55,6 +57,7 @@ export function buildRecoverySuggestions(params: {
 
   if (capacityUtilization > 80) {
     const requiredCapacity = Math.ceil(totalDemand / config.numVehicles);
+
     suggestions.push({
       icon: <Package className="w-4 h-4 text-blue-400" />,
       title: 'Increase Vehicle Capacity',
@@ -117,7 +120,9 @@ export function WarningsSection({
         <Card
           variant="bordered"
           className={`${
-            routeWarningsSize >= routesLength * 0.5 ? 'border-red-500/50 bg-red-500/5' : 'border-orange-500/50 bg-orange-500/5'
+            routeWarningsSize >= routesLength * 0.5
+              ? 'border-red-500/50 bg-red-500/5'
+              : 'border-orange-500/50 bg-orange-500/5'
           }`}
         >
           <CardContent className="py-3">
@@ -129,7 +134,9 @@ export function WarningsSection({
               />
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-1">
-                  <h4 className={`font-medium ${routeWarningsSize >= routesLength * 0.5 ? 'text-red-400' : 'text-orange-400'}`}>
+                  <h4
+                    className={`font-medium ${routeWarningsSize >= routesLength * 0.5 ? 'text-red-400' : 'text-orange-400'}`}
+                  >
                     {routeWarningsSize} of {routesLength} Routes Have Constraint Violations
                   </h4>
                   <Badge variant={routeWarningsSize >= routesLength * 0.5 ? 'error' : 'warning'}>
@@ -137,19 +144,35 @@ export function WarningsSection({
                   </Badge>
                 </div>
                 <p className="text-sm text-gray-400 mb-2">
-                  These routes exceed the {shiftLimitLabel} shift limit. Stops are assigned but <strong>cannot be practically served</strong> within working hours.
+                  These routes exceed the {shiftLimitLabel} shift limit. Stops are assigned but{' '}
+                  <strong>cannot be practically served</strong> within working hours.
                 </p>
                 <div className="text-xs text-gray-500 space-y-1">
-                  <p><strong>Problem:</strong> Total service time + travel time = {formatDuration(totalDuration)} across {vehiclesUsed} vehicles (avg {formatDuration(Math.round(totalDuration / vehiclesUsed))}/vehicle)</p>
-                  <p><strong>Available:</strong> {vehiclesUsed} vehicles × {shiftLimitLabel} shift = {formatDuration(vehiclesUsed * shiftLimitMinutes)} total vehicle-hours</p>
-                  <p><strong>Required:</strong> ~{Math.ceil(totalDuration / shiftLimitMinutes)} vehicles needed for {shiftLimitLabel} shifts</p>
+                  <p>
+                    <strong>Problem:</strong> Total service time + travel time ={' '}
+                    {formatDuration(totalDuration)} across {vehiclesUsed} vehicles (avg{' '}
+                    {formatDuration(Math.round(totalDuration / vehiclesUsed))}/vehicle)
+                  </p>
+                  <p>
+                    <strong>Available:</strong> {vehiclesUsed} vehicles × {shiftLimitLabel} shift ={' '}
+                    {formatDuration(vehiclesUsed * shiftLimitMinutes)} total vehicle-hours
+                  </p>
+                  <p>
+                    <strong>Required:</strong> ~{Math.ceil(totalDuration / shiftLimitMinutes)}{' '}
+                    vehicles needed for {shiftLimitLabel} shifts
+                  </p>
                   {vehiclesUsed < configuredVehicles && (
                     <p className="text-yellow-400">
-                      <strong>Note:</strong> Only {vehiclesUsed} of {configuredVehicles} configured vehicles used. {parallelJobsCount > 0 ? 'Parallel clustering may limit vehicle distribution - try single optimization for better utilization.' : 'Some vehicles may be unused due to constraint satisfaction.'}
+                      <strong>Note:</strong> Only {vehiclesUsed} of {configuredVehicles} configured
+                      vehicles used.{' '}
+                      {parallelJobsCount > 0
+                        ? 'Parallel clustering may limit vehicle distribution - try single optimization for better utilization.'
+                        : 'Some vehicles may be unused due to constraint satisfaction.'}
                     </p>
                   )}
                   <p>
-                    <strong>Fix:</strong> {vehiclesUsed < configuredVehicles
+                    <strong>Fix:</strong>{' '}
+                    {vehiclesUsed < configuredVehicles
                       ? 'Try single optimization (not parallel) to use all vehicles, or reduce service times'
                       : 'Add more vehicles, reduce service times, or increase shift duration'}
                   </p>
@@ -166,14 +189,23 @@ export function WarningsSection({
             <div className="flex items-start gap-3">
               <AlertTriangle className="w-5 h-5 text-orange-400 shrink-0 mt-0.5" />
               <div>
-                <h4 className="font-medium text-orange-400 mb-1">Partial Solution - Some Constraints Relaxed</h4>
+                <h4 className="font-medium text-orange-400 mb-1">
+                  Partial Solution - Some Constraints Relaxed
+                </h4>
                 <p className="text-sm text-gray-400 mb-2">
-                  cuOPT couldn&apos;t find a fully feasible solution. Time window or capacity constraints may be violated.
-                  This typically means the workload exceeds available vehicle-hours.
+                  cuOPT couldn&apos;t find a fully feasible solution. Time window or capacity
+                  constraints may be violated. This typically means the workload exceeds available
+                  vehicle-hours.
                 </p>
                 <div className="text-xs text-gray-500 space-y-1">
-                  <p><strong>Why this happens:</strong> Total service time + travel time exceeds combined vehicle shift limits</p>
-                  <p><strong>To fix:</strong> Add more vehicles, extend shift hours, reduce service times, or accept dropped stops</p>
+                  <p>
+                    <strong>Why this happens:</strong> Total service time + travel time exceeds
+                    combined vehicle shift limits
+                  </p>
+                  <p>
+                    <strong>To fix:</strong> Add more vehicles, extend shift hours, reduce service
+                    times, or accept dropped stops
+                  </p>
                 </div>
               </div>
             </div>
@@ -188,15 +220,21 @@ export function WarningsSection({
               <AlertTriangle className="w-5 h-5" />
               {droppedStopsCount} Stop{droppedStopsCount > 1 ? 's' : ''} Not Served
             </CardTitle>
-            <Badge variant="warning">{((droppedStopsCount / totalStops) * 100).toFixed(1)}% dropped</Badge>
+            <Badge variant="warning">
+              {((droppedStopsCount / totalStops) * 100).toFixed(1)}% dropped
+            </Badge>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-gray-400 mb-3">
-              Some stops couldn&apos;t be served due to constraints. Here are suggestions to recover them:
+              Some stops couldn&apos;t be served due to constraints. Here are suggestions to recover
+              them:
             </p>
             <div className="space-y-2">
               {recoverySuggestions.map((suggestion) => (
-                <div key={suggestion.title} className="bg-dark-bg rounded-lg p-3 border border-dark-border">
+                <div
+                  key={suggestion.title}
+                  className="bg-dark-bg rounded-lg p-3 border border-dark-border"
+                >
                   <div className="flex items-start gap-3">
                     <div className="mt-0.5">{suggestion.icon}</div>
                     <div className="flex-1">
@@ -205,7 +243,11 @@ export function WarningsSection({
                         <span className="text-xs text-[#C74634]">{suggestion.impact}</span>
                       </div>
                       <p className="text-xs text-gray-400 mt-1">{suggestion.description}</p>
-                      {suggestion.action && <p className="text-xs text-blue-400 mt-1 font-medium">→ {suggestion.action}</p>}
+                      {suggestion.action && (
+                        <p className="text-xs text-blue-400 mt-1 font-medium">
+                          → {suggestion.action}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>

@@ -6,117 +6,23 @@ import {
   TrafficLayer,
   InfoWindow,
 } from '@react-google-maps/api';
-import { Map as MapIcon, Navigation, Layers, AlertCircle, Car, Cloud, AlertTriangle } from 'lucide-react';
+import {
+  Map as MapIcon,
+  Navigation,
+  Layers,
+  AlertCircle,
+  Car,
+  Cloud,
+  AlertTriangle,
+} from 'lucide-react';
 import { useState, useCallback, useEffect, useRef } from 'react';
 
-import { weatherClient } from '@/api/weatherClient';
+import { weatherClient } from '@/api';
+import { WEATHER_SEVERITY_COLORS } from '@/constants';
+import { MAP_CONTAINER_STYLE, MAP_DARK_STYLES, MAP_LIBRARIES, MAP_STYLES } from '@/data';
 import { useOptimizationStore, useAppStore, useConfigStore } from '@/store';
-import { getVehicleColor, formatVehicleName } from '@/utils';
-
-import type { LocationWeather, AdverseConditionAssessment, AdverseConditionLevel } from '@/types';
-
-// Libraries to load - Directions API doesn't need a library, it's always available
-const libraries: Array<'places'> = ['places'];
-
-// Map container style
-const containerStyle = {
-  width: '100%',
-  height: '100%',
-};
-
-// Map style options
-type MapStyleId = 'roadmap' | 'satellite' | 'hybrid' | 'terrain';
-
-interface MapStyleOption {
-  id: MapStyleId;
-  name: string;
-  description: string;
-}
-
-const MAP_STYLES: MapStyleOption[] = [
-  { id: 'roadmap', name: 'Roadmap', description: 'Standard road map with traffic' },
-  { id: 'satellite', name: 'Satellite', description: 'Satellite imagery' },
-  { id: 'hybrid', name: 'Hybrid', description: 'Satellite with labels' },
-  { id: 'terrain', name: 'Terrain', description: 'Topographic map' },
-];
-
-// Custom dark mode styles for Google Maps
-const darkModeStyles: google.maps.MapTypeStyle[] = [
-  { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
-  { elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] },
-  { elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] },
-  { featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{ color: '#d59563' }] },
-  { featureType: 'poi', elementType: 'labels.text.fill', stylers: [{ color: '#d59563' }] },
-  { featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: '#263c3f' }] },
-  { featureType: 'poi.park', elementType: 'labels.text.fill', stylers: [{ color: '#6b9a76' }] },
-  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#38414e' }] },
-  { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#212a37' }] },
-  { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#9ca5b3' }] },
-  { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#746855' }] },
-  { featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{ color: '#1f2835' }] },
-  { featureType: 'road.highway', elementType: 'labels.text.fill', stylers: [{ color: '#f3d19c' }] },
-  { featureType: 'transit', elementType: 'geometry', stylers: [{ color: '#2f3948' }] },
-  { featureType: 'transit.station', elementType: 'labels.text.fill', stylers: [{ color: '#d59563' }] },
-  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#17263c' }] },
-  { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#515c6d' }] },
-  { featureType: 'water', elementType: 'labels.text.stroke', stylers: [{ color: '#17263c' }] },
-];
-
-interface RouteDirections {
-  vehicleId: number;
-  directions: google.maps.DirectionsResult | null;
-  color: string;
-  additionalSegments?: google.maps.DirectionsResult[]; // For long routes split into segments
-}
-
-interface StopWeatherData {
-  stopId: number;
-  weather: LocationWeather;
-  assessment: AdverseConditionAssessment;
-}
-
-interface EvStopMetadata {
-  networkName?: string;
-  powerGroup?: string;
-}
-
-function getEvMetadata(metadata?: Record<string, unknown>): EvStopMetadata | null {
-  if (!metadata) return null;
-
-  const networkName = typeof metadata.networkName === 'string' ? metadata.networkName : undefined;
-  const powerGroup = typeof metadata.powerGroup === 'string' ? metadata.powerGroup : undefined;
-
-  if (!networkName && !powerGroup) {
-    return null;
-  }
-
-  return { networkName, powerGroup };
-}
-
-// Weather severity colors
-const WEATHER_SEVERITY_COLORS: Record<AdverseConditionLevel, string> = {
-  none: '#22C55E',      // Green
-  low: '#84CC16',       // Lime
-  moderate: '#F59E0B',  // Amber
-  high: '#EF4444',      // Red
-  severe: '#7C3AED',    // Purple
-};
-
-// Get weather icon based on conditions
-function getWeatherIcon(weather: LocationWeather): string {
-  const condition = weather.current.conditions[0];
-  if (!condition) return '☀️';
-
-  const id = condition.id;
-  if (id >= 200 && id < 300) return '⛈️'; // Thunderstorm
-  if (id >= 300 && id < 400) return '🌧️'; // Drizzle
-  if (id >= 500 && id < 600) return '🌧️'; // Rain
-  if (id >= 600 && id < 700) return '❄️'; // Snow
-  if (id >= 700 && id < 800) return '🌫️'; // Atmosphere (fog, mist)
-  if (id === 800) return '☀️'; // Clear
-  if (id > 800) return '☁️'; // Clouds
-  return '☀️';
-}
+import type { AdverseConditionLevel, MapStyleId, RouteDirections, StopWeatherData } from '@/types';
+import { formatVehicleName, getEvMetadata, getVehicleColor, getWeatherIcon } from '@/utils';
 
 export function GoogleRouteMap() {
   const { stops, routes } = useOptimizationStore();
@@ -141,103 +47,118 @@ export function GoogleRouteMap() {
 
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey,
-    libraries,
+    libraries: MAP_LIBRARIES,
   });
 
   const getSegmentUuid = useCallback((segment: object) => {
     const existingUuid = segmentUuidMapRef.current.get(segment);
+
     if (existingUuid) return existingUuid;
 
     const nextUuid = crypto.randomUUID();
+
     segmentUuidMapRef.current.set(segment, nextUuid);
+
     return nextUuid;
   }, []);
 
   // Default center - use config store or calculate from stops
-  const center = stops.length > 0
-    ? {
-        lat: stops.reduce((sum, s) => sum + s.lat, 0) / stops.length,
-        lng: stops.reduce((sum, s) => sum + s.lng, 0) / stops.length,
+  const center =
+    stops.length > 0
+      ? {
+          lat: stops.reduce((sum, s) => sum + s.lat, 0) / stops.length,
+          lng: stops.reduce((sum, s) => sum + s.lng, 0) / stops.length,
+        }
+      : { lat: appConfig.defaultCenter.lat, lng: appConfig.defaultCenter.lng };
+
+  const onMapLoad = useCallback(
+    (map: google.maps.Map) => {
+      mapRef.current = map;
+      directionsServiceRef.current = new google.maps.DirectionsService();
+
+      // Fit bounds to stops
+      if (stops.length > 0) {
+        const bounds = new google.maps.LatLngBounds();
+
+        stops.forEach((stop) => bounds.extend({ lat: stop.lat, lng: stop.lng }));
+        map.fitBounds(bounds, 50);
       }
-    : { lat: appConfig.defaultCenter.lat, lng: appConfig.defaultCenter.lng };
-
-  const onMapLoad = useCallback((map: google.maps.Map) => {
-    mapRef.current = map;
-    directionsServiceRef.current = new google.maps.DirectionsService();
-
-    // Fit bounds to stops
-    if (stops.length > 0) {
-      const bounds = new google.maps.LatLngBounds();
-      stops.forEach((stop) => bounds.extend({ lat: stop.lat, lng: stop.lng }));
-      map.fitBounds(bounds, 50);
-    }
-  }, [stops]);
+    },
+    [stops],
+  );
 
   // Fetch directions for a single segment with retry logic
-  const fetchDirectionsSegment = useCallback(async (
-    origin: google.maps.LatLngLiteral,
-    destination: google.maps.LatLngLiteral,
-    waypoints: google.maps.DirectionsWaypoint[],
-    retries: number = 3
-  ): Promise<google.maps.DirectionsResult | null> => {
-    if (!directionsServiceRef.current) return null;
+  const fetchDirectionsSegment = useCallback(
+    async (
+      origin: google.maps.LatLngLiteral,
+      destination: google.maps.LatLngLiteral,
+      waypoints: google.maps.DirectionsWaypoint[],
+      retries: number = 3,
+    ): Promise<google.maps.DirectionsResult | null> => {
+      if (!directionsServiceRef.current) return null;
 
-    for (let attempt = 0; attempt < retries; attempt++) {
-      try {
-        const result = await new Promise<google.maps.DirectionsResult | null>((resolve) => {
-          // Try with traffic first, then without on retry
-          const useTraffic = attempt < 2;
+      for (let attempt = 0; attempt < retries; attempt++) {
+        try {
+          const result = await new Promise<google.maps.DirectionsResult | null>((resolve) => {
+            // Try with traffic first, then without on retry
+            const useTraffic = attempt < 2;
 
-          const request: google.maps.DirectionsRequest = {
-            origin,
-            destination,
-            waypoints: waypoints.slice(0, 23), // Google limits to 23 waypoints
-            travelMode: google.maps.TravelMode.DRIVING,
-            optimizeWaypoints: false, // Keep cuOPT order
-          };
-
-          // Add traffic options only on first attempts
-          if (useTraffic) {
-            request.drivingOptions = {
-              departureTime: new Date(),
-              trafficModel: google.maps.TrafficModel.BEST_GUESS,
+            const request: google.maps.DirectionsRequest = {
+              origin,
+              destination,
+              waypoints: waypoints.slice(0, 23), // Google limits to 23 waypoints
+              travelMode: google.maps.TravelMode.DRIVING,
+              optimizeWaypoints: false, // Keep cuOPT order
             };
-          }
 
-          const directionsService = directionsServiceRef.current;
-          if (!directionsService) {
-            resolve(null);
-            return;
-          }
-
-          directionsService.route(request, (response, status) => {
-            if (status === 'OK') {
-              resolve(response);
-            } else if (status === 'OVER_QUERY_LIMIT') {
-              // Rate limited - will retry with delay
-              // eslint-disable-next-line no-console
-              console.warn('Rate limited, will retry...');
-              resolve(null);
-            } else {
-              // eslint-disable-next-line no-console
-              console.warn(`Directions failed: ${status}`);
-              resolve(null);
+            // Add traffic options only on first attempts
+            if (useTraffic) {
+              request.drivingOptions = {
+                departureTime: new Date(),
+                trafficModel: google.maps.TrafficModel.BEST_GUESS,
+              };
             }
+
+            const directionsService = directionsServiceRef.current;
+
+            if (!directionsService) {
+              resolve(null);
+
+              return;
+            }
+
+            directionsService.route(request, (response, status) => {
+              if (status === 'OK') {
+                resolve(response);
+              } else if (status === 'OVER_QUERY_LIMIT') {
+                // Rate limited - will retry with delay
+                // eslint-disable-next-line no-console
+                console.warn('Rate limited, will retry...');
+                resolve(null);
+              } else {
+                // eslint-disable-next-line no-console
+                console.warn(`Directions failed: ${status}`);
+                resolve(null);
+              }
+            });
           });
-        });
 
-        if (result) return result;
+          if (result) return result;
 
-        // Exponential backoff before retry
-        const delay = Math.min(500 * Math.pow(2, attempt), 3000);
-        await new Promise((resolve) => setTimeout(resolve, delay));
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Directions error:', error);
+          // Exponential backoff before retry
+          const delay = Math.min(500 * Math.pow(2, attempt), 3000);
+
+          await new Promise((resolve) => setTimeout(resolve, delay));
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error('Directions error:', error);
+        }
       }
-    }
-    return null;
-  }, []);
+
+      return null;
+    },
+    [],
+  );
 
   // Fetch directions for each route with segmentation for long routes
   const fetchDirections = useCallback(async () => {
@@ -255,6 +176,7 @@ export function GoogleRouteMap() {
       const routeStops = route.route
         .map((stopIdx) => {
           if (stopIdx === 0) return stops[0]; // Depot
+
           return stops.find((s) => s.id === stopIdx);
         })
         .filter(Boolean) as typeof stops;
@@ -271,31 +193,43 @@ export function GoogleRouteMap() {
       if (routeStops.length <= MAX_WAYPOINTS_PER_REQUEST + 2) {
         // Small route - fetch in one request
         const origin = { lat: routeStops[0].lat, lng: routeStops[0].lng };
-        const destination = { lat: routeStops[routeStops.length - 1].lat, lng: routeStops[routeStops.length - 1].lng };
+        const destination = {
+          lat: routeStops[routeStops.length - 1].lat,
+          lng: routeStops[routeStops.length - 1].lng,
+        };
         const waypoints = routeStops.slice(1, -1).map((stop) => ({
           location: { lat: stop.lat, lng: stop.lng },
           stopover: true,
         }));
 
         const result = await fetchDirectionsSegment(origin, destination, waypoints);
+
         if (result) {
           allResults.push(result);
         }
       } else {
         // Large route - split into segments
         let segmentStart = 0;
+
         while (segmentStart < routeStops.length - 1) {
-          const segmentEnd = Math.min(segmentStart + MAX_WAYPOINTS_PER_REQUEST + 1, routeStops.length - 1);
+          const segmentEnd = Math.min(
+            segmentStart + MAX_WAYPOINTS_PER_REQUEST + 1,
+            routeStops.length - 1,
+          );
           const segmentStops = routeStops.slice(segmentStart, segmentEnd + 1);
 
           const origin = { lat: segmentStops[0].lat, lng: segmentStops[0].lng };
-          const destination = { lat: segmentStops[segmentStops.length - 1].lat, lng: segmentStops[segmentStops.length - 1].lng };
+          const destination = {
+            lat: segmentStops[segmentStops.length - 1].lat,
+            lng: segmentStops[segmentStops.length - 1].lng,
+          };
           const waypoints = segmentStops.slice(1, -1).map((stop) => ({
             location: { lat: stop.lat, lng: stop.lng },
             stopover: true,
           }));
 
           const result = await fetchDirectionsSegment(origin, destination, waypoints);
+
           if (result) {
             allResults.push(result);
           }
@@ -332,7 +266,7 @@ export function GoogleRouteMap() {
   useEffect(() => {
     if (routes.length === 0 && routeDirections.length > 0) {
       setRouteDirections([]);
-      setMapKey(k => k + 1); // Recreate map to clear polylines
+      setMapKey((k) => k + 1); // Recreate map to clear polylines
     }
   }, [routes.length, routeDirections.length]);
 
@@ -347,6 +281,7 @@ export function GoogleRouteMap() {
   useEffect(() => {
     if (mapRef.current && stops.length > 0) {
       const bounds = new google.maps.LatLngBounds();
+
       stops.forEach((stop) => bounds.extend({ lat: stop.lat, lng: stop.lng }));
       mapRef.current.fitBounds(bounds, 50);
     }
@@ -357,11 +292,13 @@ export function GoogleRouteMap() {
     if (stops.length === 0) {
       setWeatherData(new Map());
       setOverallWeatherLevel('none');
+
       return;
     }
 
     const fetchWeather = async () => {
       setIsLoadingWeather(true);
+
       try {
         const weatherMap = await weatherClient.getWeatherForStops(stops);
         const newWeatherData = new Map<number, StopWeatherData>();
@@ -370,6 +307,7 @@ export function GoogleRouteMap() {
 
         weatherMap.forEach((weather, stopId) => {
           const assessment = weatherClient.assessAdverseConditions(weather.current);
+
           newWeatherData.set(stopId, { stopId, weather, assessment });
 
           // Track worst weather condition
@@ -381,7 +319,12 @@ export function GoogleRouteMap() {
         setWeatherData(newWeatherData);
         setOverallWeatherLevel(worstLevel);
         // eslint-disable-next-line no-console
-        console.log('[GoogleRouteMap] Weather loaded for', newWeatherData.size, 'stops. Worst level:', worstLevel);
+        console.log(
+          '[GoogleRouteMap] Weather loaded for',
+          newWeatherData.size,
+          'stops. Worst level:',
+          worstLevel,
+        );
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error('Failed to fetch weather:', error);
@@ -394,64 +337,79 @@ export function GoogleRouteMap() {
   }, [stops]);
 
   // Calculate weather-adjusted ETA for a route
-  const getWeatherAdjustedETA = useCallback((vehicleId: number): { original: number; adjusted: number; multiplier: number } | null => {
-    const directions = routeDirections.find((d) => d.vehicleId === vehicleId);
-    if (!directions?.directions) return null;
+  const getWeatherAdjustedETA = useCallback(
+    (vehicleId: number): { original: number; adjusted: number; multiplier: number } | null => {
+      const directions = routeDirections.find((d) => d.vehicleId === vehicleId);
 
-    const originalSeconds = directions.directions.routes[0]?.legs.reduce(
-      (acc, leg) => acc + (leg.duration?.value || 0),
-      0
-    ) || 0;
+      if (!directions?.directions) return null;
 
-    // Find route stops and their weather
-    const route = routes.find((r) => r.vehicle_id === vehicleId);
-    if (!route) return { original: originalSeconds, adjusted: originalSeconds, multiplier: 1 };
+      const originalSeconds =
+        directions.directions.routes[0]?.legs.reduce(
+          (acc, leg) => acc + (leg.duration?.value || 0),
+          0,
+        ) || 0;
 
-    // Calculate average weather multiplier for this route
-    let totalMultiplier = 0;
-    let count = 0;
-    route.route.forEach((stopIdx) => {
-      if (stopIdx === 0) return; // Skip depot
-      const stopWeather = weatherData.get(stopIdx);
-      if (stopWeather) {
-        totalMultiplier += stopWeather.assessment.travelTimeMultiplier;
-        count++;
-      }
-    });
+      // Find route stops and their weather
+      const route = routes.find((r) => r.vehicle_id === vehicleId);
 
-    const avgMultiplier = count > 0 ? totalMultiplier / count : 1;
-    const adjustedSeconds = Math.round(originalSeconds * avgMultiplier);
+      if (!route) return { original: originalSeconds, adjusted: originalSeconds, multiplier: 1 };
 
-    return { original: originalSeconds, adjusted: adjustedSeconds, multiplier: avgMultiplier };
-  }, [routeDirections, routes, weatherData]);
+      // Calculate average weather multiplier for this route
+      let totalMultiplier = 0;
+      let count = 0;
+
+      route.route.forEach((stopIdx) => {
+        if (stopIdx === 0) return; // Skip depot
+        const stopWeather = weatherData.get(stopIdx);
+
+        if (stopWeather) {
+          totalMultiplier += stopWeather.assessment.travelTimeMultiplier;
+          count++;
+        }
+      });
+
+      const avgMultiplier = count > 0 ? totalMultiplier / count : 1;
+      const adjustedSeconds = Math.round(originalSeconds * avgMultiplier);
+
+      return { original: originalSeconds, adjusted: adjustedSeconds, multiplier: avgMultiplier };
+    },
+    [routeDirections, routes, weatherData],
+  );
 
   const isDarkTheme = mapTheme === 'dark';
   const currentStyle = MAP_STYLES.find((s) => s.id === mapStyle) || MAP_STYLES[0];
   let trafficButtonClass = 'bg-white border border-gray-200 text-gray-500 hover:text-gray-700';
+
   if (showTraffic) {
     trafficButtonClass = 'bg-green-600 text-white';
   } else if (isDarkTheme) {
     trafficButtonClass = 'bg-dark-card border border-dark-border text-gray-400 hover:text-white';
   }
+
   const weatherActiveClass = (() => {
     if (overallWeatherLevel === 'none' || overallWeatherLevel === 'low') {
       return 'bg-green-600 text-white';
     }
+
     if (overallWeatherLevel === 'moderate') {
       return 'bg-amber-500 text-white';
     }
+
     return 'bg-red-500 text-white';
   })();
   let weatherButtonClass = 'bg-white border border-gray-200 text-gray-500 hover:text-gray-700';
+
   if (showWeather) {
     weatherButtonClass = weatherActiveClass;
   } else if (isDarkTheme) {
     weatherButtonClass = 'bg-dark-card border border-dark-border text-gray-400 hover:text-white';
   }
+
   const getStyleOptionClass = (styleId: MapStyleId) => {
     if (mapStyle === styleId) {
       return isDarkTheme ? 'bg-[#C74634]/20 text-[#C74634]' : 'bg-red-50 text-red-700';
     }
+
     return isDarkTheme ? 'text-gray-300 hover:bg-dark-hover' : 'text-gray-700 hover:bg-gray-50';
   };
 
@@ -558,7 +516,9 @@ export function GoogleRouteMap() {
       {routes.length > 0 && (
         <div
           className={`absolute bottom-4 left-4 z-10 rounded-lg shadow-lg p-3 max-w-[260px] ${
-            isDarkTheme ? 'bg-dark-card border border-dark-border' : 'bg-white border border-gray-200'
+            isDarkTheme
+              ? 'bg-dark-card border border-dark-border'
+              : 'bg-white border border-gray-200'
           }`}
         >
           <div
@@ -574,9 +534,7 @@ export function GoogleRouteMap() {
           </div>
           <div
             className={`space-y-1.5 max-h-[200px] overflow-y-auto scrollbar-thin pr-1 ${
-              isDarkTheme
-                ? 'map-legend-scroll-dark'
-                : 'map-legend-scroll-light'
+              isDarkTheme ? 'map-legend-scroll-dark' : 'map-legend-scroll-light'
             }`}
           >
             {routes.map((route) => {
@@ -606,14 +564,18 @@ export function GoogleRouteMap() {
                           <AlertTriangle className="w-3 h-3 text-amber-400" />
                         </>
                       ) : (
-                        <span className={`text-[10px] ${isDarkTheme ? 'text-gray-500' : 'text-gray-400'}`}>
+                        <span
+                          className={`text-[10px] ${isDarkTheme ? 'text-gray-500' : 'text-gray-400'}`}
+                        >
                           {Math.round(weatherETA.original / 60)}m
                         </span>
                       )}
                     </div>
                   )}
                   {!showWeather && weatherETA && (
-                    <span className={`text-[10px] ${isDarkTheme ? 'text-gray-500' : 'text-gray-400'}`}>
+                    <span
+                      className={`text-[10px] ${isDarkTheme ? 'text-gray-500' : 'text-gray-400'}`}
+                    >
                       {Math.round(weatherETA.original / 60)}m
                     </span>
                   )}
@@ -624,7 +586,9 @@ export function GoogleRouteMap() {
 
           {/* Weather Impact Summary */}
           {showWeather && weatherData.size > 0 && overallWeatherLevel !== 'none' && (
-            <div className={`mt-2 pt-2 border-t ${isDarkTheme ? 'border-dark-border' : 'border-gray-200'}`}>
+            <div
+              className={`mt-2 pt-2 border-t ${isDarkTheme ? 'border-dark-border' : 'border-gray-200'}`}
+            >
               <div className="flex items-center gap-2">
                 <div
                   className="w-2 h-2 rounded-full"
@@ -643,20 +607,32 @@ export function GoogleRouteMap() {
           {/* Unassigned Stops Warning */}
           {(() => {
             const assignedStopIds = new Set<number>();
-            routes.forEach(r => r.route.forEach(id => { if (id !== 0) assignedStopIds.add(id); }));
-            const unassignedCount = stops.slice(1).filter(s => !assignedStopIds.has(s.id)).length;
+
+            routes.forEach((r) =>
+              r.route.forEach((id) => {
+                if (id !== 0) assignedStopIds.add(id);
+              }),
+            );
+            const unassignedCount = stops.slice(1).filter((s) => !assignedStopIds.has(s.id)).length;
+
             if (unassignedCount > 0) {
               return (
-                <div className={`mt-2 pt-2 border-t ${isDarkTheme ? 'border-dark-border' : 'border-gray-200'}`}>
+                <div
+                  className={`mt-2 pt-2 border-t ${isDarkTheme ? 'border-dark-border' : 'border-gray-200'}`}
+                >
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full bg-gray-400 opacity-50 border border-red-500" />
-                    <span className={`text-[10px] ${isDarkTheme ? 'text-red-400' : 'text-red-500'}`}>
-                      {unassignedCount} unassigned stop{unassignedCount > 1 ? 's' : ''} (time/capacity constraints)
+                    <span
+                      className={`text-[10px] ${isDarkTheme ? 'text-red-400' : 'text-red-500'}`}
+                    >
+                      {unassignedCount} unassigned stop{unassignedCount > 1 ? 's' : ''}{' '}
+                      (time/capacity constraints)
                     </span>
                   </div>
                 </div>
               );
             }
+
             return null;
           })()}
         </div>
@@ -666,7 +642,9 @@ export function GoogleRouteMap() {
       {showWeather && overallWeatherLevel === 'severe' && (
         <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10 bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 animate-pulse">
           <AlertTriangle className="w-4 h-4" />
-          <span className="text-sm font-medium">Severe Weather Alert - Check conditions before dispatch</span>
+          <span className="text-sm font-medium">
+            Severe Weather Alert - Check conditions before dispatch
+          </span>
         </div>
       )}
 
@@ -681,13 +659,13 @@ export function GoogleRouteMap() {
 
       <GoogleMap
         key={`google-map-${mapKey}`}
-        mapContainerStyle={containerStyle}
+        mapContainerStyle={MAP_CONTAINER_STYLE}
         center={center}
         zoom={stops.length > 0 ? 11 : 6}
         onLoad={onMapLoad}
         options={{
           mapTypeId: mapStyle,
-          styles: isDarkTheme && mapStyle === 'roadmap' ? darkModeStyles : undefined,
+          styles: isDarkTheme && mapStyle === 'roadmap' ? MAP_DARK_STYLES : undefined,
           disableDefaultUI: false,
           zoomControl: true,
           mapTypeControl: false,
@@ -719,9 +697,10 @@ export function GoogleRouteMap() {
 
         {/* Route Directions - Additional segments for long routes */}
         {routeDirections
-          .filter((rd): rd is RouteDirections & { additionalSegments: google.maps.DirectionsResult[] } => (
-            Boolean(rd.additionalSegments && rd.additionalSegments.length > 0)
-          ))
+          .filter(
+            (rd): rd is RouteDirections & { additionalSegments: google.maps.DirectionsResult[] } =>
+              Boolean(rd.additionalSegments && rd.additionalSegments.length > 0),
+          )
           .flatMap((rd) =>
             rd.additionalSegments.map((segment) => (
               <DirectionsRenderer
@@ -737,7 +716,7 @@ export function GoogleRouteMap() {
                   preserveViewport: true,
                 }}
               />
-            ))
+            )),
           )}
 
         {/* Depot Marker */}
@@ -761,7 +740,9 @@ export function GoogleRouteMap() {
         {stops.slice(1).map((stop) => {
           const assignedRoute = routes.find((r) => r.route.includes(stop.id));
           const isAssigned = !!assignedRoute;
-          const routeColor = assignedRoute ? getVehicleColor(assignedRoute.vehicle_id).color : '#9CA3AF';
+          const routeColor = assignedRoute
+            ? getVehicleColor(assignedRoute.vehicle_id).color
+            : '#9CA3AF';
           const evMetadata = getEvMetadata(stop.metadata);
           const isEVStation = !!evMetadata?.networkName;
           const stopWeather = weatherData.get(stop.id);
@@ -770,6 +751,7 @@ export function GoogleRouteMap() {
           // Unassigned stops: gray with lower opacity and smaller size
           // Assigned stops: route color or weather color if showing weather
           let markerColor = routeColor;
+
           if (!isAssigned) {
             markerColor = '#9CA3AF';
           } else if (showWeather && weatherLevel !== 'none' && weatherLevel !== 'low') {
@@ -787,6 +769,7 @@ export function GoogleRouteMap() {
 
           // Smaller, semi-transparent markers for unassigned stops
           let markerScale = 8;
+
           if (!isAssigned && routes.length > 0) {
             markerScale = 6;
           } else if (isEVStation) {
@@ -800,6 +783,7 @@ export function GoogleRouteMap() {
             ? 'M13 2L3 14 12 14 11 22 21 10 12 10 13 2'
             : google.maps.SymbolPath.CIRCLE;
           let markerStrokeWeight = 2;
+
           if (!isAssigned && routes.length > 0) {
             markerStrokeWeight = 1;
           } else if (showWeather && weatherLevel !== 'none' && weatherLevel !== 'low') {
@@ -832,6 +816,7 @@ export function GoogleRouteMap() {
                 ? { lat: stops[0].lat, lng: stops[0].lng }
                 : (() => {
                     const stop = stops.find((s) => s.id === selectedMarker);
+
                     return stop ? { lat: stop.lat, lng: stop.lng } : center;
                   })()
             }
@@ -860,6 +845,7 @@ export function GoogleRouteMap() {
               ) : (
                 (() => {
                   const stop = stops.find((s) => s.id === selectedMarker);
+
                   if (!stop) return null;
                   const assignedRoute = routes.find((r) => r.route.includes(stop.id));
                   const evMetadata = getEvMetadata(stop.metadata);
@@ -893,15 +879,21 @@ export function GoogleRouteMap() {
                             <div className="font-medium text-gray-700 mb-1">Weather Conditions</div>
                             <div className="flex justify-between">
                               <span>Temperature:</span>
-                              <span className="font-medium">{Math.round(stopWeather.weather.current.temperature)}°C</span>
+                              <span className="font-medium">
+                                {Math.round(stopWeather.weather.current.temperature)}°C
+                              </span>
                             </div>
                             <div className="flex justify-between">
                               <span>Conditions:</span>
-                              <span>{stopWeather.weather.current.conditions[0]?.description || 'Clear'}</span>
+                              <span>
+                                {stopWeather.weather.current.conditions[0]?.description || 'Clear'}
+                              </span>
                             </div>
                             <div className="flex justify-between">
                               <span>Wind:</span>
-                              <span>{Math.round(stopWeather.weather.current.windSpeed * 2.237)} mph</span>
+                              <span>
+                                {Math.round(stopWeather.weather.current.windSpeed * 2.237)} mph
+                              </span>
                             </div>
                             {stopWeather.weather.current.rain1h && (
                               <div className="flex justify-between">
@@ -912,19 +904,28 @@ export function GoogleRouteMap() {
                             {stopWeather.assessment.level !== 'none' && (
                               <div
                                 className="mt-1 px-2 py-1 rounded text-white text-center font-medium"
-                                style={{ backgroundColor: WEATHER_SEVERITY_COLORS[stopWeather.assessment.level] }}
+                                style={{
+                                  backgroundColor:
+                                    WEATHER_SEVERITY_COLORS[stopWeather.assessment.level],
+                                }}
                               >
                                 {stopWeather.assessment.level === 'low' && 'Minor Impact'}
                                 {stopWeather.assessment.level === 'moderate' && 'Moderate Delay'}
                                 {stopWeather.assessment.level === 'high' && 'High Risk'}
-                                {stopWeather.assessment.level === 'severe' && 'SEVERE CONDITIONS'}
-                                {' '}(+{Math.round((stopWeather.assessment.travelTimeMultiplier - 1) * 100)}% time)
+                                {stopWeather.assessment.level === 'severe' &&
+                                  'SEVERE CONDITIONS'}{' '}
+                                (+
+                                {Math.round(
+                                  (stopWeather.assessment.travelTimeMultiplier - 1) * 100,
+                                )}
+                                % time)
                               </div>
                             )}
                             {stopWeather.assessment.factors.length > 0 && (
                               <div className="mt-1 text-[10px] text-gray-500">
                                 {(() => {
                                   const factorKeyCounts = new Map<string, number>();
+
                                   return stopWeather.assessment.factors.map((factor) => {
                                     const baseFactorKey = [
                                       factor.type,
@@ -933,7 +934,9 @@ export function GoogleRouteMap() {
                                       factor.impact,
                                     ].join('-');
                                     const seenCount = factorKeyCounts.get(baseFactorKey) ?? 0;
+
                                     factorKeyCounts.set(baseFactorKey, seenCount + 1);
+
                                     return (
                                       <div key={`${baseFactorKey}-${seenCount}`}>
                                         • {factor.description}

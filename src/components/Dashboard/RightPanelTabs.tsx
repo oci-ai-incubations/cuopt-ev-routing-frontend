@@ -1,10 +1,15 @@
 import { BarChart3, Cloud, Target } from 'lucide-react';
 import { useState } from 'react';
 
-import { OperationalImpactPanel } from '@/components/Metrics/OperationalImpactPanel';
-import { PerformanceChart } from '@/components/Metrics/PerformanceChart';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/shared/Card';
-import { WeatherPanel } from '@/components/Weather/WeatherPanel';
+import {
+  OperationalImpactPanel,
+  PerformanceChart,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  WeatherPanel,
+} from '@/components';
 
 type RightPanelView = 'weather' | 'impact' | 'performance';
 

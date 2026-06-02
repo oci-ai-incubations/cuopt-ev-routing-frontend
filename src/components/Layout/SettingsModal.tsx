@@ -1,8 +1,8 @@
 import { clsx } from 'clsx';
 import { LogOut, Moon, Sun, User } from 'lucide-react';
 
-import { Modal } from '@/components/shared/Modal';
-import { useAuthStore } from '@/store/authStore';
+import { Modal } from '@/components';
+import { useAuthStore } from '@/store';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -22,6 +22,7 @@ export function SettingsModal({
   const user = useAuthStore((s) => s.user);
   const displayName = user?.name || user?.email || 'User';
   const subtext = user?.role ? `Logged in · ${user.role}` : 'Logged in';
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Settings" size="md">
       <div className="space-y-6">
@@ -36,7 +37,10 @@ export function SettingsModal({
             </div>
           </div>
           <button
-            onClick={() => { onClose(); onLogoutClick(); }}
+            onClick={() => {
+              onClose();
+              onLogoutClick();
+            }}
             className="px-3 py-1.5 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors flex items-center gap-2"
           >
             <LogOut className="w-4 h-4" />
@@ -55,13 +59,17 @@ export function SettingsModal({
             onClick={onToggleMapTheme}
             className={clsx(
               'px-4 py-2 rounded-lg flex items-center gap-2 transition-colors',
-              mapTheme === 'dark' ? 'bg-gray-700 text-white' : 'bg-yellow-100 text-yellow-800'
+              mapTheme === 'dark' ? 'bg-gray-700 text-white' : 'bg-yellow-100 text-yellow-800',
             )}
           >
             {mapTheme === 'dark' ? (
-              <><Moon className="w-4 h-4" /> Dark</>
+              <>
+                <Moon className="w-4 h-4" /> Dark
+              </>
             ) : (
-              <><Sun className="w-4 h-4" /> Light</>
+              <>
+                <Sun className="w-4 h-4" /> Light
+              </>
             )}
           </button>
         </div>

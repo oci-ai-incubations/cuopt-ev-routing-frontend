@@ -2,8 +2,9 @@ import { MessageSquare } from 'lucide-react';
 import { useRef, useEffect, useCallback } from 'react';
 
 import { genaiClient, cuoptClient, weatherClient } from '@/api';
-import { LoadingDots } from '@/components/shared/LoadingDots';
+import { LoadingDots } from '@/components';
 import { useChatStore, useAppStore, useOptimizationStore } from '@/store';
+import type { AdverseConditionAssessment, Stop, WeatherRoutingImpact } from '@/types';
 
 import { ChatDebugPanel } from './ChatDebugPanel';
 import { ChatEmptyState } from './ChatEmptyState';
@@ -11,11 +12,11 @@ import { ChatHeader } from './ChatHeader';
 import { ChatInput } from './ChatInput';
 import { ChatMessage } from './ChatMessage';
 
-
-import type { AdverseConditionAssessment, Stop, WeatherRoutingImpact } from '@/types';
-
 // Helper function to generate weather summary for AI response
-function generateWeatherSummary(impacts: WeatherRoutingImpact[], assessment: AdverseConditionAssessment | null): string {
+function generateWeatherSummary(
+  impacts: WeatherRoutingImpact[],
+  assessment: AdverseConditionAssessment | null,
+): string {
   if (!assessment || impacts.length === 0) {
     return '';
   }
@@ -29,26 +30,34 @@ function generateWeatherSummary(impacts: WeatherRoutingImpact[], assessment: Adv
   };
 
   // Count conditions
-  const conditionCounts = impacts.reduce((acc, imp) => {
-    const main = imp.weather.conditions[0]?.main || 'Clear';
-    acc[main] = (acc[main] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+  const conditionCounts = impacts.reduce(
+    (acc, imp) => {
+      const main = imp.weather.conditions[0]?.main || 'Clear';
+
+      acc[main] = (acc[main] || 0) + 1;
+
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
 
   const conditionSummary = Object.entries(conditionCounts)
     .map(([cond, count]) => `${cond}: ${count} stops`)
     .join(', ');
 
   // Temperature range
-  const temps = impacts.map(i => i.weather.temperature);
+  const temps = impacts.map((i) => i.weather.temperature);
   const minTemp = Math.min(...temps).toFixed(0);
   const maxTemp = Math.max(...temps).toFixed(0);
 
   // Wind info
-  const maxWind = Math.max(...impacts.map(i => i.weather.windSpeed));
-  const avgWind = (impacts.reduce((s, i) => s + i.weather.windSpeed, 0) / impacts.length).toFixed(1);
+  const maxWind = Math.max(...impacts.map((i) => i.weather.windSpeed));
+  const avgWind = (impacts.reduce((s, i) => s + i.weather.windSpeed, 0) / impacts.length).toFixed(
+    1,
+  );
 
   let summary = `\n\nWeather Assessment: ${levelText[assessment.level]}`;
+
   summary += `\nTemperature: ${minTemp}C to ${maxTemp}C`;
   summary += `\nConditions: ${conditionSummary}`;
   summary += `\nWind: avg ${avgWind} m/s, max ${maxWind.toFixed(1)} m/s`;
@@ -105,6 +114,7 @@ export function ChatInterface() {
       const userContent = attachedStops
         ? `${content}\n\n[Attached CSV: ${attachedStops.length} stops]`
         : content;
+
       addMessage({ role: 'user', content: userContent });
       setIsProcessing(true);
 
@@ -132,6 +142,7 @@ export function ChatInterface() {
 How can I assist you today?`,
           });
           setIsProcessing(false);
+
           return;
         }
 
@@ -139,16 +150,20 @@ How can I assist you today?`,
           // Answer informational questions directly without calling solver
           addStreamingMessage();
           const words = intentResult.answer.split(' ');
+
           for (let i = 0; i < words.length; i++) {
             const word = words[i];
             const suffix = i < words.length - 1 ? ' ' : '';
+
             appendToStreamingMessage(word + suffix);
-            await new Promise(resolve => setTimeout(resolve, 20));
+            await new Promise((resolve) => setTimeout(resolve, 20));
           }
+
           finalizeStreamingMessage({
             model: config.model,
           });
           setIsProcessing(false);
+
           return;
         }
 
@@ -171,6 +186,7 @@ How can I assist you today?`,
 Could you provide more details about what you need?`,
           });
           setIsProcessing(false);
+
           return;
         }
 
@@ -179,8 +195,16 @@ Could you provide more details about what you need?`,
         const promptForGenAI = attachedStops
           ? `${content} (User has uploaded ${attachedStops.length} stops from CSV file)`
           : content;
-        const { request, interpretation, error, numStops: extractedNumStops, numVehicles, useParallel: genaiUseParallel, numClusters: genaiNumClusters, stops: generatedStops } =
-          await genaiClient.convertPromptToCuOpt(promptForGenAI);
+        const {
+          request,
+          interpretation,
+          error,
+          numStops: extractedNumStops,
+          numVehicles,
+          useParallel: genaiUseParallel,
+          numClusters: genaiNumClusters,
+          stops: generatedStops,
+        } = await genaiClient.convertPromptToCuOpt(promptForGenAI);
 
         // Use attached stops if available, otherwise use generated stops from genaiClient
         const numStops = attachedStops?.length || extractedNumStops;
@@ -196,6 +220,7 @@ Could you please provide more details? For example:
 - How many vehicles are available?
 - Are there any time constraints?`,
           });
+
           return;
         }
 
@@ -203,7 +228,8 @@ Could you please provide more details? For example:
 
         // Use parallel processing if GenAI detected it from user prompt or if stops >= threshold
         const useParallel = genaiUseParallel || false;
-        const numClusters = genaiNumClusters || (useParallel ? Math.min(Math.ceil((numStops || 500) / 500), 8) : 1);
+        const numClusters =
+          genaiNumClusters || (useParallel ? Math.min(Math.ceil((numStops || 500) / 500), 8) : 1);
 
         if (useParallel) {
           // Add message about parallel processing
@@ -217,6 +243,7 @@ Could you please provide more details? For example:
 
           // Fetch weather data for stops (sample first 10 for efficiency)
           let weatherSummary = '';
+
           try {
             const sampleStops = stops.slice(0, Math.min(10, stops.length));
             const weatherImpacts = await weatherClient.getRoutingImpact(sampleStops);
@@ -225,21 +252,38 @@ Could you please provide more details? For example:
               // Calculate overall assessment
               const levels = ['none', 'low', 'moderate', 'high', 'severe'];
               let worstLevel = 'none';
+
               weatherImpacts.forEach((imp: WeatherRoutingImpact) => {
                 if (levels.indexOf(imp.assessment.level) > levels.indexOf(worstLevel)) {
                   worstLevel = imp.assessment.level;
                 }
               });
 
-              const avgMultiplier = weatherImpacts.reduce((s: number, i: WeatherRoutingImpact) => s + i.assessment.travelTimeMultiplier, 0) / weatherImpacts.length;
-              const avgSafety = weatherImpacts.reduce((s: number, i: WeatherRoutingImpact) => s + i.assessment.safetyScore, 0) / weatherImpacts.length;
+              const avgMultiplier =
+                weatherImpacts.reduce(
+                  (s: number, i: WeatherRoutingImpact) => s + i.assessment.travelTimeMultiplier,
+                  0,
+                ) / weatherImpacts.length;
+              const avgSafety =
+                weatherImpacts.reduce(
+                  (s: number, i: WeatherRoutingImpact) => s + i.assessment.safetyScore,
+                  0,
+                ) / weatherImpacts.length;
 
               const overallAssessment: AdverseConditionAssessment = {
                 level: worstLevel as AdverseConditionAssessment['level'],
-                factors: weatherImpacts.flatMap((i: WeatherRoutingImpact) => i.assessment.factors).slice(0, 3),
+                factors: weatherImpacts
+                  .flatMap((i: WeatherRoutingImpact) => i.assessment.factors)
+                  .slice(0, 3),
                 travelTimeMultiplier: avgMultiplier,
                 safetyScore: avgSafety,
-                recommendations: [...new Set(weatherImpacts.flatMap((i: WeatherRoutingImpact) => i.assessment.recommendations))].slice(0, 3),
+                recommendations: [
+                  ...new Set(
+                    weatherImpacts.flatMap(
+                      (i: WeatherRoutingImpact) => i.assessment.recommendations,
+                    ),
+                  ),
+                ].slice(0, 3),
               };
 
               weatherSummary = generateWeatherSummary(weatherImpacts, overallAssessment);
@@ -263,6 +307,7 @@ Could you please provide more details? For example:
               startLat: 0,
               startLng: 0,
             }));
+
             return cuoptClient.buildPayload(cluster, vehicles, {
               numVehicles: vehiclesPerCluster,
               vehicleCapacity: 100,
@@ -285,7 +330,7 @@ Could you please provide more details? For example:
             },
             () => {
               // Job started callback - could update UI here if needed
-            }
+            },
           );
 
           // Merge results with unique numeric vehicle IDs
@@ -295,14 +340,14 @@ Could you please provide more details? For example:
               ...v,
               vehicle_id: globalVehicleId++,
               cluster_id: clusterIdx,
-            }))
+            })),
           );
 
           const mergedResult = {
             status: 'SUCCESS' as const,
             num_vehicles: mergedVehicleData.length,
             solution_cost: results.reduce((sum, r) => sum + (r?.solution_cost || 0), 0),
-            solve_time: Math.max(...results.map(r => r?.solve_time || 0)),
+            solve_time: Math.max(...results.map((r) => r?.solve_time || 0)),
             vehicle_data: mergedVehicleData,
             clusters_used: numClusters,
             parallel_execution: true,
@@ -319,7 +364,7 @@ Could you please provide more details? For example:
             mergedResult,
             content,
             weatherSummary || undefined,
-            stops
+            stops,
           );
 
           // Stream the response word by word like ChatGPT
@@ -336,8 +381,9 @@ Could you please provide more details? For example:
           for (let i = 0; i < words.length; i++) {
             const word = words[i];
             const suffix = i < words.length - 1 ? ' ' : '';
+
             appendToStreamingMessage(word + suffix);
-            await new Promise(resolve => setTimeout(resolve, 25));
+            await new Promise((resolve) => setTimeout(resolve, 25));
           }
 
           finalizeStreamingMessage({
@@ -363,6 +409,7 @@ Could you please provide more details? For example:
 
           // Fetch weather data for stops
           let weatherSummary = '';
+
           try {
             const sampleStops = stops.slice(0, Math.min(10, stops.length));
             const weatherImpacts = await weatherClient.getRoutingImpact(sampleStops);
@@ -370,21 +417,38 @@ Could you please provide more details? For example:
             if (weatherImpacts.length > 0) {
               const levels = ['none', 'low', 'moderate', 'high', 'severe'];
               let worstLevel = 'none';
+
               weatherImpacts.forEach((imp: WeatherRoutingImpact) => {
                 if (levels.indexOf(imp.assessment.level) > levels.indexOf(worstLevel)) {
                   worstLevel = imp.assessment.level;
                 }
               });
 
-              const avgMultiplier = weatherImpacts.reduce((s: number, i: WeatherRoutingImpact) => s + i.assessment.travelTimeMultiplier, 0) / weatherImpacts.length;
-              const avgSafety = weatherImpacts.reduce((s: number, i: WeatherRoutingImpact) => s + i.assessment.safetyScore, 0) / weatherImpacts.length;
+              const avgMultiplier =
+                weatherImpacts.reduce(
+                  (s: number, i: WeatherRoutingImpact) => s + i.assessment.travelTimeMultiplier,
+                  0,
+                ) / weatherImpacts.length;
+              const avgSafety =
+                weatherImpacts.reduce(
+                  (s: number, i: WeatherRoutingImpact) => s + i.assessment.safetyScore,
+                  0,
+                ) / weatherImpacts.length;
 
               const overallAssessment: AdverseConditionAssessment = {
                 level: worstLevel as AdverseConditionAssessment['level'],
-                factors: weatherImpacts.flatMap((i: WeatherRoutingImpact) => i.assessment.factors).slice(0, 3),
+                factors: weatherImpacts
+                  .flatMap((i: WeatherRoutingImpact) => i.assessment.factors)
+                  .slice(0, 3),
                 travelTimeMultiplier: avgMultiplier,
                 safetyScore: avgSafety,
-                recommendations: [...new Set(weatherImpacts.flatMap((i: WeatherRoutingImpact) => i.assessment.recommendations))].slice(0, 3),
+                recommendations: [
+                  ...new Set(
+                    weatherImpacts.flatMap(
+                      (i: WeatherRoutingImpact) => i.assessment.recommendations,
+                    ),
+                  ),
+                ].slice(0, 3),
               };
 
               weatherSummary = generateWeatherSummary(weatherImpacts, overallAssessment);
@@ -395,6 +459,7 @@ Could you please provide more details? For example:
 
           // Step 2: Call cuOPT API
           const cuoptResult = await cuoptClient.solveVRP(request);
+
           setDebugData({ cuoptResponse: cuoptResult });
 
           // Sync results to Route Optimizer panel for detailed view
@@ -406,11 +471,12 @@ Could you please provide more details? For example:
             cuoptResult,
             content,
             weatherSummary || undefined,
-            stops
+            stops,
           );
 
           // Add weather to response
           let fullExplanation = explanation;
+
           if (weatherSummary) {
             fullExplanation += weatherSummary;
           }
@@ -422,9 +488,10 @@ Could you please provide more details? For example:
           for (let i = 0; i < words.length; i++) {
             const word = words[i];
             const suffix = i < words.length - 1 ? ' ' : '';
+
             appendToStreamingMessage(word + suffix);
             // Small delay between words for typing effect
-            await new Promise(resolve => setTimeout(resolve, 25));
+            await new Promise((resolve) => setTimeout(resolve, 25));
           }
 
           // Finalize with metadata
@@ -459,7 +526,18 @@ Please try again or rephrase your request.`,
         setIsProcessing(false);
       }
     },
-    [addMessage, addStreamingMessage, appendToStreamingMessage, finalizeStreamingMessage, setIsProcessing, setDebugData, addToast, setResult, setStops, config.model]
+    [
+      addMessage,
+      addStreamingMessage,
+      appendToStreamingMessage,
+      finalizeStreamingMessage,
+      setIsProcessing,
+      setDebugData,
+      addToast,
+      setResult,
+      setStops,
+      config.model,
+    ],
   );
 
   return (
@@ -476,7 +554,9 @@ Please try again or rephrase your request.`,
                 <ChatMessage
                   key={message.id}
                   message={message}
-                  isStreaming={isStreaming && message.id === useChatStore.getState().streamingMessageId}
+                  isStreaming={
+                    isStreaming && message.id === useChatStore.getState().streamingMessageId
+                  }
                 />
               ))}
               {isProcessing && !isStreaming && (

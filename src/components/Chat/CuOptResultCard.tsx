@@ -1,14 +1,19 @@
 import { Route, Clock, Truck, Download } from 'lucide-react';
 
-import { Badge } from '@/components/shared/Badge';
-import { Button } from '@/components/shared/Button';
+import { Badge, Button } from '@/components';
 import { useConfigStore } from '@/store';
-import { formatDistance, formatDuration, getVehiclePlate, getVehicleColor, setVehicleCountry } from '@/utils';
-
 import type { CuOptResponse, VehicleRoute } from '@/types';
+import {
+  formatDistance,
+  formatDuration,
+  getVehiclePlate,
+  getVehicleColor,
+  setVehicleCountry,
+} from '@/utils';
 
 export function CuOptResultCard({ result }: { result: CuOptResponse }) {
   const { config: appConfig } = useConfigStore();
+
   setVehicleCountry(appConfig.countryCode);
 
   const vehicleData: VehicleRoute[] = result.vehicle_data || [];
@@ -26,10 +31,14 @@ export function CuOptResultCard({ result }: { result: CuOptResponse }) {
       mimeType = 'application/json';
     } else {
       const headers = 'plate,name,stops,route,duration\n';
-      const rows = vehicleData.map((v) => {
-        const vehicle = getVehiclePlate(v.vehicle_id);
-        return `${vehicle.plate},${vehicle.name},${(v.route?.length || 2) - 2},"${v.route?.join('->')}",${v.route_duration || 0}`;
-      }).join('\n');
+      const rows = vehicleData
+        .map((v) => {
+          const vehicle = getVehiclePlate(v.vehicle_id);
+
+          return `${vehicle.plate},${vehicle.name},${(v.route?.length || 2) - 2},"${v.route?.join('->')}",${v.route_duration || 0}`;
+        })
+        .join('\n');
+
       data = headers + rows;
       filename = 'cuopt-routes.csv';
       mimeType = 'text/csv';
@@ -38,6 +47,7 @@ export function CuOptResultCard({ result }: { result: CuOptResponse }) {
     const blob = new Blob([data], { type: mimeType });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
+
     a.href = url;
     a.download = filename;
     a.click();
@@ -47,15 +57,41 @@ export function CuOptResultCard({ result }: { result: CuOptResponse }) {
   return (
     <div className="space-y-3">
       <div className="flex gap-2 justify-end">
-        <Button variant="ghost" size="sm" leftIcon={<Download className="w-3 h-3" />} onClick={() => handleDownload('json')}>JSON</Button>
-        <Button variant="ghost" size="sm" leftIcon={<Download className="w-3 h-3" />} onClick={() => handleDownload('csv')}>CSV</Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          leftIcon={<Download className="w-3 h-3" />}
+          onClick={() => handleDownload('json')}
+        >
+          JSON
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          leftIcon={<Download className="w-3 h-3" />}
+          onClick={() => handleDownload('csv')}
+        >
+          CSV
+        </Button>
       </div>
 
       <div className="grid grid-cols-3 gap-2">
         {[
-          { icon: <Route className="w-4 h-4 text-[#C74634] mx-auto mb-1" />, value: formatDistance(totalDistance), label: 'Distance' },
-          { icon: <Clock className="w-4 h-4 text-[#C74634] mx-auto mb-1" />, value: formatDuration(totalDuration), label: 'Duration' },
-          { icon: <Truck className="w-4 h-4 text-[#C74634] mx-auto mb-1" />, value: result.num_vehicles || vehicleData.length, label: 'Vehicles' },
+          {
+            icon: <Route className="w-4 h-4 text-[#C74634] mx-auto mb-1" />,
+            value: formatDistance(totalDistance),
+            label: 'Distance',
+          },
+          {
+            icon: <Clock className="w-4 h-4 text-[#C74634] mx-auto mb-1" />,
+            value: formatDuration(totalDuration),
+            label: 'Duration',
+          },
+          {
+            icon: <Truck className="w-4 h-4 text-[#C74634] mx-auto mb-1" />,
+            value: result.num_vehicles || vehicleData.length,
+            label: 'Vehicles',
+          },
         ].map(({ icon, value, label }) => (
           <div key={label} className="bg-dark-bg rounded-lg p-2 text-center">
             {icon}
@@ -72,12 +108,21 @@ export function CuOptResultCard({ result }: { result: CuOptResponse }) {
           </div>
           {vehicleData.slice(0, 10).map((v) => {
             const vehicle = getVehiclePlate(v.vehicle_id);
+
             return (
-              <div key={v.vehicle_id} className="bg-dark-bg rounded-lg p-2 border border-dark-border">
+              <div
+                key={v.vehicle_id}
+                className="bg-dark-bg rounded-lg p-2 border border-dark-border"
+              >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: getVehicleColor(v.vehicle_id).color }} />
-                    <span className="text-white font-mono text-sm font-medium">{vehicle.plate}</span>
+                    <div
+                      className="w-2 h-2 rounded-full"
+                      style={{ backgroundColor: getVehicleColor(v.vehicle_id).color }}
+                    />
+                    <span className="text-white font-mono text-sm font-medium">
+                      {vehicle.plate}
+                    </span>
                     <span className="text-gray-500 text-xs">{vehicle.name}</span>
                   </div>
                   <span className="text-gray-400 text-xs">{(v.route?.length || 2) - 2} stops</span>
@@ -98,7 +143,9 @@ export function CuOptResultCard({ result }: { result: CuOptResponse }) {
       )}
 
       <div className="flex justify-between items-center">
-        <Badge variant={result.status === 'SUCCESS' ? 'success' : 'warning'}>{result.status || 'Completed'}</Badge>
+        <Badge variant={result.status === 'SUCCESS' ? 'success' : 'warning'}>
+          {result.status || 'Completed'}
+        </Badge>
         {result.solve_time && (
           <span className="text-xs text-gray-500">Solved in {result.solve_time.toFixed(2)}s</span>
         )}

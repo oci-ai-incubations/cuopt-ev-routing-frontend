@@ -1,6 +1,6 @@
 import { Clock, MapPin, Route, Truck, Zap } from 'lucide-react';
 
-import { MetricCard } from '@/components/shared/MetricCard';
+import { MetricCard } from '@/components';
 import { formatDistance, formatDuration, formatSolveTime } from '@/utils';
 
 interface MetricsStripProps {

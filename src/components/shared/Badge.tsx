@@ -26,7 +26,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
         className={clsx(
           'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium',
           variants[variant],
-          className
+          className,
         )}
         {...props}
       >
@@ -41,7 +41,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
                 variant === 'info' && 'bg-blue-400',
                 variant === 'nvidia' && 'bg-nvidia-green',
                 variant === 'oci' && 'bg-oracle-red',
-                variant === 'default' && 'bg-gray-400'
+                variant === 'default' && 'bg-gray-400',
               )}
             />
             <span
@@ -53,7 +53,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
                 variant === 'info' && 'bg-blue-500',
                 variant === 'nvidia' && 'bg-nvidia-green',
                 variant === 'oci' && 'bg-oracle-red',
-                variant === 'default' && 'bg-gray-500'
+                variant === 'default' && 'bg-gray-500',
               )}
             />
           </span>
@@ -61,7 +61,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
         {children}
       </span>
     );
-  }
+  },
 );
 
 Badge.displayName = 'Badge';

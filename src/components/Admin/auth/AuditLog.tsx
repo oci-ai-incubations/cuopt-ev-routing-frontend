@@ -7,7 +7,7 @@
 import { ChevronLeft, ChevronRight, Download, FileSearch } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 
-import { exportAuditLog, queryAuditLog } from '@/api/admin';
+import { exportAuditLog, queryAuditLog } from '@/api';
 import {
   Badge,
   Button,
@@ -18,25 +18,8 @@ import {
   Spinner,
   TextInput,
 } from '@/components/Admin/auth/_primitives';
-
-import type { AuditLogEntry } from '@/types/admin';
-
-const PAGE_SIZE = 20;
-
-const EVENT_TYPES = [
-  '',
-  'login',
-  'logout',
-  'login_failed',
-  'token_refresh',
-  'user_created',
-  'user_updated',
-  'user_deleted',
-  'role_assigned',
-  'permission_changed',
-  'provider_created',
-  'group_created',
-];
+import { EVENT_TYPES, PAGE_SIZE } from '@/constants';
+import type { AuditLogEntry } from '@/types';
 
 export function AuditLog() {
   const [entries, setEntries] = useState<AuditLogEntry[]>([]);
@@ -52,6 +35,7 @@ export function AuditLog() {
 
   const fetchAudit = useCallback(async () => {
     setLoading(true);
+
     try {
       const data = await queryAuditLog({
         event_type: eventType || undefined,
@@ -61,6 +45,7 @@ export function AuditLog() {
         offset,
         limit: PAGE_SIZE,
       });
+
       setEntries(data.items);
       setTotal(data.total);
     } finally {
@@ -74,10 +59,12 @@ export function AuditLog() {
 
   const handleExport = async () => {
     setExporting(true);
+
     try {
       const blob = await exportAuditLog();
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
+
       a.href = url;
       a.download = `audit-log-${new Date().toISOString().slice(0, 10)}.json`;
       a.click();
@@ -144,12 +131,7 @@ export function AuditLog() {
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-400 mb-1">To</label>
-              <TextInput
-                value={dateTo}
-                onChange={setDateTo}
-                type="date"
-                className="text-xs py-2"
-              />
+              <TextInput value={dateTo} onChange={setDateTo} type="date" className="text-xs py-2" />
             </div>
           </div>
           <div className="flex gap-2 mt-3">
@@ -170,7 +152,10 @@ export function AuditLog() {
       </Card>
 
       <Card>
-        <CardHeader title={`Events (${total})`} description={`Page ${currentPage} of ${totalPages}`} />
+        <CardHeader
+          title={`Events (${total})`}
+          description={`Page ${currentPage} of ${totalPages}`}
+        />
         <CardContent>
           {loading ? (
             <div className="flex items-center justify-center py-6">

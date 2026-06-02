@@ -13,13 +13,16 @@ import type {
 // Haversine distance calculation
 function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
   const R = 6371; // Earth's radius in km
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
   return R * c;
 }
 
@@ -88,13 +91,15 @@ interface OptimizationState {
   clearParallelJobs: () => void;
 
   // Actions - Metrics
-  updateMetrics: (metrics: Partial<{
-    solveTime: number;
-    totalDistance: number;
-    totalDuration: number;
-    vehiclesUsed: number;
-    stopsServed: number;
-  }>) => void;
+  updateMetrics: (
+    metrics: Partial<{
+      solveTime: number;
+      totalDistance: number;
+      totalDuration: number;
+      vehiclesUsed: number;
+      stopsServed: number;
+    }>,
+  ) => void;
 
   // Reset
   reset: () => void;
@@ -135,8 +140,7 @@ export const useOptimizationStore = create<OptimizationState>((set) => ({
   clearStops: () => set({ stops: [] }),
 
   setVehicles: (vehicles) => set({ vehicles }),
-  setConfig: (config) =>
-    set((state) => ({ config: { ...state.config, ...config } })),
+  setConfig: (config) => set((state) => ({ config: { ...state.config, ...config } })),
 
   // Result actions
   setResult: (result) =>
@@ -144,6 +148,7 @@ export const useOptimizationStore = create<OptimizationState>((set) => ({
       // Calculate distances for each route using stop coordinates
       const routesWithDistance = (result.vehicle_data || []).map((vehicle) => {
         const routeDistance = calculateRouteDistance(vehicle.route, state.stops);
+
         return {
           ...vehicle,
           route_distance: routeDistance,
@@ -152,7 +157,10 @@ export const useOptimizationStore = create<OptimizationState>((set) => ({
 
       const totalDistance = routesWithDistance.reduce((acc, v) => acc + v.route_distance, 0);
       const totalDuration = routesWithDistance.reduce((acc, v) => acc + (v.route_duration || 0), 0);
-      const stopsServed = routesWithDistance.reduce((acc, v) => acc + Math.max(0, v.route.length - 2), 0);
+      const stopsServed = routesWithDistance.reduce(
+        (acc, v) => acc + Math.max(0, v.route.length - 2),
+        0,
+      );
 
       return {
         result: { ...result, vehicle_data: routesWithDistance },
@@ -182,11 +190,15 @@ export const useOptimizationStore = create<OptimizationState>((set) => ({
   updateParallelJob: (job) =>
     set((state) => {
       const existingIndex = state.parallelJobs.findIndex((j) => j.jobId === job.jobId);
+
       if (existingIndex >= 0) {
         const updated = [...state.parallelJobs];
+
         updated[existingIndex] = job;
+
         return { parallelJobs: updated };
       }
+
       return { parallelJobs: [...state.parallelJobs, job] };
     }),
   clearParallelJobs: () => set({ parallelJobs: [], clusters: [] }),

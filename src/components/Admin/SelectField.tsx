@@ -1,4 +1,4 @@
-import { Select } from '@/components/shared/Select';
+import { Select } from '@/components';
 
 interface SelectFieldProps {
   label: string;
@@ -9,7 +9,14 @@ interface SelectFieldProps {
   placeholder?: string;
 }
 
-export function SelectField({ label, value, onChange, options, hint, placeholder }: SelectFieldProps) {
+export function SelectField({
+  label,
+  value,
+  onChange,
+  options,
+  hint,
+  placeholder,
+}: SelectFieldProps) {
   return (
     <div className="space-y-1">
       <Select

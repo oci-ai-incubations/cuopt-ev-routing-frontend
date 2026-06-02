@@ -62,7 +62,7 @@ export function AppSidebar({
     <aside
       className={clsx(
         'flex flex-col border-r border-dark-border bg-dark-card transition-all duration-300',
-        collapsed ? 'w-16' : 'w-64'
+        collapsed ? 'w-16' : 'w-64',
       )}
     >
       <div className="h-16 flex items-center gap-3 px-4 border-b border-dark-border">
@@ -86,7 +86,7 @@ export function AppSidebar({
               'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all',
               mode === item.id
                 ? 'bg-oracle-red/10 text-oracle-red border border-oracle-red/30'
-                : 'text-gray-400 hover:bg-dark-hover hover:text-white'
+                : 'text-gray-400 hover:bg-dark-hover hover:text-white',
             )}
           >
             {item.icon}

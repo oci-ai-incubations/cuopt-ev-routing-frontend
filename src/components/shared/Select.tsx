@@ -15,7 +15,23 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ label, options, error, placeholder, className, value, defaultValue, onChange, id, name, disabled, ...props }, ref) => {
+  (
+    {
+      label,
+      options,
+      error,
+      placeholder,
+      className,
+      value,
+      defaultValue,
+      onChange,
+      id,
+      name,
+      disabled,
+      ...props
+    },
+    ref,
+  ) => {
     const wrapperRef = useRef<HTMLDivElement | null>(null);
     const selectRef = useRef<HTMLSelectElement | null>(null);
     const triggerRef = useRef<HTMLButtonElement | null>(null);
@@ -23,11 +39,14 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     const [isOpen, setIsOpen] = useState(false);
     const [openUpward, setOpenUpward] = useState(false);
     const hasPlaceholder = Boolean(placeholder);
+
     const getInitialValue = () => {
       if (typeof defaultValue === 'string') return defaultValue;
       if (hasPlaceholder) return '';
+
       return options[0]?.value ?? '';
     };
+
     const [internalValue, setInternalValue] = useState<string>(getInitialValue);
 
     const isControlled = value !== undefined;
@@ -62,7 +81,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       if (typeof ref === 'function') {
         ref(node);
       } else if (ref) {
-        (ref).current = node;
+        ref.current = node;
       }
     };
 
@@ -121,6 +140,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             if (!isControlled) {
               setInternalValue(event.target.value);
             }
+
             onChange?.(event);
           }}
           disabled={disabled}
@@ -151,7 +171,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
               'cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed',
               isOpen && 'ring-2 ring-[#C74634] border-transparent',
               error && 'border-red-500 focus:ring-red-500',
-              className
+              className,
             )}
             aria-haspopup="listbox"
             aria-expanded={isOpen}
@@ -163,7 +183,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           <ChevronDown
             className={clsx(
               'w-4 h-4 text-white pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 transition-transform duration-200',
-              isOpen && 'rotate-180'
+              isOpen && 'rotate-180',
             )}
           />
           {isOpen && !disabled && (
@@ -171,7 +191,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
               ref={menuRef}
               className={clsx(
                 'absolute w-full bg-dark-bg border border-dark-border rounded-lg shadow-xl z-[80] overflow-hidden text-sm',
-                openUpward ? 'bottom-full mb-1' : 'top-full mt-1'
+                openUpward ? 'bottom-full mb-1' : 'top-full mt-1',
               )}
             >
               {options.map((option) => (
@@ -183,7 +203,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                       'w-full text-left px-4 py-2.5 transition-colors',
                       option.value === selectedValue
                         ? 'bg-white/10 text-white'
-                        : 'text-gray-200 hover:bg-white/10'
+                        : 'text-gray-200 hover:bg-white/10',
                     )}
                   >
                     {option.label}
@@ -196,7 +216,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         {error && <p className="mt-1 text-sm text-red-400">{error}</p>}
       </div>
     );
-  }
+  },
 );
 
 Select.displayName = 'Select';

@@ -1,7 +1,4 @@
-import { Select } from '@/components/shared/Select';
-import { Slider } from '@/components/shared/Slider';
-import { HelpText, Tooltip } from '@/components/shared/Tooltip';
-
+import { Select, Slider, HelpText, Tooltip } from '@/components';
 import type { OptimizationConfig, Stop } from '@/types';
 
 interface SolverSectionProps {
@@ -22,7 +19,9 @@ export function SolverSection({ config, stops, setConfig }: SolverSectionProps) 
                 <p className="font-medium">Solver Time Limit</p>
                 <p>Maximum time the solver will spend optimizing.</p>
                 <p className="text-gray-400">Longer time = better solution quality.</p>
-                <p className="text-yellow-400">Note: This is a soft limit. Solver may slightly exceed it.</p>
+                <p className="text-yellow-400">
+                  Note: This is a soft limit. Solver may slightly exceed it.
+                </p>
               </div>
             }
             position="right"
@@ -80,22 +79,26 @@ export function SolverSection({ config, stops, setConfig }: SolverSectionProps) 
         />
         {config.parallelJobs > 1 && stops.length < 500 && (
           <HelpText variant="warning">
-            Parallel mode may increase total distance by 10-30% for small datasets.
-            Cluster boundaries prevent optimal cross-region routing.
-            Use single optimization for best quality.
+            Parallel mode may increase total distance by 10-30% for small datasets. Cluster
+            boundaries prevent optimal cross-region routing. Use single optimization for best
+            quality.
           </HelpText>
         )}
         {config.parallelJobs > 1 && config.numVehicles < config.parallelJobs * 2 && (
           <HelpText variant="warning">
             Too few vehicles for {config.parallelJobs} clusters. Each cluster needs 2+ vehicles.
-            Reduce parallel jobs to {Math.max(1, Math.floor(config.numVehicles / 2))} or add more vehicles.
+            Reduce parallel jobs to {Math.max(1, Math.floor(config.numVehicles / 2))} or add more
+            vehicles.
           </HelpText>
         )}
-        {config.parallelJobs > 1 && stops.length >= 500 && config.numVehicles >= config.parallelJobs * 2 && (
-          <HelpText variant="success">
-            Good configuration: ~{Math.ceil(stops.length / config.parallelJobs)} stops, ~{Math.floor(config.numVehicles / config.parallelJobs)} vehicles per cluster.
-          </HelpText>
-        )}
+        {config.parallelJobs > 1 &&
+          stops.length >= 500 &&
+          config.numVehicles >= config.parallelJobs * 2 && (
+            <HelpText variant="success">
+              Good configuration: ~{Math.ceil(stops.length / config.parallelJobs)} stops, ~
+              {Math.floor(config.numVehicles / config.parallelJobs)} vehicles per cluster.
+            </HelpText>
+          )}
       </div>
 
       <div>
@@ -105,9 +108,18 @@ export function SolverSection({ config, stops, setConfig }: SolverSectionProps) 
             content={
               <div className="space-y-1">
                 <p className="font-medium">Optimization Intensity</p>
-                <p><span className="text-blue-400">Quality:</span> More parallel searches (256 climbers). Best solution, slower.</p>
-                <p><span className="text-green-400">Balanced:</span> Moderate searches (128 climbers). Good tradeoff.</p>
-                <p><span className="text-yellow-400">Speed:</span> Fewer searches (64 climbers). Faster, may miss optimal.</p>
+                <p>
+                  <span className="text-blue-400">Quality:</span> More parallel searches (256
+                  climbers). Best solution, slower.
+                </p>
+                <p>
+                  <span className="text-green-400">Balanced:</span> Moderate searches (128
+                  climbers). Good tradeoff.
+                </p>
+                <p>
+                  <span className="text-yellow-400">Speed:</span> Fewer searches (64 climbers).
+                  Faster, may miss optimal.
+                </p>
               </div>
             }
             position="right"
@@ -120,17 +132,24 @@ export function SolverSection({ config, stops, setConfig }: SolverSectionProps) 
             { value: 'speed', label: 'Speed (faster, good solution)' },
           ]}
           value={config.solverMode}
-          onChange={(e) => setConfig({ solverMode: e.target.value as OptimizationConfig['solverMode'] })}
+          onChange={(e) =>
+            setConfig({ solverMode: e.target.value as OptimizationConfig['solverMode'] })
+          }
         />
       </div>
 
       <div className="pt-2 border-t border-dark-border">
-        <div className="text-xs text-gray-400 mb-2">Expected solve time ({config.solverMode} mode):</div>
+        <div className="text-xs text-gray-400 mb-2">
+          Expected solve time ({config.solverMode} mode):
+        </div>
         <div className="text-lg font-mono text-[#C74634]">
-          ~{(() => {
+          ~
+          {(() => {
             const modeMultipliers: Record<string, number> = { quality: 1.5, speed: 0.7 };
+
             return Math.ceil((stops.length / 20) * (modeMultipliers[config.solverMode] ?? 1));
-          })()}s
+          })()}
+          s
         </div>
         <div className="text-xs text-gray-500 mt-1">
           {stops.length} stops × {config.numVehicles} vehicles
@@ -167,7 +186,8 @@ export function SolverSection({ config, stops, setConfig }: SolverSectionProps) 
                   <p className="text-xs text-gray-500">(N = stops + 1 for depot)</p>
                 </div>
                 <p className="text-xs text-gray-500 pt-1 border-t border-dark-border">
-                  Current config: ~{(43.2 * Math.pow(stops.length + 1, 2) / (1024 * 1024)).toFixed(1)} MB payload
+                  Current config: ~
+                  {((43.2 * Math.pow(stops.length + 1, 2)) / (1024 * 1024)).toFixed(1)} MB payload
                 </p>
               </div>
             }
@@ -175,8 +195,10 @@ export function SolverSection({ config, stops, setConfig }: SolverSectionProps) 
           />
         </div>
         <div className="text-xs text-gray-500 mt-1">
-          Payload: ~{(43.2 * Math.pow(stops.length + 1, 2) / (1024 * 1024)).toFixed(1)} MB
-          {stops.length > 5000 && <span className="text-yellow-400 ml-1">(Consider clustering)</span>}
+          Payload: ~{((43.2 * Math.pow(stops.length + 1, 2)) / (1024 * 1024)).toFixed(1)} MB
+          {stops.length > 5000 && (
+            <span className="text-yellow-400 ml-1">(Consider clustering)</span>
+          )}
         </div>
       </div>
     </>
