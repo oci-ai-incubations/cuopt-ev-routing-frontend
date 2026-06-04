@@ -37,6 +37,7 @@ export function InputPanel({ onRunOptimization, onRunParallel }: InputPanelProps
     payloadSize,
     recommendedClusters,
     handleCSVUpload,
+    handleDownloadStops,
     handleGenerateStops,
     handleLoadEVData,
     handleLoadDynamicScenario,
@@ -105,6 +106,7 @@ export function InputPanel({ onRunOptimization, onRunParallel }: InputPanelProps
             onLoadEVData={handleLoadEVData}
             onLoadDynamicScenario={handleLoadDynamicScenario}
             onCSVUpload={handleCSVUpload}
+            onDownloadStops={handleDownloadStops}
           />
         )}
 

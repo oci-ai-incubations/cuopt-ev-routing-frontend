@@ -17,7 +17,7 @@ import {
   type Stop,
   type Toast,
 } from '@/types';
-import { estimatePayloadSize, recommendClusterCount } from '@/utils';
+import { estimatePayloadSize, recommendClusterCount, stopsToCSV } from '@/utils';
 
 interface UseInputPanelActionsParams {
   config: OptimizationConfig;
@@ -173,6 +173,35 @@ export function useInputPanelActions({
     }
   };
 
+  const handleDownloadStops = () => {
+    if (stops.length === 0) {
+      addToast({
+        type: 'error',
+        title: 'No Stops to Download',
+        message: 'Load or generate stops before downloading the dataset.',
+      });
+
+      return;
+    }
+
+    const blob = new Blob([stopsToCSV(stops)], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download = 'cuopt-stops.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    addToast({
+      type: 'success',
+      title: 'Stops Downloaded',
+      message: `Exported ${stops.length} stops to cuopt-stops.csv`,
+    });
+  };
+
   const handleLoadDynamicScenario = (scenario: DynamicBenchmarkScenario) => {
     try {
       const randomStops = generateRandomStops(
@@ -288,6 +317,7 @@ export function useInputPanelActions({
     payloadSize,
     recommendedClusters,
     handleCSVUpload,
+    handleDownloadStops,
     handleGenerateStops,
     handleLoadEVData,
     handleLoadDynamicScenario,
