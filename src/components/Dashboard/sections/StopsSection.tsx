@@ -1,4 +1,4 @@
-import { Battery, FileText, MapPin, Upload } from 'lucide-react';
+import { Battery, Download, FileText, MapPin, Upload } from 'lucide-react';
 import type { ChangeEvent, RefObject } from 'react';
 
 import { Button, Toggle, Tooltip, HelpText } from '@/components';
@@ -18,6 +18,7 @@ interface StopsSectionProps {
   onLoadEVData: () => void;
   onLoadDynamicScenario: (scenario: DynamicBenchmarkScenario) => void;
   onCSVUpload: (event: ChangeEvent<HTMLInputElement>) => void;
+  onDownloadStops: () => void;
 }
 
 export function StopsSection({
@@ -32,6 +33,7 @@ export function StopsSection({
   onLoadEVData,
   onLoadDynamicScenario,
   onCSVUpload,
+  onDownloadStops,
 }: StopsSectionProps) {
   return (
     <>
@@ -83,6 +85,16 @@ export function StopsSection({
         onClick={() => fileInputRef.current?.click()}
       >
         Upload CSV
+      </Button>
+
+      <Button
+        variant="outline"
+        className="w-full"
+        leftIcon={<Download className="w-4 h-4" />}
+        onClick={onDownloadStops}
+        disabled={stops.length === 0}
+      >
+        Download CSV
       </Button>
 
       <div className="text-xs text-gray-500 bg-dark-bg rounded-lg p-2">

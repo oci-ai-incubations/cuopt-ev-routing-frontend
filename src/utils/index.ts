@@ -3,3 +3,4 @@ export * from './formatters';
 export * from './getBaselineForStops';
 export * from './mapUtils';
 export * from './parseCSV';
+export * from './stopsToCSV';
